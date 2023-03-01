@@ -13,6 +13,13 @@ public unsafe static class SugarExtensions
         fixed (char* cptr = str)
             return cptr;
     }
+    
+    public static byte* AnsiPtr(this string str)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        fixed (byte* cbytes = bytes)
+            return cbytes;
+    }
 
     public static T* Ptr<T>(this T obj) where T : unmanaged
     {

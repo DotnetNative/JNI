@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 namespace CSJNI.High.Hierarchy;
 public class JObject : Handle
 {
-    public JObject(IntPtr addr, ClassHandle clazz) : base(addr)
+    public JObject(IntPtr addr) : base(addr)
     {
-        this.clazz = clazz;
+        
     }
-
-    public ClassHandle clazz;
 
     public T ToStruct<T>() where T : struct => Addr.ToStruct<T>();
 }

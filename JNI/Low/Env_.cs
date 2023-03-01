@@ -21,7 +21,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr DefineClass(char* name, IntPtr loader, byte* buf, int len)
+    public IntPtr DefineClass(byte* name, IntPtr loader, byte* buf, int len)
     {
         fixed (Env_* env = &this)
         {
@@ -29,7 +29,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr FindClass(char* name)
+    public IntPtr FindClass(byte* name)
     {
         fixed (Env_* env = &this)
         {
@@ -93,7 +93,7 @@ public unsafe struct Env_
         }
     }
 
-    public int ThrowNew(IntPtr clazz, char* msg)
+    public int ThrowNew(IntPtr clazz, byte* msg)
     {
         fixed (Env_* env = &this)
         {
@@ -125,7 +125,7 @@ public unsafe struct Env_
         }
     }
 
-    public void FatalError(char* msg)
+    public void FatalError(byte* msg)
     {
         fixed (Env_* env = &this)
         {
@@ -247,7 +247,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetMethodID(IntPtr clazz, char* name, char* sig)
+    public IntPtr GetMethodID(IntPtr clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
         {
@@ -771,7 +771,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetFieldID(IntPtr clazz, char* name, char* sig)
+    public IntPtr GetFieldID(IntPtr clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
         {
@@ -923,7 +923,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetStaticMethodID(IntPtr clazz, char* name, char* sig)
+    public IntPtr GetStaticMethodID(IntPtr clazz, byte* name, byte* sig) //public IntPtr GetStaticMethodID(IntPtr clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
         {
@@ -1189,7 +1189,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetStaticFieldID(IntPtr clazz, char* name, char* sig)
+    public IntPtr GetStaticFieldID(IntPtr clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
         {
@@ -1374,7 +1374,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr NewStringUTF(char* utf)
+    public IntPtr NewStringUTF(byte* utf)
     {
         fixed (Env_* env = &this)
         {
@@ -1390,7 +1390,7 @@ public unsafe struct Env_
         }
     }
 
-    public char* GetStringUTFChars(IntPtr str, bool* isCopy)
+    public byte* GetStringUTFChars(IntPtr str, bool* isCopy)
     {
         fixed (Env_* env = &this)
         {
@@ -1398,7 +1398,7 @@ public unsafe struct Env_
         }
     }
 
-    public void ReleaseStringUTFChars(IntPtr str, char* chars)
+    public void ReleaseStringUTFChars(IntPtr str, byte* chars)
     {
         fixed (Env_* env = &this)
         {
@@ -1806,7 +1806,7 @@ public unsafe struct Env_
         }
     }
 
-    public void GetStringUTFRegion(IntPtr str, int start, int len, char* buf)
+    public void GetStringUTFRegion(IntPtr str, int start, int len, byte* buf)
     {
         fixed (Env_* env = &this)
         {

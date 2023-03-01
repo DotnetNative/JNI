@@ -15,10 +15,11 @@ public unsafe class JStaticMethod : MethodData
     public JStaticMethod(Env env, string name, JType type, ClassHandle clazz, params Arg[] args) : base(env, IntPtr.Zero, name, type, args)
     {
         this.clazz = clazz;
-        Addr = env.Master->GetStaticMethodID((IntPtr)clazz, name.Ptr(), SigGen.Method(this).Ptr());
+        string argsStr = SigGen.Method(this);
+        Addr = env.Master->GetStaticMethodID((IntPtr)clazz, name.AnsiPtr(), argsStr.AnsiPtr());
     }
 
     private ClassHandle clazz;
 
-    public JObject Call(__arglist) => new JObject(Env.Master->CallStaticIntPtrMethod((IntPtr)clazz, Addr, new ArgIterator(__arglist)), clazz);
+    public JObject Call(__arglist) => new JObject(Env.Master->CallStaticIntPtrMethod((IntPtr)clazz, Addr, new ArgIterator(__arglist)));
 }

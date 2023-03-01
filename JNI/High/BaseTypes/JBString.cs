@@ -1,16 +1,20 @@
 ﻿using CSJNI.High.Hierarchy;
-using CSJNI.High;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
-namespace CSJNI.BaseTypes;
-public class JBString : JClass<JBStringS>
+namespace CSJNI.High.BaseTypes;
+public class JBString : JClass
 {
-    public JBString(Env env) : base(env, "java/lang/String")
+    public JBString(Env env) : base(env, "java/lang/String") { }
+}
+
+public class JBStringObj : JClassObject<JBStringS>
+{
+    public JBStringObj(JClass jClass, JObject obj) : base(jClass, obj)
     {
 
     }

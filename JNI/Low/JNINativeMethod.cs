@@ -10,7 +10,7 @@ namespace CSJNI.Low;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JNINativeMethod
 {
-    public char* Name;
-    public char* Signature;
+    public byte* Name;
+    public byte* Signature;
     public void* FnPtr;
 }

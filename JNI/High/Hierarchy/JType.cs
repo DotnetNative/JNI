@@ -14,7 +14,7 @@ public unsafe class JType : ClassHandle
         Sig = sig;
     }
 
-    public JType(Env env, string name, string sig) : base(env, env.Master->FindClass(name.Ptr()))
+    public JType(Env env, string name, string sig) : base(env, env.Master->FindClass(name.AnsiPtr()))
     {
         Name = name;
         Sig = sig;
