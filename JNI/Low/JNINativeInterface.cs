@@ -41,19 +41,19 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr> NewGlobalRef = null;
     public delegate* unmanaged<Env_*, IntPtr, void> DeleteGlobalRef = null;
     public delegate* unmanaged<Env_*, IntPtr, void> DeleteLocalRef = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> IsSameIntPtr = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> IsSameObject = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr> NewLocalRef = null;
     public delegate* unmanaged<Env_*, int, int> EnsureLocalCapacity = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr> AllocIntPtr = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr> AllocObject = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> NewIntPtr = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> NewIntPtrV = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> NewIntPtrA = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr> GetIntPtrClass = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> NewObjectV = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> NewObjectA = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr> GeObjectClass = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> IsInstanceOf = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetMethodID = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> CallIntPtrMethod = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> CallIntPtrMethodV = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> CallIntPtrMethodA = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> CallObjectMethodV = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> CallObjectMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], bool> CallBooleanMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, bool> CallBooleanMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, bool> CallBooleanMethodA = null;
@@ -82,8 +82,8 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, void> CallVoidMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, void> CallVoidMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, IntPtr[], IntPtr> CallNonvirtualIntPtrMethod = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, ArgIterator, IntPtr> CallNonvirtualIntPtrMethodV = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, JValue*, IntPtr> CallNonvirtualIntPtrMethodA = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, ArgIterator, IntPtr> CallNonvirtualObjectMethodV = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, JValue*, IntPtr> CallNonvirtualObjectMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, IntPtr[], bool> CallNonvirtualBooleanMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, ArgIterator, bool> CallNonvirtualBooleanMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, JValue*, bool> CallNonvirtualBooleanMethodA = null;
@@ -112,7 +112,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, ArgIterator, void> CallNonvirtualVoidMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, JValue*, void> CallNonvirtualVoidMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetFieldID = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr> GetIntPtrField = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr> GetObjectField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> GetBooleanField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, byte> GetByteField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ushort> GetCharField = null;
@@ -121,7 +121,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, long> GetLongField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, float> GetFloatField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, double> GetDoubleField = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, void> SetIntPtrField = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, void> SetObjectField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool, void> SetBooleanField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, byte, void> SetByteField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ushort, void> SetCharField = null;
@@ -131,9 +131,9 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, float, void> SetFloatField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, double, void> SetDoubleField = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetStaticMethodID = null; //public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetStaticMethodID = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> CallStaticIntPtrMethod = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> CallStaticIntPtrMethodV = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> CallStaticIntPtrMethodA = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> CallStaticObjectMethod = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> CallStaticObjectMethodV = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> CallStaticObjectMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], bool> CallStaticBooleanMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, bool> CallStaticBooleanMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, bool> CallStaticBooleanMethodA = null;
@@ -162,7 +162,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, void> CallStaticVoidMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, void> CallStaticVoidMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetStaticFieldID = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr> GetStaticIntPtrField = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr> GetStaticObjectField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> GetStaticBooleanField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, byte> GetStaticByteField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ushort> GetStaticCharField = null;
@@ -171,7 +171,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, long> GetStaticLongField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, float> GetStaticFloatField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, double> GetStaticDoubleField = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, void> SetStaticIntPtrField = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, void> SetStaticObjectField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool, void> SetStaticBooleanField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, byte, void> SetStaticByteField = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ushort, void> SetStaticCharField = null;
@@ -189,9 +189,9 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, bool*, byte*> GetStringUTFChars = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, void> ReleaseStringUTFChars = null;
     public delegate* unmanaged<Env_*, IntPtr, int> GetArrayLength = null;
-    public delegate* unmanaged<Env_*, int, IntPtr, IntPtr, IntPtr> NewIntPtrArray = null;
-    public delegate* unmanaged<Env_*, IntPtr, int, IntPtr> GetIntPtrArrayElement = null;
-    public delegate* unmanaged<Env_*, IntPtr, int, IntPtr, void> SetIntPtrArrayElement = null;
+    public delegate* unmanaged<Env_*, int, IntPtr, IntPtr, IntPtr> NewObjectArray = null;
+    public delegate* unmanaged<Env_*, IntPtr, int, IntPtr> GetObjectArrayElement = null;
+    public delegate* unmanaged<Env_*, IntPtr, int, IntPtr, void> SetObjectArrayElement = null;
     public delegate* unmanaged<Env_*, int, IntPtr> NewBooleanArray = null;
     public delegate* unmanaged<Env_*, int, IntPtr> NewByteArray = null;
     public delegate* unmanaged<Env_*, int, IntPtr> NewCharArray = null;
@@ -249,5 +249,5 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, void*, long, IntPtr> NewDirectByteBuffer = null;
     public delegate* unmanaged<Env_*, IntPtr, void*> GetDirectBufferAddress = null;
     public delegate* unmanaged<Env_*, IntPtr, long> GetDirectBufferCapacity = null;
-    public delegate* unmanaged<Env_*, IntPtr, JObjectRefType> GetIntPtrRefType = null;
+    public delegate* unmanaged<Env_*, IntPtr, JObjectRefType> GetObjectRefType = null;
 }

@@ -14,4 +14,6 @@ public class JObject : Handle
     }
 
     public T ToStruct<T>() where T : struct => Addr.ToStruct<T>();
+
+    public static explicit operator IntPtr(JObject obj) => obj.Addr;
 }

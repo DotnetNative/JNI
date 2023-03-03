@@ -12,11 +12,11 @@ public class JClassObject<T> where T : struct
         Class = jClass;
         Obj = obj;
 
-        IntPtr addr = ((IntPtr)obj);
+        IntPtr addr = (IntPtr)obj;
         if (addr == IntPtr.Zero)
             IsNull = true;
         else
-            Value = ((IntPtr)obj).ToStruct<T>();
+            Value = addr.ToStruct<T>();
     }
 
     public JClass Class;

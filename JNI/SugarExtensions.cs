@@ -28,6 +28,13 @@ public unsafe static class SugarExtensions
         return (T*)addr.ToPointer();
     }
 
+    public static T* Ptr<T>(this T[] obj) where T : unmanaged
+    {
+        TypedReference reference = __makeref(obj);
+        IntPtr addr = (IntPtr)(&reference);
+        return (T*)addr.ToPointer();
+    }
+
     public static IntPtr Addr<T>(this T obj) where T : unmanaged
     {
         TypedReference reference = __makeref(obj);

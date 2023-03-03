@@ -13,6 +13,6 @@ public unsafe class JField : FieldData
     {
     }
 
-    public T GetValue<T>(JObject obj) where T : struct => Env.Master->GetIntPtrField((IntPtr)obj, Addr).ToStruct<T>();
-    public JObject GetObjectValue(JObject obj) => new JObject(Env.Master->GetIntPtrField((IntPtr)obj, Addr));
+    public T GetValue<T>(JObject obj) where T : struct => Env.Master->GetObjectField((IntPtr)obj, Addr).ToStruct<T>();
+    public JObject GetObjectValue(JObject obj) => new JObject(Env.Master->GetObjectField((IntPtr)obj, Addr));
 }

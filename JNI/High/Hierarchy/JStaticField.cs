@@ -16,6 +16,6 @@ public unsafe class JStaticField : FieldData
 
     private ClassHandle clazz;
 
-    public T GetValue<T>() where T : struct => Env.Master->GetStaticIntPtrField((IntPtr)clazz, Addr).ToStruct<T>();
-    public JObject GetObjectValue() => new JObject(Env.Master->GetStaticIntPtrField((IntPtr)clazz, Addr));
+    public T GetValue<T>() where T : struct => Env.Master->GetStaticObjectField((IntPtr)clazz, Addr).ToStruct<T>();
+    public JObject GetObjectValue() => new JObject(Env.Master->GetStaticObjectField((IntPtr)clazz, Addr));
 }

@@ -12,7 +12,13 @@ public unsafe class JMethod : MethodData
         this.clazz = clazz;
     }
 
+    public JMethod(Env env, string name, JType type, Arg[] args, ClassHandle clazz) : base(env, IntPtr.Zero, name, type, args)
+    {
+        this.clazz = clazz;
+        Addr = env.Master->GetMethodID((IntPtr)clazz, name.AnsiPtr(), SigGen.Method(this).AnsiPtr());
+    }
+
     private ClassHandle clazz;
 
-    public JObject Call(JObject obj, __arglist) => new JObject(Env.Master->CallNonvirtualIntPtrMethod((IntPtr)obj, (IntPtr)clazz, Addr, new ArgIterator(__arglist)));
+    public JObject Call(JObject obj, __arglist) => new JObject(Env.Master->CallNonvirtualObjectMethod((IntPtr)obj, (IntPtr)clazz, Addr, new ArgIterator(__arglist)));
 }

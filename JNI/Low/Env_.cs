@@ -1,9 +1,17 @@
-﻿using System;
+﻿using CSJNI.High.Hierarchy;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CSJNI.Low;
@@ -11,13 +19,13 @@ namespace CSJNI.Low;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct Env_
 {
-    private JNINativeInterface* functions;
+    public JNINativeInterface* functions;
 
     public int GetVersion()
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetVersion(env);
+            return functions->GetVersion(env);            
         }
     }
 
@@ -173,11 +181,11 @@ public unsafe struct Env_
         }
     }
 
-    public bool IsSameIntPtr(IntPtr obj1, IntPtr obj2)
+    public bool IsSameObject(IntPtr obj1, IntPtr obj2)
     {
         fixed (Env_* env = &this)
         {
-            return functions->IsSameIntPtr(env, obj1, obj2);
+            return functions->IsSameObject(env, obj1, obj2);
         }
     }
 
@@ -197,45 +205,45 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr AllocIntPtr(IntPtr clazz)
+    public IntPtr AllocObject(IntPtr clazz)
     {
         fixed (Env_* env = &this)
         {
-            return functions->AllocIntPtr(env, clazz);
+            return functions->AllocObject(env, clazz);
         }
     }
 
-    public IntPtr NewIntPtr(IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr NewObject(IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
             IntPtr result;
-            result = functions->NewIntPtrV(env, clazz, methodID, args);
+            result = functions->NewObjectV(env, clazz, methodID, args);
             return result;
         }
     }
 
-    public IntPtr NewIntPtrV(IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr NewObjectV(IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->NewIntPtrV(env, clazz, methodID, args);
+            return functions->NewObjectV(env, clazz, methodID, args);
         }
     }
 
-    public IntPtr NewIntPtrA(IntPtr clazz, IntPtr methodID, JValue* args)
+    public IntPtr NewObjectA(IntPtr clazz, IntPtr methodID, JValue* args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->NewIntPtrA(env, clazz, methodID, args);
+            return functions->NewObjectA(env, clazz, methodID, args);
         }
     }
 
-    public IntPtr GetIntPtrClass(IntPtr obj)
+    public IntPtr GetObjectClass(IntPtr obj)
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetIntPtrClass(env, obj);
+            return functions->GeObjectClass(env, obj);
         }
     }
 
@@ -255,29 +263,29 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr CallIntPtrMethod(IntPtr obj, IntPtr methodID, ArgIterator args)
+    public IntPtr CallObjectMethod(IntPtr obj, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
             IntPtr result;
-            result = functions->CallIntPtrMethodV(env, obj, methodID, args);
+            result = functions->CallObjectMethodV(env, obj, methodID, args);
             return result;
         }
     }
 
-    public IntPtr CallIntPtrMethodV(IntPtr obj, IntPtr methodID, ArgIterator args)
+    public IntPtr CallObjectMethodV(IntPtr obj, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallIntPtrMethodV(env, obj, methodID, args);
+            return functions->CallObjectMethodV(env, obj, methodID, args);
         }
     }
 
-    public IntPtr CallIntPtrMethodA(IntPtr obj, IntPtr methodID, JValue* args)
+    public IntPtr CallObjectMethodA(IntPtr obj, IntPtr methodID, JValue* args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallIntPtrMethodA(env, obj, methodID, args);
+            return functions->CallObjectMethodA(env, obj, methodID, args);
         }
     }
 
@@ -513,12 +521,12 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr CallNonvirtualIntPtrMethod(IntPtr obj, IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr CallNonvirtualObjectMethod(IntPtr obj, IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
             IntPtr result;
-            result = functions->CallNonvirtualIntPtrMethodV(env, obj, clazz, methodID, args);
+            result = functions->CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
             return result;
         }
     }
@@ -527,15 +535,15 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallNonvirtualIntPtrMethodV(env, obj, clazz, methodID, args);
+            return functions->CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
         }
     }
 
-    public IntPtr CallNonvirtualIntPtrMethodA(IntPtr obj, IntPtr clazz, IntPtr methodID, JValue* args)
+    public IntPtr CallNonvirtualObjectMethodA(IntPtr obj, IntPtr clazz, IntPtr methodID, JValue* args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallNonvirtualIntPtrMethodA(env, obj, clazz, methodID, args);
+            return functions->CallNonvirtualObjectMethodA(env, obj, clazz, methodID, args);
         }
     }
 
@@ -779,11 +787,11 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetIntPtrField(IntPtr obj, IntPtr fieldID)
+    public IntPtr GetObjectField(IntPtr obj, IntPtr fieldID)
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetIntPtrField(env, obj, fieldID);
+            return functions->GetObjectField(env, obj, fieldID);
         }
     }
 
@@ -851,11 +859,11 @@ public unsafe struct Env_
         }
     }
 
-    public void SetIntPtrField(IntPtr obj, IntPtr fieldID, IntPtr val)
+    public void SetObjectField(IntPtr obj, IntPtr fieldID, IntPtr val)
     {
         fixed (Env_* env = &this)
         {
-            functions->SetIntPtrField(env, obj, fieldID, val);
+            functions->SetObjectField(env, obj, fieldID, val);
         }
     }
 
@@ -931,29 +939,29 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr CallStaticIntPtrMethod(IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr CallStaticObjectMethod(IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
             IntPtr result;
-            result = functions->CallStaticIntPtrMethodV(env, clazz, methodID, args);
+            result = functions->CallStaticObjectMethodV(env, clazz, methodID, args);
             return result;
         }
     }
 
-    public IntPtr CallStaticIntPtrMethodV(IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr CallStaticObjectMethodV(IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallStaticIntPtrMethodV(env, clazz, methodID, args);
+            return functions->CallStaticObjectMethodV(env, clazz, methodID, args);
         }
     }
 
-    public IntPtr CallStaticIntPtrMethodA(IntPtr clazz, IntPtr methodID, JValue* args)
+    public IntPtr CallStaticObjectMethodA(IntPtr clazz, IntPtr methodID, JValue* args)
     {
         fixed (Env_* env = &this)
         {
-            return functions->CallStaticIntPtrMethodA(env, clazz, methodID, args);
+            return functions->CallStaticObjectMethodA(env, clazz, methodID, args);
         }
     }
 
@@ -1197,11 +1205,11 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr GetStaticIntPtrField(IntPtr clazz, IntPtr fieldID)
+    public IntPtr GetStaticObjectField(IntPtr clazz, IntPtr fieldID)
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetStaticIntPtrField(env, clazz, fieldID);
+            return functions->GetStaticObjectField(env, clazz, fieldID);
         }
     }
 
@@ -1269,11 +1277,11 @@ public unsafe struct Env_
         }
     }
 
-    public void SetStaticIntPtrField(IntPtr clazz, IntPtr fieldID, IntPtr value)
+    public void SetStaticObjectField(IntPtr clazz, IntPtr fieldID, IntPtr value)
     {
         fixed (Env_* env = &this)
         {
-            functions->SetStaticIntPtrField(env, clazz, fieldID, value);
+            functions->SetStaticObjectField(env, clazz, fieldID, value);
         }
     }
 
@@ -1414,27 +1422,27 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr NewIntPtrArray(int len, IntPtr clazz, IntPtr init)
+    public IntPtr NewObjectArray(int len, IntPtr clazz, IntPtr init)
     {
         fixed (Env_* env = &this)
         {
-            return functions->NewIntPtrArray(env, len, clazz, init);
+            return functions->NewObjectArray(env, len, clazz, init);
         }
     }
 
-    public IntPtr GetIntPtrArrayElement(IntPtr array, int index)
+    public IntPtr GetObjectArrayElement(IntPtr array, int index)
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetIntPtrArrayElement(env, array, index);
+            return functions->GetObjectArrayElement(env, array, index);
         }
     }
 
-    public void SetIntPtrArrayElement(IntPtr array, int index, IntPtr val)
+    public void SetObjectArrayElement(IntPtr array, int index, IntPtr val)
     {
         fixed (Env_* env = &this)
         {
-            functions->SetIntPtrArrayElement(env, array, index, val);
+            functions->SetObjectArrayElement(env, array, index, val);
         }
     }
 
@@ -1894,11 +1902,11 @@ public unsafe struct Env_
         }
     }
 
-    public JObjectRefType GetIntPtrRefType(IntPtr obj)
+    public JObjectRefType GetObjectRefType(IntPtr obj)
     {
         fixed (Env_* env = &this)
         {
-            return functions->GetIntPtrRefType(env, obj);
+            return functions->GetObjectRefType(env, obj);
         }
     }
 }

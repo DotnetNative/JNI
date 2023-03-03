@@ -30,9 +30,11 @@ public unsafe class EntryPoint
         Env env = jvm.AttachCurrentThread();
         Env_* mst = env.Master;
         Log("Env ver: " + env.Version);
-
+        Log("A");
         JBClassObj bibClass = env.BaseTypes.Class.ForName("bib");
+        Log("B");
         Log(bibClass.IsNull);
+        Log("C");
     }
 
     public void Unload()

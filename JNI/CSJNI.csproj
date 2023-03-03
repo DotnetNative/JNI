@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="BaseTypes\" />
+	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 
 </Project>

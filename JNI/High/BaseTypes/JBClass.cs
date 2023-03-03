@@ -1,13 +1,17 @@
 ﻿using CSJNI.High.Hierarchy;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSJNI.High.BaseTypes;
-public class JBClass : JClass
+public unsafe class JBClass : JClass
 {
     public JBClass(Env env) : base(env, "java/lang/Class")
     {
@@ -17,7 +21,8 @@ public class JBClass : JClass
     private JStaticMethod forNameMeth;
     public JBClassObj ForName(string name)
     {
-        return new JBClassObj(this, forNameMeth.Call(__arglist(JBStringS.FromString(name, true))));
+        JBStringS arg = JBStringS.FromString(name, true);
+        return new JBClassObj(this, forNameMeth.Call(arg));       
     }
 }
 

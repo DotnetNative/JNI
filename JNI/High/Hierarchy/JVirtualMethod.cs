@@ -11,5 +11,5 @@ public unsafe class JVirtualMethod : MethodData
     {
     }
 
-    public JObject Call(JObject obj, __arglist) => new JObject(Env.Master->CallIntPtrMethod((IntPtr)obj, Addr, new ArgIterator(__arglist)));
+    public JObject Call(JObject obj, __arglist) => new JObject(Env.Master->CallObjectMethod((IntPtr)obj, Addr, new ArgIterator(__arglist)));
 }

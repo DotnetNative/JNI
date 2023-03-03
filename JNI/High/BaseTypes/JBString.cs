@@ -21,7 +21,7 @@ public class JBStringObj : JClassObject<JBStringS>
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct JBStringS
+public unsafe struct JBStringS
 {
     private const byte LATIN1 = 0;
     private const byte UTF16 = 1;

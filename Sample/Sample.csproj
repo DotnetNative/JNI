@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JNI\CSJNI.csproj" />
+	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 
 </Project>
