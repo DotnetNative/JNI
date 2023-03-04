@@ -9,12 +9,12 @@ public class MethodData : HandleEnv
 {
     public MethodData(Env env, IntPtr handle, string name, JType type, Arg[] args) : base(env, handle)
     {
-        FieldName = name;
+        MethodName = name;
         Type = type;
         Args = args;
     }
 
-    public string FieldName { get; init; }
+    public string MethodName { get; init; }
     public JType Type { get; init; }
     public Arg[] Args { get; init; }
 }

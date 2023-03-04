@@ -39,7 +39,7 @@ public unsafe class Env
     public void SetStaticObjectField(JObject obj, FieldHandle field, JObject val) => Master->SetStaticObjectField((IntPtr)obj, (IntPtr)field, (IntPtr)val);
     public string GetString(JObject str) => Encoding.Unicode.GetString((byte*)Master->GetStringChars((IntPtr)str, true.Ptr()), GetStringLength(str) * 2);
     public int RegisterNatives(ClassHandle clazz, JNINativeMethod[] methods) => Master->RegisterNatives((IntPtr)clazz, methods.Ptr(), methods.Length);
-    public string GetStringUTFChars(JObject str) => Encoding.UTF8.GetString(Master->GetStringUTFChars((IntPtr)str, true.Ptr()), GetStringLength(str));
+    public string GetStringUTFChars(JObject str) => Encoding.UTF8.GetString(Master->GetStringUTFChars((IntPtr)str, true.Ptr()), GetStringUTFLength(str));
     public void ReleaseStringUTFChars(JObject str, string chars) => Master->ReleaseStringUTFChars((IntPtr)str, Encoding.UTF8.GetBytes(chars).Ptr());
     public void ReleasePrimitiveArrayCritical(JObject arr, void* carr, int mode) => Master->ReleasePrimitiveArrayCritical((IntPtr)arr, carr, mode);
     public void ReleaseStringCritical(JObject str, string chars) => Master->ReleaseStringCritical((IntPtr)str, (ushort*)chars.ToCharArray().Ptr());
@@ -49,28 +49,33 @@ public unsafe class Env
     public void SetObjectArrayElement(JObject arr, int index, JObject val) => Master->SetObjectArrayElement((IntPtr)arr, index, (IntPtr)val);
     public void ReleaseStringChars(JObject str, string chars) => Master->ReleaseStringChars((IntPtr)str, (ushort*)chars.ToCharArray().Ptr());
     public JObject NewDirectByteBuffer(IntPtr addr, long capacity) => new JObject(Master->NewDirectByteBuffer(addr.ToPointer(), capacity));
+    public JString NewString(string unicode) => new JString(this, Master->NewString((ushort*)unicode.UnicodePtr(), unicode.Length), true);
     public bool IsAssignableFrom(ClassHandle clazz1, ClassHandle clazz2) => Master->IsAssignableFrom((IntPtr)clazz1, (IntPtr)clazz2);
     public JObject GetObjectField(JObject obj, FieldHandle field) => new JObject(Master->GetObjectField((IntPtr)obj, (IntPtr)field));
     public void* GetPrimitiveArrayCritical(JObject arr, bool isCopy) => Master->GetPrimitiveArrayCritical((IntPtr)arr, isCopy.Ptr());
     public MethodHandle FromReflectedMethod(JObject method) => new MethodHandle(this, Master->FromReflectedMethod((IntPtr)method));
     public JObject GetObjectArrayElement(JObject arr, int index) => new JObject(Master->GetObjectArrayElement((IntPtr)arr, index));
+    public JObject NewStringObj(string unicode) => new JObject(Master->NewString((ushort*)unicode.UnicodePtr(), unicode.Length));
     public FieldHandle FromReflectedField(JObject field) => new FieldHandle(this, Master->FromReflectedMethod((IntPtr)field));
     public JObject NewDirectByteBuffer(void* link, long capacity) => new JObject(Master->NewDirectByteBuffer(link, capacity));
+    public ClassHandle GetClass(string name) => new ClassHandle(this, Master->FindClass(name.Replace('.', '/').AnsiPtr()));
     public ClassHandle GetSuperclass(ClassHandle clazz) => new ClassHandle(this, Master->GetSuperclass((IntPtr)clazz));
-    public JObject NewString(string unicode) => new JObject(Master->NewString((ushort*)unicode.Ptr(), unicode.Length));
-    public JObject NewStringUTF(string str) => new JObject(Master->NewStringUTF((byte*)str.ToCharArray().Ptr()));
     public bool IsInstanceOf(JObject obj, ClassHandle clazz) => Master->IsInstanceOf((IntPtr)obj, (IntPtr)clazz);
+    public JString NewStringUTF(string str) => new JString(this, Master->NewStringUTF(str.AnsiPtr()), false);
     public bool IsSameObject(JObject obj1, JObject obj2) => Master->IsSameObject((IntPtr)obj1, (IntPtr)obj2);
-    public ClassHandle GetClass(string name) => new ClassHandle(this, Master->FindClass(name.AnsiPtr()));
+    public bool IsObjectNull(JObject obj) => Master->IsObjectNull((IntPtr)obj);
     public int ThrowNew(ClassHandle clazz, string msg) => Master->ThrowNew((IntPtr)clazz, msg.AnsiPtr());
     public ClassHandle GetObjectClass(JObject obj) => (ClassHandle)Master->GetObjectClass((IntPtr)obj);
     public JObject PopLocalFrame(JObject result) => new JObject(Master->PopLocalFrame((IntPtr)result));
     public JObject NewWeakGlobalRef(JObject obj) => new JObject(Master->NewWeakGlobalRef((IntPtr)obj));
+    public void ReleaseStringUTFChars(JObject str) => Master->ReleaseStringUTFChars((IntPtr)str, null);
     public long GetDirectBufferCapacity(JObject buf) => Master->GetDirectBufferCapacity((IntPtr)buf);
     public JObject AllocObject(ClassHandle clazz) => new JObject(Master->AllocObject((IntPtr)clazz));
     public void* GetDirectBufferAddress(JObject buf) => Master->GetDirectBufferAddress((IntPtr)buf);
+    public JObject NewStringUTFObj(string str) => new JObject(Master->NewStringUTF(str.AnsiPtr()));
     public void DeleteWeakGlobalRef(JObject refObj) => Master->DeleteWeakGlobalRef((IntPtr)refObj);
     public JObject NewLocalRef(JObject refObj) => new JObject(Master->NewLocalRef((IntPtr)refObj));
+    public void ReleaseStringChars(JObject str) => Master->ReleaseStringChars((IntPtr)str, null);
     public JObjectRefType GetObjectRefType(JObject obj) => Master->GetObjectRefType((IntPtr)obj);
     public int UnregisterNatives(ClassHandle clazz) => Master->UnregisterNatives((IntPtr)clazz);
     public JObject NewGlobalRef(JObject obj) => new JObject(Master->NewGlobalRef((IntPtr)obj));
@@ -89,6 +94,10 @@ public unsafe class Env
     public int Throw(JObject obj) => Master->Throw((IntPtr)obj);
     public void ExceptionClear() => Master->ExceptionClear();
     public bool ExceptionCheck() => Master->ExceptionCheck();
+
+    public JString CreateString(string text, bool isUnicode = true) => new JString(this, text, isUnicode);
+    public JString CreateString(IntPtr addr, bool isUnicode = true) => new JString(this, addr, isUnicode);
+    public JString CreateString(JObject obj, bool isUnicode = true) => new JString(this, (IntPtr)obj, isUnicode);
 }
 
 public class BaseTypeCollection
@@ -99,6 +108,7 @@ public class BaseTypeCollection
     }
     private Env env;
 
+    public JBVoid Void;
     public JBBool Bool;
     public JBByte Byte;
     public JBShort Short;
@@ -110,9 +120,11 @@ public class BaseTypeCollection
     public JBString String;
 
     public JBClass Class;
+    public JBClassLoader ClassLoader;
 
     internal void InitBaseTypes()
     {
+        Void = new JBVoid(env);
         Bool = new JBBool(env);
         Byte = new JBByte(env);
         Short = new JBShort(env);
@@ -123,6 +135,7 @@ public class BaseTypeCollection
 
         String = new JBString(env);
 
+        ClassLoader = new JBClassLoader(env);
         Class = new JBClass(env);
     }
 }

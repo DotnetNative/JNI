@@ -189,6 +189,15 @@ public unsafe struct Env_
         }
     }
 
+    public bool IsObjectNull(IntPtr obj) //CUSTOM
+    {
+        fixed (Env_* env = &this)
+        {
+            delegate* unmanaged<Env_*, IntPtr, void*, bool> isObjectNull = (delegate* unmanaged<Env_*, IntPtr, void*, bool>)functions->IsSameObject;
+            return isObjectNull(env, obj, null);
+        }
+    }
+
     public IntPtr NewLocalRef(IntPtr @ref)
     {
         fixed (Env_* env = &this)
