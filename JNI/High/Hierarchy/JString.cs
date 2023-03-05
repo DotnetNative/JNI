@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace CSJNI.High.Hierarchy;
 public unsafe class JString : JObject, IDisposable
 {
-    public JString(Env env, IntPtr addr, bool isUnicode = true) : base(addr)
+    public JString(Env env, IntPtr addr, bool isUnicode = true) : base(env, addr)
     {
         Env = env;
         IsUnicode = isUnicode;
     }
 
-    public JString(Env env, string str, bool isUnicode = true) : base (IntPtr.Zero)
+    public JString(Env env, string str, bool isUnicode = true) : base (env, IntPtr.Zero)
     {
         Env = env;
         IsUnicode = isUnicode;

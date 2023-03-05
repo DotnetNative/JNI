@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CSJNI.High.Hierarchy;
-public class FieldData : HandleEnv
+public class FieldData : FieldHandle
 {
     public FieldData(Env env, IntPtr handle, string name, JType type) : base(env, handle)
     {

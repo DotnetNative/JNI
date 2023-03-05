@@ -11,5 +11,5 @@ public unsafe class JCtor : JMethod
     public JCtor(Env env, nint handle, string name, JType type, Arg[] args, ClassHandle clazz) : base(env, handle, name, type, args, clazz) { }
     public JCtor(JMethod method) : base(method.Env, method.MethodName, method.Type, method.Args, method.Clazz) { }
 
-    public JObject NewInstance(Params args) => new JObject(Env.Master->NewObjectA((IntPtr)Clazz, Addr, args.Ptr));
+    public JObject NewInstance(Params args) => new JObject(Env, Env.Master->NewObjectA((IntPtr)Clazz, Addr, args.Ptr));
 }

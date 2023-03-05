@@ -9,41 +9,23 @@ using System.Threading.Tasks;
 namespace CSJNI.High.BaseTypes;
 public class JBString : JClass
 {
-    public JBString(Env env) : base(env, "java/lang/String") { }
+    public JBString(Env env) : base(env, "java/lang/String")
+    {
+        valueOf = GetStaticMethod("valueOf", this, env.Types.Object);
+    }
+
+    private JStaticMethod valueOf;
+    public JBStringObj GetString(string str)
+    {
+        using JString jstr = new JString(Env, str, false);
+        return new JBStringObj(this, valueOf.CallObj(new Params(jstr)));
+    }
 }
 
-public class JBStringObj : JClassObject<JBStringS>
+public class JBStringObj : JClassObject<byte>
 {
     public JBStringObj(JClass jClass, JObject obj) : base(jClass, obj)
     {
 
-    }
-}
-
-[StructLayout(LayoutKind.Sequential)]
-public unsafe struct JBStringS
-{
-    private const byte LATIN1 = 0;
-    private const byte UTF16 = 1;
-
-    public byte[] Bytes;
-    public byte Coder;
-
-    public override string ToString()
-    {
-        if (Coder == LATIN1)
-            return Encoding.Latin1.GetString(Bytes, 0, Bytes.Length);
-        else if (Coder == UTF16)
-            return Encoding.Unicode.GetString(Bytes, 0, Bytes.Length);
-        return "Wrong encoder. Current is " + Coder;
-    }
-
-    public static JBStringS FromString(string str, bool isUnicode)
-    {
-        return new JBStringS()
-        {
-            Bytes = (isUnicode ? Encoding.Unicode : Encoding.UTF8).GetBytes(str),
-            Coder = isUnicode ? UTF16 : LATIN1,
-        };
     }
 }

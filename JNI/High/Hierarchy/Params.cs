@@ -19,8 +19,8 @@ public unsafe class Params : IList<JValue>
     private List<JValue> listValues;
     private JValue[] values;
     public JValue* Ptr { get {
-            fixed (JValue* arr = values)
-                return arr;
+        fixed (JValue* arr = values)
+            return arr;
     }}
 
     public int Count => values.Length;

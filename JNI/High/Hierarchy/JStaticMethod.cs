@@ -18,15 +18,17 @@ public unsafe class JStaticMethod : MethodData
 
     public JStaticMethod(Env env, string name, JType type, ClassHandle clazz, params Arg[] args) : base(env, IntPtr.Zero, name, type, args)
     {
-        this.Clazz = clazz;
+        Clazz = clazz;
         string argsStr = SigGen.Method(this);
         Addr = env.Master->GetStaticMethodID((IntPtr)clazz, name.AnsiPtr(), argsStr.AnsiPtr());
     }
 
     public ClassHandle Clazz;
 
-    public JObject CallObj() => new JObject(Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, new Params().Ptr));
+    public void CallVoid() => Env.Master->CallStaticVoidMethodA((IntPtr)Clazz, Addr, new Params().Ptr);
+    public void CallVoid(Params args) => Env.Master->CallStaticVoidMethodA((IntPtr)Clazz, Addr, args.Ptr);
+    public JObject CallObj() => new JObject(Env, Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, new Params().Ptr));
     public T Call<T>() where T : struct => Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, new Params().Ptr).ToStruct<T>();
-    public JObject CallObj(Params args) => new JObject(Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, args.Ptr));
+    public JObject CallObj(Params args) => new JObject(Env, Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, args.Ptr));
     public T Call<T>(Params args) where T : struct => Env.Master->CallStaticObjectMethodA((IntPtr)Clazz, Addr, args.Ptr).ToStruct<T>();
 }

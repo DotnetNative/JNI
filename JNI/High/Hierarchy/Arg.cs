@@ -21,11 +21,11 @@ public class ArrayArg : Arg
 {
     public ArrayArg(string sig, int dim) : base(sig)
     {
-        Sig += new string('[', dim);
+        Sig = new string('[', dim) + Sig;
     }
 
     public ArrayArg(JType type, int dim) : base(type)
     {
-        Sig += new string('[', dim);
+        Sig = new string('[', dim) + Sig;
     }
 }

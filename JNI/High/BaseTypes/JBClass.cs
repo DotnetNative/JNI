@@ -16,8 +16,8 @@ public unsafe class JBClass : JClass
 {
     public JBClass(Env env) : base(env, "java/lang/Class")
     {
-        forNameMeth = new JStaticMethod(env, "forName", this, this, new Arg(env.BaseTypes.String));
-        forNameMethEx = new JStaticMethod(env, "forName", this, this, new Arg(env.BaseTypes.String), new Arg(env.BaseTypes.Bool), new Arg(env.BaseTypes.ClassLoader));
+        forNameMeth = new JStaticMethod(env, "forName", this, this, new Arg(env.Types.String));
+        forNameMethEx = new JStaticMethod(env, "forName", this, this, new Arg(env.Types.String), new Arg(env.Types.Bool), new Arg(env.Types.ClassLoader));
     }
 
     private JStaticMethod forNameMeth;

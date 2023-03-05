@@ -23,7 +23,7 @@ public class JBClassLoaderObj : JClassObject<bool>
 
     }
 
-    public JBClassLoaderObj(Env env, JObject obj) : base(env.BaseTypes.ClassLoader, obj)
+    public JBClassLoaderObj(Env env, JObject obj) : base(env.Types.ClassLoader, obj)
     {
 
     }

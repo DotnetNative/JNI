@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSJNI.High.Hierarchy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,9 +18,9 @@ public unsafe static class SugarExtensions
 
     public static byte* AnsiPtr(this string str)
     {
+        str += '\0';
         byte[] bytes = Encoding.UTF8.GetBytes(str);
-        fixed (byte* cbytes = bytes)
-            return cbytes;
+        return bytes.Ptr();
     }
 
     public static byte* UnicodePtr(this string str)
@@ -56,4 +57,6 @@ public unsafe static class SugarExtensions
     }
 
     public static T ToStruct<T>(this IntPtr addr) where T : struct => Marshal.PtrToStructure<T>(addr);
+
+    public static Arg[] ToArgs(this JType[] arr) => arr.Select(t => new Arg(t)).ToArray();
 }

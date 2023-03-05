@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CSJNI.High.Hierarchy;
-public class HandleEnv : Handle
+public class HandleEnv : Handle, IDisposable
 {
     public HandleEnv(Env env, IntPtr handle) : base(handle)
     {
@@ -13,4 +13,9 @@ public class HandleEnv : Handle
     }
 
     public Env Env;
+
+    public void Dispose()
+    {
+        Env.DeleteLocalRef((IntPtr)this);
+    }
 }
