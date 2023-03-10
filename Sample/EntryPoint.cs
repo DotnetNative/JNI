@@ -39,32 +39,14 @@ public unsafe class EntryPoint
         mst = env.Master;
         types = env.Types;
 
-        GC.Collect();
-        IntPtr clazz = mst->FindClass("bib".AnsiPtr());
-
-        IntPtr mcF = mst->GetStaticFieldID(clazz, "R".AnsiPtr(), "Lbib;".AnsiPtr());
-        IntPtr mc = mst->GetStaticObjectField(clazz, mcF);
-
-        IntPtr mc2F = mst->GetStaticFieldID(clazz, "K".AnsiPtr(), "Lnf;".AnsiPtr());
-        IntPtr mc2 = mst->GetObjectField(clazz, mc2F);
-
-
-        IntPtr sF = mst->GetStaticFieldID(clazz, "J".AnsiPtr(), "Lorg/apache/logging/log4j/Logger;".AnsiPtr());
-        IntPtr s = mst->GetStaticObjectField(clazz, sF);
-
-        IntPtr s2F = mst->GetStaticFieldID(clazz, "ar".AnsiPtr(), "I".AnsiPtr());
-        IntPtr s2 = mst->GetStaticObjectField(clazz, s2F);
-
-
-        Interop.MessageBox(0, mcF + " " + mc + "\n" + mc2F + " " + mc2 + "\n" + sF + " " + s + "\n" + s2F + " " + s2, "CB", 0);
-
-
-        /*
-        IntPtr sF = mst->GetFieldID(clazz, "T".AnsiPtr(), "Z".AnsiPtr());
-        IntPtr s = mst->GetObjectField(clazz, sF);
-        Interop.MessageBox(0, s.ToString(), "CB", 0);
-        */
-
+        //IntPtr clazz = new IntPtr(0x2A95DFEAC8);
+        //IntPtr mcF = new IntPtr(0x2A95DFEAE8);
+        delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr> GetStaticObjectField = (delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr>)new IntPtr(0x6E39A170).ToPointer();
+        IntPtr clazz = new IntPtr(0x494F3FE758); //mst->FindClass("bib".AnsiPtrTest());
+        IntPtr mcF = new IntPtr(0x494F3FE778); //mst->GetStaticFieldID(clazz, "R".AnsiPtrTest(), "Lbib;".AnsiPtrTest());
+        IntPtr mc = GetStaticObjectField(mst, clazz, mcF);
+        Interop.MessageBox(0, mc + "\n" + new IntPtr(GetStaticObjectField).ToString("X") + '\n' + new IntPtr(&mst->functions->GetStaticObjectField).ToString("X"), "CA", 0);
+        
         /*
         using JStaticField mcF = types.Add("bib").GetStaticField("R", types.Get("bib"));
         Log(0 + ":" + mcF);        

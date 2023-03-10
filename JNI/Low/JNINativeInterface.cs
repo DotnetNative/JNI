@@ -16,10 +16,10 @@ public unsafe struct JNINativeInterface
 
     }
 
-    private void* reserved0 = null;
-    private void* reserved1 = null;
-    private void* reserved2 = null;
-    private void* reserved3 = null;
+    public void* reserved0 = null;
+    public void* reserved1 = null;
+    public void* reserved2 = null;
+    public void* reserved3 = null;
 
     public delegate* unmanaged<Env_*, int> GetVersion = null;
     public delegate* unmanaged<Env_*, byte*, IntPtr, byte*, int, IntPtr> DefineClass = null;
@@ -45,13 +45,13 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr> NewLocalRef = null;
     public delegate* unmanaged<Env_*, int, int> EnsureLocalCapacity = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr> AllocObject = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> NewIntPtr = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> NewObject = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> NewObjectV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> NewObjectA = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr> GeObjectClass = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr> GetObjectClass = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, bool> IsInstanceOf = null;
     public delegate* unmanaged<Env_*, IntPtr, byte*, byte*, IntPtr> GetMethodID = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> CallIntPtrMethod = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], IntPtr> CallObjectMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, IntPtr> CallObjectMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, IntPtr> CallObjectMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], bool> CallBooleanMethod = null;
@@ -81,7 +81,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr[], void> CallVoidMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, ArgIterator, void> CallVoidMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, JValue*, void> CallVoidMethodA = null;
-    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, IntPtr[], IntPtr> CallNonvirtualIntPtrMethod = null;
+    public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, IntPtr[], IntPtr> CallNonvirtualObjectMethod = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, ArgIterator, IntPtr> CallNonvirtualObjectMethodV = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, JValue*, IntPtr> CallNonvirtualObjectMethodA = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr, IntPtr, IntPtr[], bool> CallNonvirtualBooleanMethod = null;

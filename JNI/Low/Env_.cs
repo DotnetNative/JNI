@@ -252,7 +252,7 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
         {
-            return functions->GeObjectClass(env, obj);
+            return functions->GetObjectClass(env, obj);
         }
     }
 
@@ -540,7 +540,7 @@ public unsafe struct Env_
         }
     }
 
-    public IntPtr CallNonvirtualIntPtrMethodV(IntPtr obj, IntPtr clazz, IntPtr methodID, ArgIterator args)
+    public IntPtr CallNonvirtualObjectMethodV(IntPtr obj, IntPtr clazz, IntPtr methodID, ArgIterator args)
     {
         fixed (Env_* env = &this)
         {
