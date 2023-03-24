@@ -18,6 +18,7 @@ public unsafe static class SugarExtensions
 
     public static byte* AnsiPtrTest(this string str)
     {
+        str += '\0';
         byte[] bytes = Encoding.UTF8.GetBytes(str);
         Array.Resize(ref bytes, bytes.Length + 1);
         GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
