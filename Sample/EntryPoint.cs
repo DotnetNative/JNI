@@ -42,8 +42,6 @@ public unsafe class EntryPoint
         env = jvm.AttachCurrentThread();
         mst = env.Master;
         types = env.Types;
-
-        JBClassObj clazz = types.Class.ForName("bib");
     }
 
     [UnmanagedCallersOnly(EntryPoint = "Unload", CallConvs = new Type[] { typeof(CallConvCdecl) })]

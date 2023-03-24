@@ -5,6 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PackageId>Yotic.JNI</PackageId>
+	<Title>JNI Wrapper. Works inside another process</Title>
+	<Authors>Yotic</Authors>
+	<Company />
+	<Product />
+	<Description>JNI Wrapper. Works inside another process</Description>
+	<Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -101,6 +101,9 @@ public unsafe class Env
     public JString CreateString(string text, bool isUnicode = true) => new JString(this, text, isUnicode);
     public JString CreateString(IntPtr addr, bool isUnicode = true) => new JString(this, addr, isUnicode);
     public JString CreateString(JObject obj, bool isUnicode = true) => new JString(this, (IntPtr)obj, isUnicode);
+
+    public JType GetType(string nameAndSign) => new JType(this, nameAndSign);
+    public JType GetType(string name, string sign) => new JType(this, name, sign);
 }
 
 public class RuntimeTypeCollection
