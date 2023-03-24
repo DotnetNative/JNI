@@ -20,7 +20,7 @@ public unsafe class JStaticMethod : MethodData
     {
         Clazz = clazz;
         string argsStr = SigGen.Method(this);
-        Addr = env.Master->GetStaticMethodID((IntPtr)clazz, name.AnsiPtr(), argsStr.AnsiPtr());
+        Addr = env.Master->GetStaticMethodID((IntPtr)clazz, name.UtfPtr(), argsStr.UtfPtr());
     }
 
     public ClassHandle Clazz;

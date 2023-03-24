@@ -10,18 +10,23 @@ public unsafe class JType : ClassHandle
 {
     public JType(Env env, IntPtr handle, string name, string sig) : base(env, handle)
     {
-        Name = name;
-        Sig = sig;
+        BaseCtor(name, sig);
     }
 
-    public JType(Env env, string name, string sig) : base(env, env.Master->FindClass(name.AnsiPtr()))
+    public JType(Env env, string name, string sig) : base(env, env.Master->FindClass(name.Replace('.', '/').UtfPtr()))
     {
-        Name = name;
-        Sig = sig;
+        BaseCtor(name, sig);
     }
 
-    public JType(Env env, string nameAndSig) : this(env, nameAndSig, nameAndSig) { }
+    private void BaseCtor(string name, string sig)
+    {
+        Name = name.Replace('.', '/');
+        Sig = sig.Replace('.', '/');
+    }
 
-    public string Name { get; init; }
-    public string Sig { get; init; }
+    public JType(Env env, string nameAndSig) : this(env, nameAndSig.Replace('.', '/'), nameAndSig) { }
+
+    public string Name { get; private set; }
+    public string Sig { get; private set; }
+    public int Dim { get; set; } = 0;
 }

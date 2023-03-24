@@ -15,7 +15,7 @@ public unsafe class JMethod : MethodData
     public JMethod(Env env, string name, JType type, Arg[] args, ClassHandle clazz) : base(env, IntPtr.Zero, name, type, args)
     {
         Clazz = clazz;
-        Addr = env.Master->GetMethodID((IntPtr)clazz, name.AnsiPtr(), SigGen.Method(this).AnsiPtr());
+        Addr = env.Master->GetMethodID((IntPtr)clazz, name.UtfPtr(), SigGen.Method(this).UtfPtr());
     }
 
     public ClassHandle Clazz;

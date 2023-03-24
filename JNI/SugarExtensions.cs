@@ -6,9 +6,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CSJNI;
-public unsafe static class SugarExtensions
+internal unsafe static class SugarExtensions
 {
     public static char* Ptr(this string str)
     {
@@ -16,28 +17,9 @@ public unsafe static class SugarExtensions
             return cptr;
     }
 
-    public static byte* AnsiPtrTest(this string str)
-    {
-        str += '\0';
-        byte[] bytes = Encoding.UTF8.GetBytes(str);
-        Array.Resize(ref bytes, bytes.Length + 1);
-        GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-        return (byte*)handle.AddrOfPinnedObject().ToPointer();
-    }
-
-    public static byte* AnsiPtr(this string str)
-    {
-        str += '\0';
-        byte[] bytes = Encoding.UTF8.GetBytes(str);
-        return bytes.Ptr();
-    }
-
-    public static byte* UnicodePtr(this string str)
-    {
-        byte[] bytes = Encoding.Unicode.GetBytes(str);
-        fixed (byte* cbytes = bytes)
-            return cbytes;
-    }
+    public static byte* UtfPtr(this string str) => (byte*)Marshal.StringToCoTaskMemUTF8(str).ToPointer();
+    public static byte* UniPtr(this string str) => (byte*)Marshal.StringToCoTaskMemUni(str).ToPointer();
+    public static byte* AnsiPtr(this string str) => (byte*)Marshal.StringToCoTaskMemAnsi(str).ToPointer();
 
     public static T* Ptr<T>(this T obj) where T : unmanaged
     {
