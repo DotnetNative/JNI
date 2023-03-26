@@ -11,7 +11,7 @@
 	<Company />
 	<Product />
 	<Description>JNI Wrapper. Works inside another process</Description>
-	<Version>1.0.3</Version>
+	<Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

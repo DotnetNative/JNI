@@ -26,7 +26,7 @@ public unsafe class JMethod : MethodData
     public JObject CallVirt(JObject obj, Params args) => new JObject(Env, Env.Master->CallObjectMethodA((IntPtr)obj, Addr, args.Ptr));
     public void CallVoid(JObject obj) => Env.Master->CallNonvirtualVoidMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, new Params().Ptr);
     public void CallVirtVoid(JObject obj) => Env.Master->CallVoidMethodA((IntPtr)obj, Addr, new Params().Ptr);
-    public void CallVoid(JObject obj, Params args) => Env.Master->CallNonvirtualObjectMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, args.Ptr);
-    public void CallVirtVoid(JObject obj, Params args) => Env.Master->CallObjectMethodA((IntPtr)obj, Addr, args.Ptr);
+    public void CallVoid(JObject obj, Params args) => Env.Master->CallNonvirtualVoidMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, args.Ptr);
+    public void CallVirtVoid(JObject obj, Params args) => Env.Master->CallVoidMethodA((IntPtr)obj, Addr, args.Ptr);
 
 }
