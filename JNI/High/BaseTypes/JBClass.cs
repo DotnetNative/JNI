@@ -26,13 +26,13 @@ public unsafe class JBClass : JClass
     public JBClassObj ForName(string name)
     {
         using JString str = Env.NewStringUTF(name);
-        return new JBClassObj(this, forNameMeth.CallObj(new Params(str)));
+        return new JBClassObj(this, forNameMeth.Call(new Params(str)));
     }
 
     public JBClassObj ForName(string name, bool initialize, JBClassLoaderObj classLoader)
     {
         using JString str = Env.NewStringUTF(name);
-        return new JBClassObj(this, forNameMethEx.CallObj(new Params(str, initialize, classLoader.Obj)));
+        return new JBClassObj(this, forNameMethEx.Call(new Params(str, initialize, classLoader.Obj)));
     }
 }
 

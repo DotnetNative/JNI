@@ -18,7 +18,7 @@ public class JBString : JClass
     public JBStringObj GetString(string str)
     {
         using JString jstr = new JString(Env, str, false);
-        return new JBStringObj(this, valueOf.CallObj(new Params(jstr)));
+        return new JBStringObj(this, valueOf.Call(new Params(jstr)));
     }
 }
 

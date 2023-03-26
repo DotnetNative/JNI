@@ -20,8 +20,8 @@ public unsafe class JMethod : MethodData
 
     public ClassHandle Clazz;
 
-    public JObject CallObj(JObject obj) => new JObject(Env, Env.Master->CallNonvirtualObjectMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, new Params().Ptr));
-    public JObject CallVirtObj(JObject obj) => new JObject(Env, Env.Master->CallObjectMethodA((IntPtr)obj, Addr, new Params().Ptr));
-    public JObject CallObj(JObject obj, Params args) => new JObject(Env, Env.Master->CallNonvirtualObjectMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, args.Ptr));
-    public JObject CallVirtObj(JObject obj, Params args) => new JObject(Env, Env.Master->CallObjectMethodA((IntPtr)obj, Addr, args.Ptr));
+    public JObject Call(JObject obj) => new JObject(Env, Env.Master->CallNonvirtualObjectMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, new Params().Ptr));
+    public JObject CallVirt(JObject obj) => new JObject(Env, Env.Master->CallObjectMethodA((IntPtr)obj, Addr, new Params().Ptr));
+    public JObject Call(JObject obj, Params args) => new JObject(Env, Env.Master->CallNonvirtualObjectMethodA((IntPtr)obj, (IntPtr)Clazz, Addr, args.Ptr));
+    public JObject CallVirt(JObject obj, Params args) => new JObject(Env, Env.Master->CallObjectMethodA((IntPtr)obj, Addr, args.Ptr));
 }
