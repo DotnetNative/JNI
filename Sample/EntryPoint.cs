@@ -1,23 +1,11 @@
-﻿global using static Sample.EntryPoint;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
+﻿using JNI;
+using JNI.Enums;
+using JNI.Low;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using CSJNI;
-using CSJNI.High;
-using CSJNI.High.BaseTypes;
-using CSJNI.High.Enums;
-using CSJNI.High.Hierarchy;
-using CSJNI.Low;
 
 namespace Sample;
-public unsafe class EntryPoint
+public sealed unsafe class EntryPoint
 {
     private static string logPath = @"C:\log.txt";
     public static void Log(object obj)
@@ -25,7 +13,7 @@ public unsafe class EntryPoint
         File.AppendAllText(logPath, $"{obj}\n");
     }
 
-    private static JNI jni;
+    private static JCI jni;
     private static JVM jvm;
     private static Env env;
     private static Env_* mst;
@@ -37,7 +25,7 @@ public unsafe class EntryPoint
         File.WriteAllText(logPath, "");
         Log($"Injected at {DateTime.Now}");
                 
-        jni = new JNI(JNIVersion.V18);
+        jni = new JCI(JVersion.V18);
         jvm = jni.GetJVM();
         env = jvm.AttachCurrentThread();
         mst = env.Master;

@@ -1,37 +1,38 @@
-﻿using System.Runtime.InteropServices;
+﻿using JNI.Enums;
+using System.Runtime.InteropServices;
 
-namespace CSJNI.Low;
+namespace JNI.Low;
 
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JVM_
 {
     private JNIInvokeInterface* functions;
 
-    public int AttachCurrentThread(void** penv, void* args)
+    public RetCode AttachCurrentThread(void** penv, void* args)
     {
         fixed (JVM_* jvm = &this)
             return functions->AttachCurrentThread(jvm, penv, args);
     }
 
-    public int GetEnv(void** penv, int version)
+    public RetCode GetEnv(void** penv, int version)
     {
         fixed (JVM_* jvm = &this)
             return functions->GetEnv(jvm, penv, version);
     }
 
-    public int DestroyJavaVM()
+    public RetCode DestroyJavaVM()
     {
         fixed (JVM_* jvm = &this)
             return functions->DestroyJavaVM(jvm);
     }
 
-    public int DetachCurrentThread()
+    public RetCode DetachCurrentThread()
     {
         fixed (JVM_* jvm = &this)
             return functions->DetachCurrentThread(jvm);
     }
 
-    public int AttachCurrentThreadAsDaemon(void** penv, void* args)
+    public RetCode AttachCurrentThreadAsDaemon(void** penv, void* args)
     {
         fixed (JVM_* jvm = &this)
             return functions->AttachCurrentThreadAsDaemon(jvm, penv, args);

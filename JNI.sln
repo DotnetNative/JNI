@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSJNI", "JNI\CSJNI.csproj", "{4CFC3392-D038-4E98-8C42-DBF372FAB3F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JNI", "JNI\JNI.csproj", "{4CFC3392-D038-4E98-8C42-DBF372FAB3F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample.csproj", "{D3A3DA6E-E578-408F-832C-E0ADDD52F66A}"
 EndProject

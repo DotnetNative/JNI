@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using JNI.Enums;
+using JNI.Models;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CSJNI.Low;
+namespace JNI.Low;
 
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JNINativeInterface
@@ -16,12 +12,9 @@ public unsafe struct JNINativeInterface
 
     }
 
-    public void* reserved0 = null;
-    public void* reserved1 = null;
-    public void* reserved2 = null;
-    public void* reserved3 = null;
+    public void* reserved0 = null, reserved1 = null, reserved2 = null, reserved3 = null;
 
-    public delegate* unmanaged<Env_*, int> GetVersion = null;
+    public delegate* unmanaged<Env_*, JVersion> GetVersion = null;
     public delegate* unmanaged<Env_*, byte*, IntPtr, byte*, int, IntPtr> DefineClass = null;
     public delegate* unmanaged<Env_*, byte*, IntPtr> FindClass = null;
     public delegate* unmanaged<Env_*, IntPtr, IntPtr> FromReflectedMethod = null;
@@ -232,7 +225,7 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, IntPtr, int, int, long*, void> SetLongArrayRegion = null;
     public delegate* unmanaged<Env_*, IntPtr, int, int, float*, void> SetFloatArrayRegion = null;
     public delegate* unmanaged<Env_*, IntPtr, int, int, double*, void> SetDoubleArrayRegion = null;
-    public delegate* unmanaged<Env_*, IntPtr, JNINativeMethod*, int, int> RegisterNatives = null;
+    public delegate* unmanaged<Env_*, IntPtr, NativeMethod_*, int, RetCode> RegisterNatives = null;
     public delegate* unmanaged<Env_*, IntPtr, int> UnregisterNatives = null;
     public delegate* unmanaged<Env_*, IntPtr, int> MonitorEnter = null;
     public delegate* unmanaged<Env_*, IntPtr, int> MonitorExit = null;
@@ -249,5 +242,5 @@ public unsafe struct JNINativeInterface
     public delegate* unmanaged<Env_*, void*, long, IntPtr> NewDirectByteBuffer = null;
     public delegate* unmanaged<Env_*, IntPtr, void*> GetDirectBufferAddress = null;
     public delegate* unmanaged<Env_*, IntPtr, long> GetDirectBufferCapacity = null;
-    public delegate* unmanaged<Env_*, IntPtr, JObjectRefType> GetObjectRefType = null;
+    public delegate* unmanaged<Env_*, IntPtr, JObjRefType> GetObjectRefType = null;
 }
