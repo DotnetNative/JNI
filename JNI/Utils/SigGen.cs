@@ -17,14 +17,17 @@ public sealed class SigGen
         "java/lang/Void",
     };
 
-    public static string Arg(JType type) => Dim(type.Dim) + Hand(type);
-    public static string Field(JType type) => Dim(type.Dim) + Hand(type);
-    public static string Field(FieldData field) => Field(field.Type);
-    public static string Method(MethodData method) => Method(method.Type, method.Args);
-    public static string Method(JType retType, Arg[] args) =>
+    public static string Arg(JType type) => Field(type);
+    public static string Arg(TypeInfo info) => Field(info);
+    public static string Field(JType type) => Field(~type);
+    public static string Field(TypeInfo info) => baseTypes.Contains(info.Name) ? $"{Dim(info.Dim)}{info.Sig}" : $"{Dim(info.Dim)}L{info.Sig};";
+    public static string Field(FieldData field) => field.Sig;
+    public static string Method(JType retType, Arg[] args) => Method(~retType, args);
+    public static string Method(TypeInfo retType, Arg[] args) =>
         $"({string.Concat(args.Select(a => a.Sig))})" +
         Field(retType);
 
-    private static string Dim(int dim) => new string('[', dim);
-    private static string Hand(JType type) => baseTypes.Contains(type.Name) ? type.Sig : $"L{type.Sig};";
+    public static string Dim(int dim) => new string('[', dim);
+    public static string Type(JType type) => Type(~type);
+    public static string Type(TypeInfo info) => baseTypes.Contains(info.Name) ? info.Sig : $"L{info.Sig};";
 }

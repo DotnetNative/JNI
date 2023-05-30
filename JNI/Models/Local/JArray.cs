@@ -1,22 +1,23 @@
 ﻿using System.Collections;
 
 namespace JNI.Models.Local;
-public class JArray : JObject, IList<JObject>
+public unsafe sealed class JArray : JObject, IList<JObject>
 {
-    public JArray(Env env, IntPtr addr) : base(env, addr) { }
+    public JArray(Env env, nint addr) : base(env, addr) { }
     public JArray(JObject obj) : base(obj.Env, obj.Addr) { }
+    public JArray(Env env, ClassHandle type, int length, JObject init) : base(env, nint.Zero)
+    {
+        var arr = env.NewObjectArray(length, type, init);
+        Addr = arr.Addr;
+    }
 
     public JObject this[int index]
     {
-        get => Env.GetObjectArrayElement(this, index);
-        set => Env.SetObjectArrayElement(this, index, value);
+        get => new(Env, Env.Master->GetObjectArrayElement(Addr, index));
+        set => Env.Master->SetObjectArrayElement(Addr, index, !value);
     }
 
-    public JObject Get(Env env, int index) => env.GetObjectArrayElement(this, index);
-    public void Set(Env env, int index, JObject obj) => env.SetObjectArrayElement(this, index, obj);
-
-    public int Count => Env.GetArrayLength(this);
-    public int GetCount(Env env) => env.GetArrayLength(this);
+    public int Count => Env.Master->GetArrayLength(Addr);
 
     public bool IsReadOnly => true;
 
@@ -24,8 +25,11 @@ public class JArray : JObject, IList<JObject>
     {
         int count = Count;
         for (int i = 0; i < count; i++)
-            if (this[i] == item)
+        {
+            using var obj = this[i];
+            if (obj == item)
                 return true;
+        }
         return false;
     }
 
@@ -33,8 +37,11 @@ public class JArray : JObject, IList<JObject>
     {
         int count = Count;
         for (int i = 0; i < count; i++)
-            if (this[i] == item)
+        {
+            using var obj = this[i];
+            if (obj == item)
                 return i;
+        }
         return -1;
     }
 

@@ -3,10 +3,7 @@
 namespace JNI;
 public sealed unsafe class JVM
 {
-    public JVM(JVM_* jvm)
-    {
-        Master = jvm;
-    }
+    public JVM(JVM_* jvm) => Master = jvm;
 
     public JVM_* Master { get; init; }
 

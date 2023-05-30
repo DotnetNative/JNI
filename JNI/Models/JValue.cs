@@ -1,4 +1,5 @@
-﻿using JNI.Models.Local;
+﻿using JNI.Models.Global;
+using JNI.Models.Local;
 using System.Runtime.InteropServices;
 
 namespace JNI.Models;
@@ -23,79 +24,85 @@ public struct JValue
     [FieldOffset(0)]
     public double d; //8
     [FieldOffset(0)]
-    public IntPtr l; //8
+    public nint l; //8
 
-    public static JValue Zero = new JValue(IntPtr.Zero);
+    public static JValue Zero = new JValue(nint.Zero);
 
     public JValue(bool value)
     {
-        this = new JValue();
+        this = new();
         z = value;
     }
 
     public JValue(sbyte value)
     {
-        this = new JValue();
+        this = new();
         b = value;
     }
 
     public JValue(char value)
     {
-        this = new JValue();
+        this = new();
         c = value;
     }
 
     public JValue(short value)
     {
-        this = new JValue();
+        this = new();
         s = value;
     }
 
     public JValue(int value)
     {
-        this = new JValue();
+        this = new();
         i = value;
     }
 
     public JValue(long value)
     {
-        this = new JValue();
+        this = new();
         j = value;
     }
 
     public JValue(float value)
     {
-        this = new JValue();
+        this = new();
         f = value;
     }
 
     public JValue(double value)
     {
-        this = new JValue();
+        this = new();
         d = value;
     }
 
-    public JValue(IntPtr value)
+    public JValue(nint value)
     {
-        this = new JValue();
+        this = new();
         l = value;
     }
 
     public JValue(JObject value)
     {
-        this = new JValue();
+        this = new();
         l = value.Addr;
     }
 
-    public static implicit operator JValue(bool val) => new JValue(val);
-    public static implicit operator JValue(sbyte val) => new JValue(val);
-    public static implicit operator JValue(char val) => new JValue(val);
-    public static implicit operator JValue(short val) => new JValue(val);
-    public static implicit operator JValue(int val) => new JValue(val);
-    public static implicit operator JValue(long val) => new JValue(val);
-    public static implicit operator JValue(float val) => new JValue(val);
-    public static implicit operator JValue(double val) => new JValue(val);
-    public static implicit operator JValue(IntPtr val) => new JValue(val);
-    public static implicit operator JValue(JObject val) => new JValue(val);
-    public static implicit operator JValue(JString val) => new JValue(val);
+    public JValue(JGObject value)
+    {
+        this = new();
+        l = value.Addr;
+    }
+
+    public static implicit operator JValue(bool val) => new(val);
+    public static implicit operator JValue(sbyte val) => new(val);
+    public static implicit operator JValue(char val) => new(val);
+    public static implicit operator JValue(short val) => new(val);
+    public static implicit operator JValue(int val) => new(val);
+    public static implicit operator JValue(long val) => new(val);
+    public static implicit operator JValue(float val) => new(val);
+    public static implicit operator JValue(double val) => new(val);
+    public static implicit operator JValue(nint val) => new(val);
+    public static implicit operator JValue(JObject val) => new(val);
+    public static implicit operator JValue(JString val) => new(val);
 }

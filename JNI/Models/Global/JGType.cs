@@ -1,12 +1,23 @@
-﻿using JNI.Models.Local;
+﻿using JNI.Models.Weak;
 
 namespace JNI.Models.Global;
-public class JGType : JType
+public unsafe sealed class JGType : GClassHandle
 {
-    public JGType(Env env, string nameAndSig) : base(env, nameAndSig) => PutGlobal();
-    public JGType(Env env, nint handle, string nameAndSig) : base(env, handle, nameAndSig) => PutGlobal();
-    public JGType(Env env, string name, string sig) : base(env, name, sig) => PutGlobal();
-    public JGType(Env env, nint handle, string name, string sig) : base(env, handle, name, sig) => PutGlobal();
-    public JGType(Env env, JGObject obj, string nameAndSig) : base(env, obj.Addr, nameAndSig) { }
-    public JGType(Env env, JGObject obj, string name, string sig) : base(env, obj.Addr, name, sig) { }
+    public JGType(nint gAddr, nint lAddr, string name, string sig, int dim = 0) : base(gAddr, lAddr)
+        => Info = new(name, sig, dim);
+
+    public JGType(nint gAddr, nint lAddr, string nameAndSig, int dim = 0) : this(gAddr, lAddr, nameAndSig, nameAndSig)
+        => Info = new(nameAndSig, nameAndSig, dim);
+
+    public JGType(nint gAddr, nint lAddr, TypeInfo info) : this(gAddr, lAddr, info.Name, info.Sig)
+        => Info = info;
+
+    public TypeInfo Info;
+
+    public new WeakJType AsWeak(Env env) => new(env, Addr, Info);
+    public WeakClassHandle AsWeakClassHandle(Env env) => base.AsWeak(env);
+
+    public static explicit operator Arg(JGType type) => new(type.Info.Sig);
+    public static explicit operator TypeInfo(JGType type) => type.Info;
+    public static TypeInfo operator ~(JGType type) => type.Info;
 }

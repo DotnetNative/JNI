@@ -13,6 +13,6 @@ public unsafe struct JNIInvokeInterface
     public delegate* unmanaged<JVM_*, RetCode> DestroyJavaVM = null;
     public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThread = null;
     public delegate* unmanaged<JVM_*, RetCode> DetachCurrentThread = null;
-    public delegate* unmanaged<JVM_*, void**, int, RetCode> GetEnv = null;
+    public delegate* unmanaged<JVM_*, void**, JVersion, RetCode> GetEnv = null;
     public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThreadAsDaemon = null;
 }

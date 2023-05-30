@@ -1,47 +1,56 @@
-﻿using JNI.Models;
-using JNI.Models.Local;
+﻿using JNI.Low;
+using JNI.Models;
 using System.Runtime.InteropServices;
 
 namespace JNI.Internal;
-internal unsafe static class SugarExtensions
+internal static unsafe class SugarExtensions
 {
-    public static char* Ptr(this string str)
+    public static T ToStruct<T>(this nint addr) where T : struct => Marshal.PtrToStructure<T>(addr);
+
+    public static Arg[] ToArgs(this TypeInfo[] arr)
     {
-        fixed (char* cptr = str)
-            return cptr;
+        var ret = new Arg[arr.Length];
+        for (int i = 0; i < arr.Length; i++)
+            ret[i] = new Arg(arr[i]);
+        return ret;
     }
 
-    public static byte* UtfPtr(this string str) => (byte*)Marshal.StringToCoTaskMemUTF8(str).ToPointer();
-    public static byte* UniPtr(this string str) => (byte*)Marshal.StringToCoTaskMemUni(str).ToPointer();
-    public static byte* AnsiPtr(this string str) => (byte*)Marshal.StringToCoTaskMemAnsi(str).ToPointer();
-
-    public static T* Ptr<T>(this T obj) where T : unmanaged
+    public static T* Pin<T>(this T obj) where T : unmanaged
     {
-        TypedReference reference = __makeref(obj);
-        IntPtr addr = (IntPtr)(&reference);
-        return (T*)addr.ToPointer();
+        var addr = (T*)Marshal.AllocCoTaskMem(sizeof(T));
+        *addr = obj;
+        return addr;
     }
 
-    public static T* Ptr<T>(this T[] obj) where T : unmanaged
+    public static T* Pin<T>(this T[] arr) where T : unmanaged
     {
-        fixed (T* ptr = obj)
-            return ptr;
+        var addr = (T*)Marshal.AllocCoTaskMem(sizeof(T) * arr.Length);
+        fixed (T* ptr = arr)
+            for (int i = 0; i < arr.Length; i++)
+                addr[i] = arr[i];
+        return addr;
     }
 
-    public static T[] ToArr<T>(this T[] arr, T* ptr)
+    public static NativeMethod_[] ToStructs(this NativeMethod[] arr)
+    {
+        var result = new NativeMethod_[arr.Length];
+        for (int i = 0; i < arr.Length; i++)
+            result[i] = arr[i].ToStruct();
+        return result;
+    }
+
+    public static T[] ToArr<T>(this T[] arr, T* ptr) where T : unmanaged
     {
         for (int i = 0; i < arr.Length; i++)
             arr[i] = *(ptr + i);
         return arr;
     }
 
-    public static IntPtr Addr<T>(this T obj) where T : unmanaged
-    {
-        TypedReference reference = __makeref(obj);
-        return (IntPtr)(&reference);
-    }
+    public static string AsLetterHex(this nint addr, char letter) => $"0{letter}" + addr.ToInt64().ToString("X");
 
-    public static T ToStruct<T>(this IntPtr addr) where T : struct => Marshal.PtrToStructure<T>(addr);
+    public static string TransformHex(this string hex) => "0x" + (string.IsNullOrEmpty(hex) ? "0" : hex);
 
-    public static Arg[] ToArgs(this JType[] arr) => arr.Select(t => new Arg(t)).ToArray();
+    public static string AsHex(this nint addr) => addr.ToInt64().ToString("X").TransformHex();
+
+    public static string AsJavaPath(this string path) => path.Replace('.', '/');
 }

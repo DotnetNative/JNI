@@ -14,7 +14,7 @@ public unsafe struct JVM_
             return functions->AttachCurrentThread(jvm, penv, args);
     }
 
-    public RetCode GetEnv(void** penv, int version)
+    public RetCode GetEnv(void** penv, JVersion version)
     {
         fixed (JVM_* jvm = &this)
             return functions->GetEnv(jvm, penv, version);

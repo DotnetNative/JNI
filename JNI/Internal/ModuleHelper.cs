@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 
 namespace JNI.Internal;
-internal sealed class ModuleHelper
+internal static class ModuleHelper
 {
     static ModuleHelper()
     {
@@ -12,5 +12,5 @@ internal sealed class ModuleHelper
                 JVMModule = module.BaseAddress;
     }
 
-    public static IntPtr JavaModule, JVMModule;
+    public static nint JavaModule, JVMModule;
 }

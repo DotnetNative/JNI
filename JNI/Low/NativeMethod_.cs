@@ -3,7 +3,7 @@
 namespace JNI.Low;
 
 [StructLayout(LayoutKind.Sequential)]
-public unsafe struct NativeMethod_
+public unsafe struct NativeMethod_ : IDisposable
 {
     public NativeMethod_(byte* name, byte* signature, void* fnPtr)
     {
@@ -15,4 +15,10 @@ public unsafe struct NativeMethod_
     public byte* Name;
     public byte* Signature;
     public void* FnPtr;
+
+    public void Dispose()
+    {
+        Marshal.FreeCoTaskMem((nint)Name);
+        Marshal.FreeCoTaskMem((nint)Signature);
+    }
 }
