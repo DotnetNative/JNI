@@ -21,7 +21,7 @@ public static unsafe class EnvHelper
         using var nameCo = new CoMem(name);
         string sig = SigGen.Field(type);
         using var sigCo = new CoMem(sig);
-        return new(env, env.Master->GetFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig, clazz);
+        return new(env, env.Master->GetStaticFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig, clazz);
     }
     public static JGStaticField GetGlobalStaticField(Env env, GClassHandle clazz, string name, TypeInfo type) => new(env, clazz, name, type);
 

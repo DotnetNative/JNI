@@ -1,7 +1,6 @@
 ﻿using JNI.Internal;
 using JNI.Models.Local;
 using JNI.Utils;
-using System.Security.Claims;
 
 namespace JNI.Models.Global;
 public unsafe sealed class JGStaticField
