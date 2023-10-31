@@ -27,7 +27,7 @@ public unsafe class LHandle : IDisposable
 
         IsDisposed = true;
 
-        Env.Master->DeleteLocalRef(Addr);
+        Env.Native->DeleteLocalRef(Addr);
     }
 
     public static nint operator !(LHandle obj) => obj.Addr;

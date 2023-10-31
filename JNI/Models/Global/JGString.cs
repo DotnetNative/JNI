@@ -20,19 +20,19 @@ public unsafe sealed class JGString : JGObject
 
     public string ToString(Env env)
     {
-        var bytesPtr = (byte*)env.Master->GetStringChars(Addr, Env.FalsePtr);
+        var bytesPtr = (byte*)env.Native->GetStringChars(Addr, Env.FalsePtr);
         var unicode = true;
         if ((nint)bytesPtr < 2 << 0xF)
         {
-            bytesPtr = env.Master->GetStringUTFChars(Addr, Env.FalsePtr);
+            bytesPtr = env.Native->GetStringUTFChars(Addr, Env.FalsePtr);
             unicode = false;
         }
 
         var bytes = new byte[GetLength(env)].ToArr(bytesPtr);
 
         if (!unicode)
-            env.Master->ReleaseStringUTFChars(Addr, bytesPtr);
-        else env.Master->ReleaseStringChars(Addr, (ushort*)bytesPtr);
+            env.Native->ReleaseStringUTFChars(Addr, bytesPtr);
+        else env.Native->ReleaseStringChars(Addr, (ushort*)bytesPtr);
 
         return (unicode ? Encoding.Unicode : Encoding.UTF8).GetString(bytes);
     }

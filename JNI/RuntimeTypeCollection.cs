@@ -18,6 +18,7 @@ public class RuntimeTypeCollection
         Object = new TypeInfo("java/lang/Object");
         String = new TypeInfo("java/lang/String");
 
+
         VoidType = env.GetGlobalType(Void);
         BoolType = env.GetGlobalType(Bool);
         ByteType = env.GetGlobalType(Byte);

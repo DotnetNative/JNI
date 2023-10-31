@@ -3,6 +3,7 @@ using JNI.Models;
 using JNI.Models.Global;
 using JNI.Models.Local;
 using JNI.Utils;
+using Memory;
 
 namespace JNI;
 public static unsafe class EnvHelper
@@ -12,7 +13,7 @@ public static unsafe class EnvHelper
         using var nameCo = new CoMem(name);
         string sig = SigGen.Field(type);
         using var sigCo = new CoMem(sig);
-        return new(env, env.Master->GetFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig);
+        return new(env, env.Native->GetFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig);
     }
     public static JGField GetGlobalField(Env env, GClassHandle clazz, string name, TypeInfo type) => new(env, clazz, name, type);
 
@@ -21,7 +22,7 @@ public static unsafe class EnvHelper
         using var nameCo = new CoMem(name);
         string sig = SigGen.Field(type);
         using var sigCo = new CoMem(sig);
-        return new(env, env.Master->GetStaticFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig, clazz);
+        return new(env, env.Native->GetStaticFieldID(!clazz, nameCo.Ptr, sigCo.Ptr), name, sig, clazz);
     }
     public static JGStaticField GetGlobalStaticField(Env env, GClassHandle clazz, string name, TypeInfo type) => new(env, clazz, name, type);
 

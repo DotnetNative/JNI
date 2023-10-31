@@ -6,21 +6,21 @@ public unsafe sealed class JStaticField : FieldData
 
     private ClassHandle clazz;
 
-    public JObject Value => new JObject(Env, Env.Master->GetStaticObjectField(!clazz, Addr));
-    public JString GetString(Env env, JObject obj, bool isUnicode = true) => new(env, Env.Master->GetStaticObjectField(!clazz, Addr), isUnicode);
-    public bool GetBool() => Env.Master->GetStaticBooleanField(!clazz, Addr);
-    public byte GetByte() => Env.Master->GetStaticByteField(!clazz, Addr);
-    public short GetShort() => Env.Master->GetStaticShortField(!clazz, Addr);
-    public int GetInt() => Env.Master->GetStaticIntField(!clazz, Addr);
-    public long GetLong() => Env.Master->GetStaticLongField(!clazz, Addr);
-    public float GetFloat() => Env.Master->GetStaticFloatField(!clazz, Addr);
-    public double GetDouble() => Env.Master->GetStaticDoubleField(!clazz, Addr);
-    public void SetBool(bool value) => Env.Master->SetStaticBooleanField(!clazz, Addr, value);
-    public void SetByte(byte value) => Env.Master->SetStaticByteField(!clazz, Addr, value);
-    public void SetShort(short value) => Env.Master->SetStaticShortField(!clazz, Addr, value);
-    public void SetInt(int value) => Env.Master->SetStaticIntField(!clazz, Addr, value);
-    public void SetLong(long value) => Env.Master->SetStaticLongField(!clazz, Addr, value);
-    public void SetFloat(float value) => Env.Master->SetStaticFloatField(!clazz, Addr, value);
-    public void SetDouble(double value) => Env.Master->SetStaticDoubleField(!clazz, Addr, value);
-    public void SetValue(JObject value) => Env.Master->SetStaticObjectField(!clazz, Addr, !value);
+    public JObject Value => new JObject(Env, Env.Native->GetStaticObjectField(!clazz, Addr));
+    public JString GetString(Env env, JObject obj, bool isUnicode = true) => new(env, Env.Native->GetStaticObjectField(!clazz, Addr), isUnicode);
+    public bool GetBool() => Env.Native->GetStaticBooleanField(!clazz, Addr);
+    public byte GetByte() => Env.Native->GetStaticByteField(!clazz, Addr);
+    public short GetShort() => Env.Native->GetStaticShortField(!clazz, Addr);
+    public int GetInt() => Env.Native->GetStaticIntField(!clazz, Addr);
+    public long GetLong() => Env.Native->GetStaticLongField(!clazz, Addr);
+    public float GetFloat() => Env.Native->GetStaticFloatField(!clazz, Addr);
+    public double GetDouble() => Env.Native->GetStaticDoubleField(!clazz, Addr);
+    public void SetBool(bool value) => Env.Native->SetStaticBooleanField(!clazz, Addr, value);
+    public void SetByte(byte value) => Env.Native->SetStaticByteField(!clazz, Addr, value);
+    public void SetShort(short value) => Env.Native->SetStaticShortField(!clazz, Addr, value);
+    public void SetInt(int value) => Env.Native->SetStaticIntField(!clazz, Addr, value);
+    public void SetLong(long value) => Env.Native->SetStaticLongField(!clazz, Addr, value);
+    public void SetFloat(float value) => Env.Native->SetStaticFloatField(!clazz, Addr, value);
+    public void SetDouble(double value) => Env.Native->SetStaticDoubleField(!clazz, Addr, value);
+    public void SetValue(JObject value) => Env.Native->SetStaticObjectField(!clazz, Addr, !value);
 }

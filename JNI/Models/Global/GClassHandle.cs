@@ -24,16 +24,16 @@ public unsafe class GClassHandle : GHandle
 
     public GClassHandle GetSuperclass(Env env)
     {
-        var cls = env.Master->GetSuperclass(Addr);
+        var cls = env.Native->GetSuperclass(Addr);
         return new GClassHandle(env.NewGlobalRef(cls), cls);
     }
-    public bool AssignableFrom(Env env, ClassHandle clazz) => env.Master->IsAssignableFrom(Addr, !clazz);
+    public bool AssignableFrom(Env env, ClassHandle clazz) => env.Native->IsAssignableFrom(Addr, !clazz);
 
     public RetCode RegisterNatives(Env env, params NativeMethod_[] methods)
     {
         fixed (NativeMethod_* ptr = methods)
-            return env.Master->RegisterNatives(Addr, ptr, methods.Length);
+            return env.Native->RegisterNatives(Addr, ptr, methods.Length);
     }
     public RetCode RegisterNatives(Env env, params NativeMethod[] methods) => RegisterNatives(env, methods.ToStructs());
-    public RetCode UnregisterNatives(Env env) => env.Master->UnregisterNatives(Addr);
+    public RetCode UnregisterNatives(Env env) => env.Native->UnregisterNatives(Addr);
 }

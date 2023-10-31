@@ -1,6 +1,7 @@
 ﻿using JNI.Internal;
 using JNI.Low;
 using JNI.Utils;
+using Memory;
 
 namespace JNI.Models;
 public sealed unsafe class NativeMethod

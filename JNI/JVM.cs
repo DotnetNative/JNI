@@ -3,25 +3,25 @@
 namespace JNI;
 public sealed unsafe class JVM
 {
-    public JVM(JVM_* jvm) => Master = jvm;
+    public JVM(JVM_* jvm) => Native = jvm;
 
-    public JVM_* Master { get; init; }
+    public JVM_* Native { get; init; }
 
     public Env AttachCurrentThread(void* args = null)
     {
         Env_* env;
-        Master->AttachCurrentThread((void**)&env, args);
-        return new Env(env);
+        Native->AttachCurrentThread((void**)&env, args);
+        return new(env);
     }
 
     public Env AttachCurrentThreadAsDaemon(void* args = null)
     {
         Env_* env;
-        Master->AttachCurrentThreadAsDaemon((void**)&env, args);
-        return new Env(env);
+        Native->AttachCurrentThreadAsDaemon((void**)&env, args);
+        return new(env);
     }
 
-    public void DetachCurrentThread() => Master->DetachCurrentThread();
+    public void DetachCurrentThread() => Native->DetachCurrentThread();
 
-    public void DestroyJVM() => Master->DestroyJavaVM();
+    public void DestroyJVM() => Native->DestroyJavaVM();
 }

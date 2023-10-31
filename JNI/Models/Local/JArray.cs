@@ -13,11 +13,11 @@ public unsafe sealed class JArray : JObject, IList<JObject>
 
     public JObject this[int index]
     {
-        get => new(Env, Env.Master->GetObjectArrayElement(Addr, index));
-        set => Env.Master->SetObjectArrayElement(Addr, index, !value);
+        get => new(Env, Env.Native->GetObjectArrayElement(Addr, index));
+        set => Env.Native->SetObjectArrayElement(Addr, index, !value);
     }
 
-    public int Count => Env.Master->GetArrayLength(Addr);
+    public int Count => Env.Native->GetArrayLength(Addr);
 
     public bool IsReadOnly => true;
 

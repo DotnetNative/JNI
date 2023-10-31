@@ -6,13 +6,13 @@ public unsafe sealed class JGArray : JGObject
 
     public JGObject Get(Env env, int index)
     {
-        var addr = env.Master->GetObjectArrayElement(Addr, index);
+        var addr = env.Native->GetObjectArrayElement(Addr, index);
         return new JGObject(env.NewGlobalRef(addr), addr);
     }
-    public void Set(Env env, int index, JGObject obj) => env.Master->SetObjectArrayElement(Addr, index, !obj);
+    public void Set(Env env, int index, JGObject obj) => env.Native->SetObjectArrayElement(Addr, index, !obj);
 
     public int Count => throw new NotImplementedException();
-    public int GetCount(Env env) => env.Master->GetArrayLength(Addr);
+    public int GetCount(Env env) => env.Native->GetArrayLength(Addr);
 
     public bool IsReadOnly => true;
 

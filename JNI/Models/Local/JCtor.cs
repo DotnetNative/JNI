@@ -8,6 +8,6 @@ public unsafe sealed class JCtor : JMethod
     public JObject NewInstance(Params args)
     {
         fixed (JValue* ptr = args.Values)
-            return new(Env, Env.Master->NewObjectA(!Clazz, Addr, ptr));
+            return new(Env, Env.Native->NewObjectA(!Clazz, Addr, ptr));
     }
 }

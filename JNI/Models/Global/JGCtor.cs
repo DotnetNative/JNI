@@ -9,8 +9,8 @@ public unsafe sealed class JGCtor : JGMethod
     {
         fixed (JValue* ptr = args.Values)
         {
-            var obj = env.Master->NewObjectA(!Clazz, Addr, ptr);
-            return new(env.Master->NewGlobalRef(obj), obj);
+            var obj = env.Native->NewObjectA(!Clazz, Addr, ptr);
+            return new(env.Native->NewGlobalRef(obj), obj);
         }
     }
 }

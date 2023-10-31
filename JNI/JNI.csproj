@@ -27,6 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Yotic.Memory.Extensions" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 

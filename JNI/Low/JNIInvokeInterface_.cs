@@ -8,11 +8,11 @@ public unsafe struct JNIInvokeInterface
 {
     public JNIInvokeInterface() { }
 
-    private void* reserved0 = null, reserved1 = null, reserved2 = null;
+    public void* reserved0, reserved1, reserved2;
 
-    public delegate* unmanaged<JVM_*, RetCode> DestroyJavaVM = null;
-    public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThread = null;
-    public delegate* unmanaged<JVM_*, RetCode> DetachCurrentThread = null;
-    public delegate* unmanaged<JVM_*, void**, JVersion, RetCode> GetEnv = null;
-    public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThreadAsDaemon = null;
+    public delegate* unmanaged<JVM_*, RetCode> DestroyJavaVM;
+    public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThread;
+    public delegate* unmanaged<JVM_*, RetCode> DetachCurrentThread;
+    public delegate* unmanaged<JVM_*, void**, JVersion, RetCode> GetEnv;
+    public delegate* unmanaged<JVM_*, void**, void*, RetCode> AttachCurrentThreadAsDaemon;
 }

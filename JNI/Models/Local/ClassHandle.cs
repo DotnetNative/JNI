@@ -21,20 +21,20 @@ public unsafe class ClassHandle : LHandle
     public JStaticMethod GetStaticMethodA(string name, TypeInfo type, params Arg[] args) => EnvHelper.GetStaticMethod(Env, this, name, type, args);
     public JStaticMethod GetStaticMethod(string name, TypeInfo type, params TypeInfo[] types) => EnvHelper.GetStaticMethod(Env, this, name, type, types.ToArgs());
 
-    public ClassHandle GetSuperclass() => new ClassHandle(Env, Env.Master->GetSuperclass(Addr));
-    public bool AssignableFrom(ClassHandle clazz) => Env.Master->IsAssignableFrom(Addr, !clazz);
+    public ClassHandle GetSuperclass() => new ClassHandle(Env, Env.Native->GetSuperclass(Addr));
+    public bool AssignableFrom(ClassHandle clazz) => Env.Native->IsAssignableFrom(Addr, !clazz);
 
     public JObject AsObject => new(Env, Addr);
 
     public RetCode RegisterNatives(params NativeMethod_[] methods)
     {
         fixed (NativeMethod_* ptr = methods)
-            return Env.Master->RegisterNatives(Addr, ptr, methods.Length);
+            return Env.Native->RegisterNatives(Addr, ptr, methods.Length);
     }
     public RetCode RegisterNatives(Env env, params NativeMethod[] methods)
     {
         fixed (NativeMethod_* ptr = methods.ToStructs())
-            return env.Master->RegisterNatives(Addr, ptr, methods.Length);
+            return env.Native->RegisterNatives(Addr, ptr, methods.Length);
     }
-    public RetCode UnregisterNatives() => Env.Master->UnregisterNatives(Addr);
+    public RetCode UnregisterNatives() => Env.Native->UnregisterNatives(Addr);
 }
