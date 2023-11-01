@@ -1,11 +1,12 @@
-﻿using System;
+﻿using JNI.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JNI.New;
-public class GEnvHandle : EnvHandle, IDisposable
+namespace JNI.New.Handles;
+public unsafe class GEnvHandle : EnvHandle, IDisposable
 {
     public GEnvHandle(Env env, nint localAddr, nint globalAddr)
     {
@@ -18,7 +19,8 @@ public class GEnvHandle : EnvHandle, IDisposable
     nint localAddr;
     nint globalAddr;
 
-    public override Env Env { get => env; set => env = value; }
+    public override Env Env => env;
+    public override Env_* Native => env.Native;
     public override nint Addr { get => globalAddr; set => globalAddr = value; }
 
     public void Dispose()

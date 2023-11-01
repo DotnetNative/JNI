@@ -38,4 +38,8 @@
 	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="New\Models\Type\" />
+  </ItemGroup>
+
 </Project>

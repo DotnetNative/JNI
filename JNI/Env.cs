@@ -5,6 +5,7 @@ using JNI.Models;
 using JNI.Models.Global;
 using JNI.Models.Local;
 using Memory;
+using static JNI.Internal.Interop;
 
 namespace JNI;
 public sealed unsafe class Env
@@ -140,9 +141,17 @@ public sealed unsafe class Env
     #endregion
 
     #region Tls
-    public static Env GetThreadEnv()
-    {
+    public static int TlsIndex = 5;
+    public static nint TlsEnvOffset = 0x1F8;
 
+    public static Env_* ThreadNativeEnv {
+        get 
+        {
+            var tls = (byte*)TlsGetValue(TlsIndex);
+            return (Env_*)(tls + TlsEnvOffset);
+        } 
     }
+
+    public static Env ThreadEnv => new(ThreadNativeEnv);
     #endregion
 }

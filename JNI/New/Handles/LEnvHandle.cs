@@ -1,10 +1,11 @@
-﻿using System;
+﻿using JNI.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JNI.New;
+namespace JNI.New.Handles;
 public class LEnvHandle : EnvHandle, IDisposable
 {
     public LEnvHandle(Env env, nint addr)
@@ -16,7 +17,8 @@ public class LEnvHandle : EnvHandle, IDisposable
     Env env;
     nint localAddr;
 
-    public override Env Env { get => env; set => env = value; }
+    public override Env Env => env;
+    public override unsafe Env_* Native => env.Native;
     public override nint Addr { get => localAddr; set => localAddr = value; }
 
     public void Dispose()

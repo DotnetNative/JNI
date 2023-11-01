@@ -1,11 +1,19 @@
-﻿using JNI.Core;
-using JNI.Core.Enums;
+﻿using JNI.Core.Enums;
+using JNI.Core;
 using JNI.Internal;
+using JNI.Models.Local;
+using JNI.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using JNI.New.Handles;
 
-namespace JNI.Models.Local;
-public unsafe class ClassHandle : LHandle
+namespace JNI.New.Models.Class;
+public unsafe class ClassHandle : HandleContainer
 {
-    public ClassHandle(Env env, nint handle) : base(env, handle) { }
+    public ClassHandle(EnvHandle handle) : base(handle) { }
 
     public JCtor GetCtorA(params Arg[] args) => new(GetMethodA("<init>", Env.Types.Void, args));
     public JCtor GetCtor(params TypeInfo[] types) => new(GetMethod("<init>", Env.Types.Void, types));
@@ -21,7 +29,7 @@ public unsafe class ClassHandle : LHandle
     public JStaticMethod GetStaticMethod(string name, TypeInfo type, params TypeInfo[] types) => EnvHelper.GetStaticMethod(Env, this, name, type, types.ToArgs());
 
     public ClassHandle GetSuperclass() => new ClassHandle(Env, Env.Native->GetSuperclass(Addr));
-    public bool AssignableFrom(ClassHandle clazz) => Env.Native->IsAssignableFrom(Addr, !clazz);
+    public bool AssignableFrom(ClassHandle clazz) => Env.Native->IsAssignableFrom(Addr, clazz);
 
     public JObject AsObject => new(Env, Addr);
 
