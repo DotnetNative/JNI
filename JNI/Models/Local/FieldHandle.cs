@@ -1,6 +1,4 @@
-﻿using JNI.Models.Local;
-
-namespace JNI.Models;
+﻿namespace JNI.Models.Local;
 public class FieldHandle : LHandle
 {
     public FieldHandle(Env env, nint handle) : base(env, handle) { }

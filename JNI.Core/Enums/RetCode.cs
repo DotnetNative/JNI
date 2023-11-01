@@ -1,4 +1,4 @@
-﻿namespace JNI.Enums;
+﻿namespace JNI.Core.Enums;
 public enum RetCode : int
 {
     OK = 0,                /* success */

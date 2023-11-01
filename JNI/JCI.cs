@@ -1,6 +1,6 @@
-﻿using JNI.Enums;
+﻿using JNI.Core;
+using JNI.Core.Enums;
 using JNI.Internal;
-using JNI.Low;
 
 namespace JNI;
 public unsafe struct JCI

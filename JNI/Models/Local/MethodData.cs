@@ -1,6 +1,6 @@
 ﻿using JNI.Utils;
 
-namespace JNI.Models;
+namespace JNI.Models.Local;
 public class MethodData : MethodHandle
 {
     public MethodData(Env env, nint handle, string name, TypeInfo info, Arg[] args) : base(env, handle)

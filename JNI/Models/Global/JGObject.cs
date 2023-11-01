@@ -1,4 +1,5 @@
 ﻿using JNI.Models.Local;
+using JNI.Models.Weak;
 
 namespace JNI.Models.Global;
 public unsafe class JGObject : GHandle

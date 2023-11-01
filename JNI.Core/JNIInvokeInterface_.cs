@@ -1,7 +1,7 @@
-﻿using JNI.Enums;
+﻿using JNI.Core.Enums;
 using System.Runtime.InteropServices;
 
-namespace JNI.Low;
+namespace JNI.Core;
 
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JNIInvokeInterface

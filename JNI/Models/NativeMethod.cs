@@ -1,5 +1,5 @@
-﻿using JNI.Internal;
-using JNI.Low;
+﻿using JNI.Core;
+using JNI.Internal;
 using JNI.Utils;
 using Memory;
 

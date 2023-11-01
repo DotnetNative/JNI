@@ -1,4 +1,6 @@
-﻿namespace JNI.Models.Global;
+﻿using JNI.Models.Local;
+
+namespace JNI.Models.Global;
 public unsafe sealed class JGCtor : JGMethod
 {
     public JGCtor(nint gAddr, nint lAddr, string name, TypeInfo type, ClassHandle clazz, params Arg[] args) : base(gAddr, lAddr, name, type, clazz, args) { }

@@ -31,6 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JNI.Core\JNI.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 

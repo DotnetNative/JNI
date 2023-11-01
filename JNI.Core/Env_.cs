@@ -1,13 +1,12 @@
-﻿using JNI.Enums;
-using JNI.Models;
+﻿using JNI.Core.Enums;
 using System.Runtime.InteropServices;
 
-namespace JNI.Low;
+namespace JNI.Core;
 
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct Env_
 {
-    public JNINativeInterface* functions;
+    public JNINativeInterface_* functions;
 
     public JVersion GetVersion()
     {
@@ -165,7 +164,7 @@ public unsafe struct Env_
             return functions->NewObjectV(env, clazz, methodID, args);
     }
 
-    public nint NewObjectA(nint clazz, nint methodID, JValue* args)
+    public nint NewObjectA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->NewObjectA(env, clazz, methodID, args);
@@ -201,7 +200,7 @@ public unsafe struct Env_
             return functions->CallObjectMethodV(env, obj, methodID, args);
     }
 
-    public nint CallObjectMethodA(nint obj, nint methodID, JValue* args)
+    public nint CallObjectMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallObjectMethodA(env, obj, methodID, args);
@@ -219,7 +218,7 @@ public unsafe struct Env_
             return functions->CallBooleanMethodV(env, obj, methodID, args);
     }
 
-    public bool CallBooleanMethodA(nint obj, nint methodID, JValue* args)
+    public bool CallBooleanMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallBooleanMethodA(env, obj, methodID, args);
@@ -237,7 +236,7 @@ public unsafe struct Env_
             return functions->CallByteMethodV(env, obj, methodID, args);
     }
 
-    public byte CallByteMethodA(nint obj, nint methodID, JValue* args)
+    public byte CallByteMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallByteMethodA(env, obj, methodID, args);
@@ -255,7 +254,7 @@ public unsafe struct Env_
             return functions->CallCharMethodV(env, obj, methodID, args);
     }
 
-    public ushort CallCharMethodA(nint obj, nint methodID, JValue* args)
+    public ushort CallCharMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallCharMethodA(env, obj, methodID, args);
@@ -273,7 +272,7 @@ public unsafe struct Env_
             return functions->CallShortMethodV(env, obj, methodID, args);
     }
 
-    public short CallShortMethodA(nint obj, nint methodID, JValue* args)
+    public short CallShortMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallShortMethodA(env, obj, methodID, args);
@@ -291,7 +290,7 @@ public unsafe struct Env_
             return functions->CallIntMethodV(env, obj, methodID, args);
     }
 
-    public int CallIntMethodA(nint obj, nint methodID, JValue* args)
+    public int CallIntMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallIntMethodA(env, obj, methodID, args);
@@ -309,7 +308,7 @@ public unsafe struct Env_
             return functions->CallLongMethodV(env, obj, methodID, args);
     }
 
-    public long CallLongMethodA(nint obj, nint methodID, JValue* args)
+    public long CallLongMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallLongMethodA(env, obj, methodID, args);
@@ -327,7 +326,7 @@ public unsafe struct Env_
             return functions->CallFloatMethodV(env, obj, methodID, args);
     }
 
-    public float CallFloatMethodA(nint obj, nint methodID, JValue* args)
+    public float CallFloatMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallFloatMethodA(env, obj, methodID, args);
@@ -345,7 +344,7 @@ public unsafe struct Env_
             return functions->CallDoubleMethodV(env, obj, methodID, args);
     }
 
-    public double CallDoubleMethodA(nint obj, nint methodID, JValue* args)
+    public double CallDoubleMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallDoubleMethodA(env, obj, methodID, args);
@@ -363,7 +362,7 @@ public unsafe struct Env_
             functions->CallVoidMethodV(env, obj, methodID, args);
     }
 
-    public void CallVoidMethodA(nint obj, nint methodID, JValue* args)
+    public void CallVoidMethodA(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallVoidMethodA(env, obj, methodID, args);
@@ -381,7 +380,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
     }
 
-    public nint CallNonvirtualObjectMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public nint CallNonvirtualObjectMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualObjectMethodA(env, obj, clazz, methodID, args);
@@ -399,7 +398,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualBooleanMethodV(env, obj, clazz, methodID, args);
     }
 
-    public bool CallNonvirtualBooleanMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public bool CallNonvirtualBooleanMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualBooleanMethodA(env, obj, clazz, methodID, args);
@@ -417,7 +416,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualByteMethodV(env, obj, clazz, methodID, args);
     }
 
-    public byte CallNonvirtualByteMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public byte CallNonvirtualByteMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualByteMethodA(env, obj, clazz, methodID, args);
@@ -435,7 +434,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualCharMethodV(env, obj, clazz, methodID, args);
     }
 
-    public ushort CallNonvirtualCharMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public ushort CallNonvirtualCharMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualCharMethodA(env, obj, clazz, methodID, args);
@@ -453,7 +452,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualShortMethodV(env, obj, clazz, methodID, args);
     }
 
-    public short CallNonvirtualShortMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public short CallNonvirtualShortMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualShortMethodA(env, obj, clazz, methodID, args);
@@ -471,7 +470,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualIntMethodV(env, obj, clazz, methodID, args);
     }
 
-    public int CallNonvirtualIntMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public int CallNonvirtualIntMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualIntMethodA(env, obj, clazz, methodID, args);
@@ -489,7 +488,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualLongMethodV(env, obj, clazz, methodID, args);
     }
 
-    public long CallNonvirtualLongMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public long CallNonvirtualLongMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualLongMethodA(env, obj, clazz, methodID, args);
@@ -507,7 +506,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualFloatMethodV(env, obj, clazz, methodID, args);
     }
 
-    public float CallNonvirtualFloatMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public float CallNonvirtualFloatMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualFloatMethodA(env, obj, clazz, methodID, args);
@@ -525,7 +524,7 @@ public unsafe struct Env_
             return functions->CallNonvirtualDoubleMethodV(env, obj, clazz, methodID, args);
     }
 
-    public double CallNonvirtualDoubleMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public double CallNonvirtualDoubleMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualDoubleMethodA(env, obj, clazz, methodID, args);
@@ -543,7 +542,7 @@ public unsafe struct Env_
             functions->CallNonvirtualVoidMethodV(env, obj, clazz, methodID, args);
     }
 
-    public void CallNonvirtualVoidMethodA(nint obj, nint clazz, nint methodID, JValue* args)
+    public void CallNonvirtualVoidMethodA(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallNonvirtualVoidMethodA(env, obj, clazz, methodID, args);
@@ -681,7 +680,7 @@ public unsafe struct Env_
             return functions->CallStaticObjectMethodV(env, clazz, methodID, args);
     }
 
-    public nint CallStaticObjectMethodA(nint clazz, nint methodID, JValue* args)
+    public nint CallStaticObjectMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticObjectMethodA(env, clazz, methodID, args);
@@ -699,7 +698,7 @@ public unsafe struct Env_
             return functions->CallStaticBooleanMethodV(env, clazz, methodID, args);
     }
 
-    public bool CallStaticBooleanMethodA(nint clazz, nint methodID, JValue* args)
+    public bool CallStaticBooleanMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticBooleanMethodA(env, clazz, methodID, args);
@@ -717,7 +716,7 @@ public unsafe struct Env_
             return functions->CallStaticByteMethodV(env, clazz, methodID, args);
     }
 
-    public byte CallStaticByteMethodA(nint clazz, nint methodID, JValue* args)
+    public byte CallStaticByteMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticByteMethodA(env, clazz, methodID, args);
@@ -735,7 +734,7 @@ public unsafe struct Env_
             return functions->CallStaticCharMethodV(env, clazz, methodID, args);
     }
 
-    public ushort CallStaticCharMethodA(nint clazz, nint methodID, JValue* args)
+    public ushort CallStaticCharMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticCharMethodA(env, clazz, methodID, args);
@@ -753,7 +752,7 @@ public unsafe struct Env_
             return functions->CallStaticShortMethodV(env, clazz, methodID, args);
     }
 
-    public short CallStaticShortMethodA(nint clazz, nint methodID, JValue* args)
+    public short CallStaticShortMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticShortMethodA(env, clazz, methodID, args);
@@ -771,7 +770,7 @@ public unsafe struct Env_
             return functions->CallStaticIntMethodV(env, clazz, methodID, args);
     }
 
-    public int CallStaticIntMethodA(nint clazz, nint methodID, JValue* args)
+    public int CallStaticIntMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticIntMethodA(env, clazz, methodID, args);
@@ -789,7 +788,7 @@ public unsafe struct Env_
             return functions->CallStaticLongMethodV(env, clazz, methodID, args);
     }
 
-    public long CallStaticLongMethodA(nint clazz, nint methodID, JValue* args)
+    public long CallStaticLongMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticLongMethodA(env, clazz, methodID, args);
@@ -807,7 +806,7 @@ public unsafe struct Env_
             return functions->CallStaticFloatMethodV(env, clazz, methodID, args);
     }
 
-    public float CallStaticFloatMethodA(nint clazz, nint methodID, JValue* args)
+    public float CallStaticFloatMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticFloatMethodA(env, clazz, methodID, args);
@@ -825,7 +824,7 @@ public unsafe struct Env_
             return functions->CallStaticDoubleMethodV(env, clazz, methodID, args);
     }
 
-    public double CallStaticDoubleMethodA(nint clazz, nint methodID, JValue* args)
+    public double CallStaticDoubleMethodA(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticDoubleMethodA(env, clazz, methodID, args);
@@ -843,7 +842,7 @@ public unsafe struct Env_
             functions->CallStaticVoidMethodV(env, cls, methodID, args);
     }
 
-    public void CallStaticVoidMethodA(nint cls, nint methodID, JValue* args)
+    public void CallStaticVoidMethodA(nint cls, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallStaticVoidMethodA(env, cls, methodID, args);

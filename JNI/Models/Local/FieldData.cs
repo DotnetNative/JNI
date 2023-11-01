@@ -1,4 +1,4 @@
-﻿namespace JNI.Models;
+﻿namespace JNI.Models.Local;
 public class FieldData : FieldHandle
 {
     public FieldData(Env env, nint handle, string name, string sig) : base(env, handle)

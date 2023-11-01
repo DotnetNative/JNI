@@ -1,4 +1,4 @@
-﻿using JNI.Low;
+﻿using JNI.Core;
 using JNI.Models;
 using System.Runtime.InteropServices;
 

@@ -1,5 +1,4 @@
-﻿using JNI.Low;
-
+﻿using JNI.Core;
 namespace JNI;
 public sealed unsafe class JVM
 {

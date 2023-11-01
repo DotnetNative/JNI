@@ -1,6 +1,6 @@
-﻿using JNI.Enums;
+﻿using JNI.Core;
+using JNI.Core.Enums;
 using JNI.Internal;
-using JNI.Low;
 using JNI.Models;
 using JNI.Models.Global;
 using JNI.Models.Local;

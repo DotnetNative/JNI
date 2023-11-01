@@ -1,9 +1,8 @@
-﻿using JNI.Enums;
+﻿using JNI.Core;
+using JNI.Core.Enums;
 using JNI.Internal;
-using JNI.Low;
-using JNI.Models.Local;
 
-namespace JNI.Models;
+namespace JNI.Models.Local;
 public unsafe class ClassHandle : LHandle
 {
     public ClassHandle(Env env, nint handle) : base(env, handle) { }
