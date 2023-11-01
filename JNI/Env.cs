@@ -138,4 +138,11 @@ public sealed unsafe class Env
     #region Info
     public JVersion Version => Native->GetVersion();
     #endregion
+
+    #region Tls
+    public static Env GetThreadEnv()
+    {
+
+    }
+    #endregion
 }
