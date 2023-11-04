@@ -11,4 +11,13 @@
     <PackageReference Include="Yotic.Memory.Extensions" Version="1.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="System.Runtime.CompilerServices.MethodImplAttribute">
+      <Alias>MethImpl</Alias>
+    </Using>
+    <Using Include="System.Runtime.CompilerServices.MethodImplOptions">
+      <Static>True</Static>
+    </Using>
+  </ItemGroup>
+
 </Project>

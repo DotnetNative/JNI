@@ -1,5 +1,5 @@
 ﻿using JNI.Models;
-using JNI.Models.Global;
+using JNI.Models.Models.Type;
 
 namespace JNI;
 public class RuntimeTypeCollection
@@ -9,6 +9,7 @@ public class RuntimeTypeCollection
         Void = new TypeInfo("java/lang/Void", "V");
         Bool = new TypeInfo("java/lang/Boolean", "Z");
         Byte = new TypeInfo("java/lang/Byte", "B");
+        Char = new TypeInfo("java/lang/Character", "C");
         Short = new TypeInfo("java/lang/Short", "S");
         Int = new TypeInfo("java/lang/Integer", "I");
         Long = new TypeInfo("java/lang/Long", "J");
@@ -19,22 +20,24 @@ public class RuntimeTypeCollection
         String = new TypeInfo("java/lang/String");
 
 
-        VoidType = env.GetGlobalType(Void);
-        BoolType = env.GetGlobalType(Bool);
-        ByteType = env.GetGlobalType(Byte);
-        ShortType = env.GetGlobalType(Short);
-        IntType = env.GetGlobalType(Int);
-        LongType = env.GetGlobalType(Long);
-        FloatType = env.GetGlobalType(Float);
-        DoubleType = env.GetGlobalType(Double);
+        VoidType = env.GetGType(Void);
+        BoolType = env.GetGType(Bool);
+        ByteType = env.GetGType(Byte);
+        CharType = env.GetGType(Char);
+        ShortType = env.GetGType(Short);
+        IntType = env.GetGType(Int);
+        LongType = env.GetGType(Long);
+        FloatType = env.GetGType(Float);
+        DoubleType = env.GetGType(Double);
 
-        ObjectType = env.GetGlobalType(Object);
-        StringType = env.GetGlobalType(String);
+        ObjectType = env.GetGType(Object);
+        StringType = env.GetGType(String);
     }
 
     public TypeInfo Void;
     public TypeInfo Bool;
     public TypeInfo Byte;
+    public TypeInfo Char;
     public TypeInfo Short;
     public TypeInfo Int;
     public TypeInfo Long;
@@ -45,15 +48,16 @@ public class RuntimeTypeCollection
     public TypeInfo Object;
 
 
-    public JGType VoidType;
-    public JGType BoolType;
-    public JGType ByteType;
-    public JGType ShortType;
-    public JGType IntType;
-    public JGType LongType;
-    public JGType FloatType;
-    public JGType DoubleType;
+    public GJType VoidType;
+    public GJType BoolType;
+    public GJType ByteType;
+    public GJType CharType;
+    public GJType ShortType;
+    public GJType IntType;
+    public GJType LongType;
+    public GJType FloatType;
+    public GJType DoubleType;
 
-    public JGType StringType;
-    public JGType ObjectType;
+    public GJType StringType;
+    public GJType ObjectType;
 }

@@ -1,6 +1,7 @@
 ﻿using JNI.Core;
 using JNI.Internal;
-using JNI.Utils;
+using JNI.Models.Models;
+using JNI.Models.Models.Type;
 using Memory;
 
 namespace JNI.Models;
@@ -19,9 +20,9 @@ public sealed unsafe class NativeMethod
     
     public NativeMethod(string name, nint funcAddr, TypeInfo retType, params TypeInfo[] args) : this(name, funcAddr.ToPointer(), retType, args.ToArgs()) { }
 
-    public string Name { get; init; }
-    public string Sig { get; init; }
-    public void* FuncPtr { get; init; }
+    public readonly string Name;
+    public readonly string Sig;
+    public readonly void* FuncPtr;
 
     public NativeMethod_ ToStruct()
     {

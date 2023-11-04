@@ -1,5 +1,5 @@
-﻿using JNI.Models.Global;
-using JNI.Models.Local;
+﻿using JNI.Models.Models.Object;
+using JNI.Models.Models.String;
 using System.Runtime.InteropServices;
 
 namespace JNI.Models;
@@ -26,7 +26,7 @@ public struct JValue
     [FieldOffset(0)]
     public nint l; //8
 
-    public static JValue Zero = new JValue(nint.Zero);
+    public static JValue Zero = new(nint.Zero);
 
     public JValue(bool value)
     {
@@ -83,12 +83,6 @@ public struct JValue
     }
 
     public JValue(JObject value)
-    {
-        this = new();
-        l = value.Addr;
-    }
-
-    public JValue(JGObject value)
     {
         this = new();
         l = value.Addr;

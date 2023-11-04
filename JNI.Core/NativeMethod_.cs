@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Memory;
+using System.Runtime.InteropServices;
 
 namespace JNI.Core;
 
@@ -16,9 +17,5 @@ public unsafe struct NativeMethod_ : IDisposable
     public byte* Signature;
     public void* FnPtr;
 
-    public void Dispose()
-    {
-        Marshal.FreeCoTaskMem((nint)Name);
-        Marshal.FreeCoTaskMem((nint)Signature);
-    }
+    public void Dispose() => MemEx.Free(Name, Signature);
 }

@@ -2,9 +2,16 @@
 using JNI.Core.Enums;
 using JNI.Internal;
 using JNI.Models;
-using JNI.Models.Global;
-using JNI.Models.Local;
+using JNI.Models.Handles;
+using JNI.Models.Models.Array;
+using JNI.Models.Models.Class;
+using JNI.Models.Models.Field;
+using JNI.Models.Models.Method;
+using JNI.Models.Models.Object;
+using JNI.Models.Models.String;
+using JNI.Models.Models.Type;
 using Memory;
+using System.Xml.Linq;
 using static JNI.Internal.Interop;
 
 namespace JNI;
@@ -42,92 +49,137 @@ public sealed unsafe class Env
     public Env_* Native;
 
     #region Type
-    public ClassHandle GetClass(string name) => new(this, GetClassHandle(name));
     public nint GetClassHandle(string name)
     {
         using var nameCo = new CoMem(name.AsJavaPath());
         return Native->FindClass(nameCo.Ptr);
     }
-    public JGType GetGlobalType(TypeInfo info)
-    {
-        var type = GetType(info);
-        return new(NewGlobalRef(type.Addr), type.Addr, info);
-    }
-    public JGType GetGlobalType(string name, string sig, int dim) => GetGlobalType(new(name.AsJavaPath(), sig.AsJavaPath(), dim));
-    public JGType GetGlobalType(string nameAndSig, int dim = 0) => GetGlobalType(nameAndSig, nameAndSig, dim);
-    public JType GetType(string name, string sig, int dim = 0)
+
+    public LJClass GetClass(string name) => new(LHandle.Create(GetClassHandle(name)));
+    public GJClass GetGClass(string name) => new(GHandle.Create(GetClassHandle(name)));
+
+    public LJType GetType(string name, string sig, int dim = 0)
     {
         var info = new TypeInfo(name.AsJavaPath(), sig.AsJavaPath(), dim);
-        return new(this, info);
+        return new(LHandle.Create(GetClassHandle(name)), info);
     }
-    public JType GetType(string nameAndSign, int dim = 0) => new(this, nameAndSign.AsJavaPath(), dim);
-    public JType GetType(TypeInfo info) => new(this, info);
-    public ClassHandle DefineClass(string name, JObject loader, byte[] bytes)
+    public LJType GetType(string nameAndSig, int dim = 0) => new(LHandle.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
+    public LJType GetType(TypeInfo info) => new(LHandle.Create(GetClassHandle(info.Name)), info);
+
+    public GJType GetGType(string name, string sig, int dim = 0)
+    {
+        var info = new TypeInfo(name.AsJavaPath(), sig.AsJavaPath(), dim);
+        return new(GHandle.Create(GetClassHandle(name)), info);
+    }
+    public GJType GetGType(string nameAndSig, int dim = 0) => new(GHandle.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
+    public GJType GetGType(TypeInfo info) => new(GHandle.Create(GetClassHandle(info.Name)), info);
+
+    public LJClass DefineClass(string name, JObject loader, byte[] bytes)
     {
         using var nameCo = new CoMem(name.AsJavaPath());
         fixed (byte* ptr = bytes)
-            return new(this, Native->DefineClass(nameCo.Ptr, !loader, ptr, bytes.Length));
+            return new(LHandle.Create(Native->DefineClass(nameCo.Ptr, loader, ptr, bytes.Length)));
+    }
+
+    public GJClass DefineGClass(string name, JObject loader, byte[] bytes)
+    {
+        using var nameCo = new CoMem(name.AsJavaPath());
+        fixed (byte* ptr = bytes)
+            return new GJClass(GHandle.Create(Native->DefineClass(nameCo.Ptr, loader, ptr, bytes.Length)));
     }
     #endregion
 
     #region Frame
-    public JObject PopLocalFrame(JObject result) => new(this, Native->PopLocalFrame((nint)result));
+    public LJObject PopLocalFrame(JObject result) => LJObject.Create(Native->PopLocalFrame(result));
     public int PushLocalFrame(int capacity) => Native->PushLocalFrame(capacity);
     #endregion
 
     #region Reflect
-    public JObject ToReflectedMethod(ClassHandle clazz, MethodHandle method, bool isStatic = false) => new(this, Native->ToReflectedMethod(!clazz, !method, isStatic));
-    public JObject ToReflectedField(ClassHandle clazz, FieldHandle field, bool isStatic = false) => new(this, Native->ToReflectedField(!clazz, !field, isStatic));
-    public FieldHandle FromReflectedField(JObject field) => new(this, Native->FromReflectedField(!field));
-    public MethodHandle FromReflectedMethod(JObject method) => new(this, Native->FromReflectedMethod(!method));
+    public LJObject ToReflectedMethod(JClass clazz, MethodHandle method, bool isStatic = false) => LJObject.Create(Native->ToReflectedMethod(clazz, method, isStatic));
+    public LJObject ToReflectedField(JClass clazz, FieldHandle field, bool isStatic = false) => LJObject.Create(Native->ToReflectedField(clazz, field, isStatic));
+    public FieldHandle FromReflectedField(JObject field) => new FieldHandle(LHandle.Create(Native->FromReflectedField(field)));
+    public MethodHandle FromReflectedMethod(JObject method) => new MethodHandle(LHandle.Create(Native->FromReflectedMethod(method)));
+
+    public GJObject ToGReflectedMethod(JClass clazz, MethodHandle method, bool isStatic = false) => GJObject.Create(Native->ToReflectedMethod(clazz, method, isStatic));
+    public GJObject ToGReflectedField(JClass clazz, FieldHandle field, bool isStatic = false) => GJObject.Create(Native->ToReflectedField(clazz, field, isStatic));
+    public FieldHandle FromReflectedFieldG(JObject field) => new FieldHandle(GHandle.Create(Native->FromReflectedField(field)));
+    public MethodHandle FromReflectedMethodG(JObject method) => new MethodHandle(GHandle.Create(Native->FromReflectedMethod(method)));
     #endregion
 
     #region Array
-    public JArray NewObjectArray(int length, ClassHandle clazz, JObject initElement) => new(this, Native->NewObjectArray(length, (nint)clazz, (nint)initElement));
+    public LJArray NewObjectArray(int length, JClass clazz, JObject initElement) => new LJArray(LHandle.Create(Native->NewObjectArray(length, (nint)clazz, initElement)));
+    public GJArray NewGObjectArray(int length, JClass clazz, JObject initElement) => new GJArray(GHandle.Create(Native->NewObjectArray(length, (nint)clazz, initElement)));
     #endregion
 
     #region Ref
-    public nint NewGlobalRef(nint obj) => Native->NewGlobalRef(obj);
-    public nint NewLocalRef(nint obj) => Native->NewLocalRef(obj);
-    public void DeleteGlobalRef(nint link) => Native->DeleteGlobalRef(link);
-    public void DeleteLocalRef(nint link) => Native->DeleteLocalRef(link);
+    public nint NewGlobalRef(nint addr) => Native->NewGlobalRef(addr);
+    public nint NewLocalRef(nint addr) => Native->NewLocalRef(addr);
+    public void DeleteGlobalRef(nint addr) => Native->DeleteGlobalRef(addr);
+    public void DeleteLocalRef(nint addr) => Native->DeleteLocalRef(addr);
     #endregion
 
     #region String
-    public JString NewString(string unicode)
+    public LJString NewString(string unicode)
     {
         using var strCo = new CoMem(unicode, CoStrType.Uni);
-        return new(this, Native->NewString((ushort*)strCo.Ptr, unicode.Length), true);
+        return new LJString(LJObject.Create(Native->NewString((char*)strCo.Ptr, unicode.Length)), true);
     }
-    public JString NewStringUTF(string str)
+    public GJString NewGString(string unicode)
+    {
+        using var strCo = new CoMem(unicode, CoStrType.Uni);
+        return new GJString(GJObject.Create(Native->NewString((char*)strCo.Ptr, unicode.Length)), true);
+    }
+
+    public LJString NewStringUTF(string str)
     {
         using var strCo = new CoMem(str);
-        return new(this, Native->NewStringUTF(strCo.Ptr), false);
+        return new LJString(LJObject.Create(Native->NewStringUTF(strCo.Ptr)), false);
     }
-    public int GetStringLength(JObject str) => Native->GetStringLength(!str);
-    public int GetStringUTFLength(JObject str) => Native->GetStringUTFLength(!str);
-    public string GetStringUTFChars(JObject str) => new JString(this, str.Addr, false).ToString();
-    public string GetString(JObject str) => new JString(this, str.Addr, true).ToString();
-    public JString CreateString(string text, bool isUnicode = true) => isUnicode ? NewString(text) : NewStringUTF(text);
-    public JString CreateString(nint addr, bool isUnicode = true) => new(this, addr, isUnicode);
-    public JString CreateString(JObject obj, bool isUnicode = true) => new(this, (nint)obj, isUnicode);
+    public GJString NewGStringUTF(string str)
+    {
+        using var strCo = new CoMem(str);
+        return new GJString(GJObject.Create(Native->NewStringUTF(strCo.Ptr)), false);
+    }
+
+    public int GetStringLength(JString str) => Native->GetStringLength(str);
+    public int GetStringUTFLength(JString str) => Native->GetStringUTFLength(str);
+
+    public string GetStringUTFChars(JObject str)
+    {
+        using var _ = new LJString(LJObject.Create(str.Addr), false);
+        return _.ToString();
+    }
+
+    public string GetString(JObject str)
+    {
+        using var _ = new LJString(LJObject.Create(str.Addr), true);
+        return _.ToString();
+    }
+
+    public LJString CreateString(string text, bool isUnicode = true) => isUnicode ? NewString(text) : NewStringUTF(text);
+    public LJString CreateString(nint addr, bool isUnicode = true) => new LJString(LJObject.Create(addr), isUnicode);
+    public LJString CreateString(LJObject obj, bool isUnicode = true) => new LJString(obj, isUnicode);
+
+    public GJString CreateGString(string text, bool isUnicode = true) => isUnicode ? NewGString(text) : NewGStringUTF(text);
+    public GJString CreateGString(nint addr, bool isUnicode = true) => new GJString(GJObject.Create(addr), isUnicode);
+    public GJString CreateGString(GJObject obj, bool isUnicode = true) => new GJString(obj, isUnicode);
     #endregion
 
     #region Sync
-    public RetCode Lock(JObject obj) => Native->MonitorEnter(!obj);
-    public RetCode Unlock(JObject obj) => Native->MonitorExit(!obj);
+    public RetCode Lock(JObject obj) => Native->MonitorEnter(obj);
+    public RetCode Unlock(JObject obj) => Native->MonitorExit(obj);
     #endregion
 
     #region Exception
     public void ExceptionClear() => Native->ExceptionClear();
     public bool ExceptionCheck() => Native->ExceptionCheck();
     public void ExceptionDescribe() => Native->ExceptionDescribe();
-    public JObject ExceptionOccurred() => new(this, Native->ExceptionOccurred());
-    public RetCode Throw(JObject obj) => Native->Throw(!obj);
-    public RetCode ThrowNew(ClassHandle clazz, string msg)
+    public LJObject ExceptionOccurred() => LJObject.Create(Native->ExceptionOccurred());
+    public RetCode Throw(JObject obj) => Native->Throw(obj);
+    public RetCode ThrowNew(JClass clazz, string msg)
     {
         using var msgCo = new CoMem(msg);
-        return Native->ThrowNew(!clazz, msgCo.Ptr);
+        return Native->ThrowNew(clazz, msgCo.Ptr);
     }
     public void FatalError(string msg)
     {

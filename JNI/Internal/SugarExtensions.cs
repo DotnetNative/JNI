@@ -1,5 +1,7 @@
 ﻿using JNI.Core;
 using JNI.Models;
+using JNI.Models.Models;
+using JNI.Models.Models.Type;
 using System.Runtime.InteropServices;
 
 namespace JNI.Internal;
