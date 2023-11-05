@@ -1,5 +1,4 @@
 ﻿using JNI.Core;
-using JNI.Internal;
 using Memory;
 
 namespace JNI;

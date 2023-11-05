@@ -1,6 +1,4 @@
-﻿using JNI.Internal;
-
-namespace JNI;
+﻿namespace JNI;
 public class TypeInfo
 {
     public TypeInfo(string name, string sig, int dim = 0)

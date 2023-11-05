@@ -1,5 +1,4 @@
 ﻿using JNI.Core;
-using JNI.Internal;
 using Memory;
 
 namespace JNI;
@@ -10,6 +9,9 @@ public unsafe abstract class JClass : HandleContainer
 
     public LJCtor GetCtor(params Arg[] args) => new LJCtor(GetVoidMethod("<init>", args));
     public GJCtor GetGCtor(params Arg[] args) => new GJCtor(GetVoidGMethod("<init>", args));
+
+    public LJCtor GetCtor(params TypeInfo[] args) => GetCtor(args.ToArgs());
+    public GJCtor GetGCtor(params TypeInfo[] args) => GetGCtor(args.ToArgs());
 
     #region Field
     public LHandle GetFieldHandle(string name, TypeInfo type)
@@ -78,7 +80,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJStaticBoolField GetStaticBoolGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Bool), name, this);
     public GJStaticByteField GetStaticByteGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Byte), name, this);
     public GJStaticCharField GetStaticCharGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Char), name, this);
-    public GJStaticShortField GetStaticShorGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Short), name, this);
+    public GJStaticShortField GetStaticShortGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Short), name, this);
     public GJStaticIntField GetStaticIntGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Int), name, this);
     public GJStaticLongField GetStaticLongGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Long), name, this);
     public GJStaticFloatField GetStaticFloatGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Float), name, this);
@@ -144,27 +146,27 @@ public unsafe abstract class JClass : HandleContainer
     public GJFloatMethod GetFloatGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Float, args), name, this, args);
     public GJDoubleMethod GetDoubleGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Double, args), name, this, args);
 
-    public LJStaticObjectMethod GetObjectStaticMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodHandle(name, type, args), name, type, this, args);
-    public LJStaticVoidMethod GetVoidStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Void, args), name, this, args);
-    public LJStaticBoolMethod GetBoolStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Bool, args), name, this, args);
-    public LJStaticByteMethod GetByteStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Byte, args), name, this, args);
-    public LJStaticCharMethod GetCharStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Char, args), name, this, args);
-    public LJStaticShortMethod GetShortStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Short, args), name, this, args);
-    public LJStaticIntMethod GetIntStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Int, args), name, this, args);
-    public LJStaticLongMethod GetLongStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Long, args), name, this, args);
-    public LJStaticFloatMethod GetFloatStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Float, args), name, this, args);
-    public LJStaticDoubleMethod GetDoubleStaticMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Double, args), name, this, args);
+    public LJStaticObjectMethod GetStaticObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodHandle(name, type, args), name, type, this, args);
+    public LJStaticVoidMethod GetStaticVoidMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Void, args), name, this, args);
+    public LJStaticBoolMethod GetStaticBoolMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Bool, args), name, this, args);
+    public LJStaticByteMethod GetStaticByteMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Byte, args), name, this, args);
+    public LJStaticCharMethod GetStaticCharMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Char, args), name, this, args);
+    public LJStaticShortMethod GetStaticShortMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Short, args), name, this, args);
+    public LJStaticIntMethod GetStaticIntMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Int, args), name, this, args);
+    public LJStaticLongMethod GetStaticLongMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Long, args), name, this, args);
+    public LJStaticFloatMethod GetStaticFloatMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Float, args), name, this, args);
+    public LJStaticDoubleMethod GetStaticDoubleMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Double, args), name, this, args);
 
-    public GJStaticObjectMethod GetObjectGStaticMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodGHandle(name, type, args), name, type, this, args);
-    public GJStaticVoidMethod GetVoidGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Void, args), name, this, args);
-    public GJStaticBoolMethod GetBoolGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Bool, args), name, this, args);
-    public GJStaticByteMethod GetByteGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Byte, args), name, this, args);
-    public GJStaticCharMethod GetCharGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Char, args), name, this, args);
-    public GJStaticShortMethod GetShortGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Short, args), name, this, args);
-    public GJStaticIntMethod GetIntGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Int, args), name, this, args);
-    public GJStaticLongMethod GetLongGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Long, args), name, this, args);
-    public GJStaticFloatMethod GetFloatGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Float, args), name, this, args);
-    public GJStaticDoubleMethod GetDoubleGStaticMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Double, args), name, this, args);
+    public GJStaticObjectMethod GetStaticObjectGMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodGHandle(name, type, args), name, type, this, args);
+    public GJStaticVoidMethod GetStaticVoidGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Void, args), name, this, args);
+    public GJStaticBoolMethod GetStaticBoolGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Bool, args), name, this, args);
+    public GJStaticByteMethod GetStaticByteGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Byte, args), name, this, args);
+    public GJStaticCharMethod GetStaticCharGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Char, args), name, this, args);
+    public GJStaticShortMethod GetStaticShortGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Short, args), name, this, args);
+    public GJStaticIntMethod GetStaticIntGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Int, args), name, this, args);
+    public GJStaticLongMethod GetStaticLongGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Long, args), name, this, args);
+    public GJStaticFloatMethod GetStaticFloatGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Float, args), name, this, args);
+    public GJStaticDoubleMethod GetStaticDoubleGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Double, args), name, this, args);
     #endregion
 
     public LJClass GetSuperclass() => new LJClass(LHandle.Create(Env.Native->GetSuperclass(Addr)));

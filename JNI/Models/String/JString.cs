@@ -1,4 +1,5 @@
 ﻿using JNI.Internal;
+using Memory;
 using System.Text;
 
 namespace JNI;
@@ -22,7 +23,8 @@ public unsafe abstract class JString : HandleContainer
             unicode = false;
         }
 
-        var bytes = new byte[Length].ToArr(bytesPtr);
+        var bytes = new byte[Length];
+        MemEx.Copy(bytes, bytesPtr);
 
         if (!unicode)
             Env.Native->ReleaseStringUTFChars(Addr, bytesPtr);
