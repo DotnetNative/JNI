@@ -1,7 +1,4 @@
-﻿using JNI.Models;
-using JNI.Models.Models.Type;
-
-namespace JNI;
+﻿namespace JNI;
 public class RuntimeTypeCollection
 {
     public RuntimeTypeCollection(Env env)

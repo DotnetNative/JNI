@@ -1,5 +1,4 @@
 ﻿using JNI.Core;
-using JNI.Core.Enums;
 using JNI.Internal;
 
 namespace JNI;

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace JNI.Models;
+namespace JNI;
 public sealed unsafe class Params : IList<JValue>
 {
     public Params(params JValue[] values)

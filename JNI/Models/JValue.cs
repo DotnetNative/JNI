@@ -1,8 +1,6 @@
-﻿using JNI.Models.Models.Object;
-using JNI.Models.Models.String;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace JNI.Models;
+namespace JNI;
 
 [StructLayout(LayoutKind.Explicit)]
 public struct JValue

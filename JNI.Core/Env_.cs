@@ -1,5 +1,4 @@
-﻿using JNI.Core.Enums;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace JNI.Core;
 

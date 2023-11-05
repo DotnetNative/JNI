@@ -1,4 +1,4 @@
-﻿namespace JNI.Core.Enums;
+﻿namespace JNI.Core;
 public enum JVersion : int
 {
     V11 = 0x00010001,

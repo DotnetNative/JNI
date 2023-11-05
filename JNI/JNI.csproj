@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auxiliary\Auxiliary.csproj" />
     <ProjectReference Include="..\JNI.Core\JNI.Core.csproj" />
   </ItemGroup>
 

@@ -1,17 +1,6 @@
 ﻿using JNI.Core;
-using JNI.Core.Enums;
 using JNI.Internal;
-using JNI.Models;
-using JNI.Models.Handles;
-using JNI.Models.Models.Array;
-using JNI.Models.Models.Class;
-using JNI.Models.Models.Field;
-using JNI.Models.Models.Method;
-using JNI.Models.Models.Object;
-using JNI.Models.Models.String;
-using JNI.Models.Models.Type;
 using Memory;
-using System.Xml.Linq;
 using static JNI.Internal.Interop;
 
 namespace JNI;
@@ -196,12 +185,13 @@ public sealed unsafe class Env
     public static int TlsIndex = 5;
     public static nint TlsEnvOffset = 0x1F8;
 
-    public static Env_* ThreadNativeEnv {
-        get 
+    public static Env_* ThreadNativeEnv
+    {
+        get
         {
             var tls = (byte*)TlsGetValue(TlsIndex);
             return (Env_*)(tls + TlsEnvOffset);
-        } 
+        }
     }
 
     public static Env ThreadEnv => new(ThreadNativeEnv);

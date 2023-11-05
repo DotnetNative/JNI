@@ -1,6 +1,4 @@
-﻿using JNI.Models.Models.Object;
-
-namespace JNI.Models;
+﻿namespace JNI;
 public class Lock : IDisposable
 {
     public Lock(JObject obj)

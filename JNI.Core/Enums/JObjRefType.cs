@@ -1,4 +1,4 @@
-﻿namespace JNI.Core.Enums;
+﻿namespace JNI.Core;
 public enum JObjRefType
 {
     InvalidRefType = 0,

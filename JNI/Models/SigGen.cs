@@ -1,13 +1,4 @@
-﻿using JNI.Models.Models;
-using JNI.Models.Models.Field;
-using JNI.Models.Models.Type;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JNI.Models;
+﻿namespace JNI;
 public sealed class SigGen
 {
     private static string[] baseTypes = new string[]
