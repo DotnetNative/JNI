@@ -676,6 +676,16 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint GetFieldID(nint clazz, string name, string sig)
+    {
+        using var nameCo = new CoMem(name);
+        using var sigCo = new CoMem(sig);
+
+        fixed (Env_* env = &this)
+            return functions->GetFieldID(env, clazz, (byte*)nameCo, (byte*)sigCo);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint GetFieldID(nint clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
