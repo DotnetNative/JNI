@@ -22,8 +22,8 @@ public unsafe class GHandle : EnvHandle, IDisposable
 
     public void Dispose()
     {
-        var e = Env;
-        e.DeleteGlobalRef(globalAddr);
-        e.DeleteLocalRef(localAddr);
+        var e = Native;
+        e->DeleteGlobalRef(globalAddr);
+        e->DeleteLocalRef(localAddr);
     }
 }

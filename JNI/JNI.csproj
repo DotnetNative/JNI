@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Yotic.Memory.Extensions" Version="1.0.6" />
+    <PackageReference Include="Yotic.Memory.Extensions" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>

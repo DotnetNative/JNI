@@ -17,6 +17,6 @@ public unsafe class LHandle : EnvHandle, IDisposable
 
     public void Dispose()
     {
-        Env.DeleteLocalRef(localAddr);
+        Native->DeleteLocalRef(localAddr);
     }
 }

@@ -3,20 +3,6 @@ public class RuntimeTypeCollection
 {
     public RuntimeTypeCollection(Env env)
     {
-        Void = new TypeInfo("java/lang/Void", "V");
-        Bool = new TypeInfo("java/lang/Boolean", "Z");
-        Byte = new TypeInfo("java/lang/Byte", "B");
-        Char = new TypeInfo("java/lang/Character", "C");
-        Short = new TypeInfo("java/lang/Short", "S");
-        Int = new TypeInfo("java/lang/Integer", "I");
-        Long = new TypeInfo("java/lang/Long", "J");
-        Float = new TypeInfo("java/lang/Float", "F");
-        Double = new TypeInfo("java/lang/Double", "D");
-
-        Object = new TypeInfo("java/lang/Object");
-        String = new TypeInfo("java/lang/String");
-
-
         VoidType = env.GetGType(Void);
         BoolType = env.GetGType(Bool);
         ByteType = env.GetGType(Byte);
@@ -31,30 +17,29 @@ public class RuntimeTypeCollection
         StringType = env.GetGType(String);
     }
 
-    public TypeInfo Void;
-    public TypeInfo Bool;
-    public TypeInfo Byte;
-    public TypeInfo Char;
-    public TypeInfo Short;
-    public TypeInfo Int;
-    public TypeInfo Long;
-    public TypeInfo Float;
-    public TypeInfo Double;
+    public readonly TypeInfo 
+        Void = new("java.lang.Void", "V"),
+        Bool = new("java.lang.Boolean", "Z"),
+        Byte = new("java.lang.Byte", "B"),
+        Char = new("java.lang.Character", "C"),
+        Short = new("java.lang.Short", "S"),
+        Int = new("java.lang.Integer", "I"),
+        Long = new("java.lang.Long", "J"),
+        Float = new("java.lang.Float", "F"),
+        Double = new("java.lang.Double", "D"),
+        Object = new("java.lang.Object"),
+        String = new("java.lang.String");
 
-    public TypeInfo String;
-    public TypeInfo Object;
-
-
-    public GJType VoidType;
-    public GJType BoolType;
-    public GJType ByteType;
-    public GJType CharType;
-    public GJType ShortType;
-    public GJType IntType;
-    public GJType LongType;
-    public GJType FloatType;
-    public GJType DoubleType;
-
-    public GJType StringType;
-    public GJType ObjectType;
+    public readonly GJType
+        VoidType,
+        BoolType,
+        ByteType,
+        CharType,
+        ShortType,
+        IntType,
+        LongType,
+        FloatType,
+        DoubleType,
+        StringType,
+        ObjectType;
 }

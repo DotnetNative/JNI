@@ -26,9 +26,9 @@ public sealed unsafe class Env
         Types = StaticTypes;
     }
 
-    private static bool init;
+    static bool init;
 
-    private static bool trueValue = true, falseValue;
+    static bool trueValue = true, falseValue;
     public static bool* TruePtr, FalsePtr;
 
     public static RuntimeTypeCollection StaticTypes;
@@ -94,18 +94,6 @@ public sealed unsafe class Env
     public MethodHandle FromReflectedMethodG(JObject method) => new MethodHandle(GHandle.Create(Native->FromReflectedMethod(method)));
     #endregion
 
-    #region Array
-    public LJArray NewObjectArray(int length, JClass clazz, JObject initElement) => new LJArray(LHandle.Create(Native->NewObjectArray(length, (nint)clazz, initElement)));
-    public GJArray NewGObjectArray(int length, JClass clazz, JObject initElement) => new GJArray(GHandle.Create(Native->NewObjectArray(length, (nint)clazz, initElement)));
-    #endregion
-
-    #region Ref
-    public nint NewGlobalRef(nint addr) => Native->NewGlobalRef(addr);
-    public nint NewLocalRef(nint addr) => Native->NewLocalRef(addr);
-    public void DeleteGlobalRef(nint addr) => Native->DeleteGlobalRef(addr);
-    public void DeleteLocalRef(nint addr) => Native->DeleteLocalRef(addr);
-    #endregion
-
     #region String
     public LJString NewString(string unicode)
     {
@@ -128,9 +116,6 @@ public sealed unsafe class Env
         using var strCo = new CoMem(str);
         return new GJString(GJObject.Create(Native->NewStringUTF(strCo.Ptr)), false);
     }
-
-    public int GetStringLength(JString str) => Native->GetStringLength(str);
-    public int GetStringUTFLength(JString str) => Native->GetStringUTFLength(str);
 
     public string GetStringUTFChars(JObject str)
     {

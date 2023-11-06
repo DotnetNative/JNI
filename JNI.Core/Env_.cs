@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Memory;
+using System.Runtime.InteropServices;
 
 namespace JNI.Core;
 
@@ -15,10 +16,28 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint DefineClass(string name, nint loader, byte* buf, int len)
+    {
+        using var coName = new CoMem(name);
+
+        fixed (Env_* env = &this)
+            return functions->DefineClass(env, (byte*)coName, loader, buf, len);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint DefineClass(byte* name, nint loader, byte* buf, int len)
     {
         fixed (Env_* env = &this)
             return functions->DefineClass(env, name, loader, buf, len);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public nint FindClass(string name)
+    {
+        using var coName = new CoMem(name);
+
+        fixed (Env_* env = &this)
+            return functions->FindClass(env, (byte*)coName);
     }
 
     [MethImpl(AggressiveInlining)]
@@ -75,6 +94,15 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             return functions->Throw(env, obj);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public RetCode ThrowNew(nint clazz, string msg)
+    {
+        using var coMsg = new CoMem(msg);
+
+        fixed (Env_* env = &this)
+            return functions->ThrowNew(env, clazz, (byte*)coMsg);
     }
 
     [MethImpl(AggressiveInlining)]
@@ -208,6 +236,16 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             return functions->IsInstanceOf(env, obj, clazz);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public nint GetMethodID(nint clazz, string name, string sig)
+    {
+        using var coName = new CoMem(name);
+        using var coSig = new CoMem(name);
+
+        fixed (Env_* env = &this)
+            return functions->GetMethodID(env, clazz, (byte*)coName, (byte*)coSig);
     }
 
     [MethImpl(AggressiveInlining)]
@@ -1121,6 +1159,15 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint NewString(string unicode, int len)
+    {
+        using var coUnicode = new CoMem(unicode, CoStrType.Uni);
+
+        fixed (Env_* env = &this)
+            return functions->NewString(env, (char*)coUnicode, len);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint NewString(char* unicode, int len)
     {
         fixed (Env_* env = &this)
@@ -1132,6 +1179,13 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             return functions->GetStringLength(env, str);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public char* GetStringChars(nint str, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetStringChars(env, str, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
@@ -1149,6 +1203,15 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint NewStringUTF(string utf)
+    {
+        using var coUtf = new CoMem(utf);
+
+        fixed (Env_* env = &this)
+            return functions->NewStringUTF(env, (byte*)coUtf);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint NewStringUTF(byte* utf)
     {
         fixed (Env_* env = &this)
@@ -1160,6 +1223,13 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             return functions->GetStringUTFLength(env, str);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public byte* GetStringUTFChars(nint str, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetStringUTFChars(env, str, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
@@ -1258,6 +1328,63 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             return functions->NewDoubleArray(env, len);
+    }
+
+
+    [MethImpl(AggressiveInlining)]
+    public bool* GetBooleanArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetBooleanArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public byte* GetByteArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetByteArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public char* GetCharArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetCharArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public short* GetShortArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetShortArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public int* GetIntArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetIntArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public long* GetLongArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetLongArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public float* GetFloatArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetFloatArrayElements(env, array, &isCopy);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public double* GetDoubleArrayElements(nint array, bool isCopy)
+    {
+        fixed (Env_* env = &this)
+            return functions->GetDoubleArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
