@@ -5,31 +5,24 @@ using static JNI.Internal.Interop;
 namespace JNI;
 public sealed unsafe class Env
 {
-    static Env()
-    {
-        fixed (bool* ptr = &trueValue)
-            TruePtr = ptr;
-        fixed (bool* ptr = &falseValue)
-            FalsePtr = ptr;
-    }
-
     public Env(Env_* env)
     {
         Native = env;
 
         if (!init)
         {
-            StaticTypes = new RuntimeTypeCollection(this);
             init = true;
+
+            StaticTypes = new RuntimeTypeCollection(this);
+
+            java.lang.String.Init(this);
+            java.lang.Enum.Init(this);
         }
 
         Types = StaticTypes;
     }
 
     static bool init;
-
-    static bool trueValue = true, falseValue;
-    public static bool* TruePtr, FalsePtr;
 
     public static RuntimeTypeCollection StaticTypes;
     public RuntimeTypeCollection Types;
@@ -92,50 +85,6 @@ public sealed unsafe class Env
     public GJObject ToGReflectedField(JClass clazz, FieldHandle field, bool isStatic = false) => GJObject.Create(Native->ToReflectedField(clazz, field, isStatic));
     public FieldHandle FromReflectedFieldG(JObject field) => new FieldHandle(GHandle.Create(Native->FromReflectedField(field)));
     public MethodHandle FromReflectedMethodG(JObject method) => new MethodHandle(GHandle.Create(Native->FromReflectedMethod(method)));
-    #endregion
-
-    #region String
-    public LJString NewString(string unicode)
-    {
-        using var strCo = new CoMem(unicode, CoStrType.Uni);
-        return new LJString(LJObject.Create(Native->NewString((char*)strCo.Ptr, unicode.Length)), true);
-    }
-    public GJString NewGString(string unicode)
-    {
-        using var strCo = new CoMem(unicode, CoStrType.Uni);
-        return new GJString(GJObject.Create(Native->NewString((char*)strCo.Ptr, unicode.Length)), true);
-    }
-
-    public LJString NewStringUTF(string str)
-    {
-        using var strCo = new CoMem(str);
-        return new LJString(LJObject.Create(Native->NewStringUTF(strCo.Ptr)), false);
-    }
-    public GJString NewGStringUTF(string str)
-    {
-        using var strCo = new CoMem(str);
-        return new GJString(GJObject.Create(Native->NewStringUTF(strCo.Ptr)), false);
-    }
-
-    public string GetStringUTFChars(JObject str)
-    {
-        using var _ = new LJString(LJObject.Create(str.Addr), false);
-        return _.ToString();
-    }
-
-    public string GetString(JObject str)
-    {
-        using var _ = new LJString(LJObject.Create(str.Addr), true);
-        return _.ToString();
-    }
-
-    public LJString CreateString(string text, bool isUnicode = true) => isUnicode ? NewString(text) : NewStringUTF(text);
-    public LJString CreateString(nint addr, bool isUnicode = true) => new LJString(LJObject.Create(addr), isUnicode);
-    public LJString CreateString(LJObject obj, bool isUnicode = true) => new LJString(obj, isUnicode);
-
-    public GJString CreateGString(string text, bool isUnicode = true) => isUnicode ? NewGString(text) : NewGStringUTF(text);
-    public GJString CreateGString(nint addr, bool isUnicode = true) => new GJString(GJObject.Create(addr), isUnicode);
-    public GJString CreateGString(GJObject obj, bool isUnicode = true) => new GJString(obj, isUnicode);
     #endregion
 
     #region Sync

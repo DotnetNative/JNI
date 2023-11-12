@@ -16,6 +16,22 @@ public unsafe abstract class GJStaticField : JStaticField
     public GJStaticField(GHandle handle, string name, TypeInfo type, JClass clazz) : base(handle, name, type, clazz) { }
 }
 
+public unsafe class LJStaticStringField : JStaticField
+{
+    public LJStaticStringField(LHandle handle, string name, JClass clazz) : base(handle, name, handle.Env.Types.String, clazz) { }
+
+    public java.lang.String Value { get => new(LHandle.Create(Native->GetStaticObjectField(Clazz, Addr))); set => Native->SetStaticObjectField(Clazz, Addr, value); }
+    public java.lang.String GValue { get => new(GHandle.Create(Native->GetStaticObjectField(Clazz, Addr))); set => Native->SetStaticObjectField(Clazz, Addr, value); }
+}
+
+public unsafe class GJStaticStringField : JStaticField
+{
+    public GJStaticStringField(GHandle handle, string name, JClass clazz) : base(handle, name, handle.Env.Types.String, clazz) { }
+
+    public java.lang.String Value { get => new(LHandle.Create(Native->GetStaticObjectField(Clazz, Addr))); set => Native->SetStaticObjectField(Clazz, Addr, value); }
+    public java.lang.String GValue { get => new(GHandle.Create(Native->GetStaticObjectField(Clazz, Addr))); set => Native->SetStaticObjectField(Clazz, Addr, value); }
+}
+
 public unsafe class LJStaticObjectField : JStaticField
 {
     public LJStaticObjectField(LHandle handle, string name, TypeInfo type, JClass clazz) : base(handle, name, type, clazz) { }

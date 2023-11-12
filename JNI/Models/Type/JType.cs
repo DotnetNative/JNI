@@ -7,8 +7,8 @@ public unsafe abstract class JType : JClass
 
     public TypeInfo Info;
 
-    public static explicit operator Arg(JType type) => new Arg(type);
-    public static explicit operator TypeInfo(JType type) => type.Info;
+    public static implicit operator Arg(JType type) => new Arg(type);
+    public static implicit operator TypeInfo(JType type) => type.Info;
 }
 
 public unsafe class LJType : JType

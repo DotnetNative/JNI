@@ -36,6 +36,40 @@ public unsafe class GJStaticVoidMethod : GJStaticMethod
     }
 }
 
+public unsafe class LJStaticStringMethod : LJStaticMethod
+{
+    public LJStaticStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
+
+    public java.lang.String Call(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LHandle.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallG(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GHandle.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr)));
+    }
+}
+
+public unsafe class GJStaticStringMethod : GJStaticMethod
+{
+    public GJStaticStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
+
+    public java.lang.String Call(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LHandle.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallG(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GHandle.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr)));
+    }
+}
+
 public unsafe class LJStaticObjectMethod : LJStaticMethod
 {
     public LJStaticObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }

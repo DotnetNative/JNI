@@ -6,23 +6,23 @@ namespace JNI;
 public struct JValue
 {
     [FieldOffset(0)]
-    public bool z; //1
+    bool z; //1
     [FieldOffset(0)]
-    public sbyte b; //1
+    sbyte b; //1
     [FieldOffset(0)]
-    public ushort c; //2
+    ushort c; //2
     [FieldOffset(0)]
-    public short s; //2
+    short s; //2
     [FieldOffset(0)]
-    public int i; //4
+    int i; //4
     [FieldOffset(0)]
-    public long j; //8
+    long j; //8
     [FieldOffset(0)]
-    public float f; //4
+    float f; //4
     [FieldOffset(0)]
-    public double d; //8
+    double d; //8
     [FieldOffset(0)]
-    public nint l; //8
+    nint l; //8
 
     public static JValue Zero = new(nint.Zero);
 
@@ -96,5 +96,4 @@ public struct JValue
     public static implicit operator JValue(double val) => new(val);
     public static implicit operator JValue(nint val) => new(val);
     public static implicit operator JValue(JObject val) => new(val);
-    public static implicit operator JValue(JString val) => new(val);
 }

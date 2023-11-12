@@ -48,6 +48,65 @@ public unsafe class GJVoidMethod : GJMethod
     }
 }
 
+
+public unsafe class LJStringMethod : LJMethod
+{
+    public LJStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
+
+    public java.lang.String Call(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallVirt(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GHandle.Create(Native->CallObjectMethodA(obj, Addr, ptr)));
+    }
+
+    public java.lang.String CallG(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallVirtG(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LHandle.Create(Native->CallObjectMethodA(obj, Addr, ptr)));
+    }
+}
+
+public unsafe class GJStringMethod : GJMethod
+{
+    public GJStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
+
+    public java.lang.String Call(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallVirt(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(LJObject.Create(Native->CallObjectMethodA(obj, Addr, ptr)));
+    }
+
+    public java.lang.String CallG(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr)));
+    }
+
+    public java.lang.String CallVirtG(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+            return new(GJObject.Create(Native->CallObjectMethodA(obj, Addr, ptr)));
+    }
+}
+
 public unsafe class LJObjectMethod : LJMethod
 {
     public LJObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }

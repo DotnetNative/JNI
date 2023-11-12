@@ -819,6 +819,16 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint GetStaticMethodID(nint clazz, string name, string sig)
+    {
+        using var nameCo = new CoMem(name);
+        using var sigCo = new CoMem(sig);
+
+        fixed (Env_* env = &this)
+            return functions->GetStaticMethodID(env, clazz, (byte*)nameCo, (byte*)sigCo);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint GetStaticMethodID(nint clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
@@ -1036,6 +1046,16 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint GetStaticFieldID(nint clazz, string name, string sig)
+    {
+        using var nameCo = new CoMem(name);
+        using var sigCo = new CoMem(sig);
+
+        fixed (Env_* env = &this)
+            return functions->GetStaticFieldID(env, clazz, (byte*)nameCo, (byte*)sigCo);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint GetStaticFieldID(nint clazz, byte* name, byte* sig)
     {
         fixed (Env_* env = &this)
@@ -1166,6 +1186,15 @@ public unsafe struct Env_
     {
         fixed (Env_* env = &this)
             functions->SetStaticDoubleField(env, clazz, fieldID, value);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public nint NewString(string unicode)
+    {
+        using var coUnicode = new CoMem(unicode, CoStrType.Uni);
+
+        fixed (Env_* env = &this)
+            return functions->NewString(env, (char*)coUnicode, unicode.Length);
     }
 
     [MethImpl(AggressiveInlining)]

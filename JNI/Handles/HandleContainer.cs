@@ -12,6 +12,8 @@ public abstract unsafe class HandleContainer : Handle, IDisposable
     public Env Env => Handle.Env;
     public Env_* Native => Handle.Native;
 
+    public static implicit operator EnvHandle(HandleContainer val) => val.Handle;
+
     public void Dispose()
     {
         if (IsGlobal)

@@ -9,6 +9,40 @@ public unsafe abstract class JArray : HandleContainer
     public readonly int Length;
 }
 
+public unsafe abstract class JStringArray : JArray
+{
+    public JStringArray(EnvHandle handle) : base(handle) { }
+
+    public java.lang.String this[int index] { get => new(Get(index)); set => Native->SetObjectArrayElement(Addr, index, value); }
+    public java.lang.String Get(int index) => new(LJObject.Create(Native->GetObjectArrayElement(Addr, index)));
+    public java.lang.String GetG(int index) => new(GJObject.Create(Native->GetObjectArrayElement(Addr, index)));
+
+    public bool Contains(java.lang.String item) => IndexOf(item) != -1;
+
+    public int IndexOf(java.lang.String item)
+    {
+        int count = Length;
+        for (int i = 0; i < count; i++)
+        {
+            using var obj = Get(i);
+            if (obj == item)
+                return i;
+        }
+        return -1;
+    }
+}
+
+public unsafe class LJStringArray : JStringArray
+{
+    public LJStringArray(LHandle handle) : base(handle) { }
+    public LJStringArray(int length) : base(LHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.StaticTypes.StringType, 0))) { }
+}
+public unsafe class GJStringArray : JStringArray
+{
+    public GJStringArray(GHandle handle) : base(handle) { }
+    public GJStringArray(int length, JType type) : base(GHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.StaticTypes.StringType, 0))) { }
+}
+
 public unsafe abstract class JObjectArray : JArray
 {
     public JObjectArray(EnvHandle handle) : base(handle) { }
@@ -17,17 +51,7 @@ public unsafe abstract class JObjectArray : JArray
     public LJObject Get(int index) => LJObject.Create(Native->GetObjectArrayElement(Addr, index));
     public GJObject GetG(int index) => GJObject.Create(Native->GetObjectArrayElement(Addr, index));
 
-    public bool Contains(JObject item)
-    {
-        int count = Length;
-        for (int i = 0; i < count; i++)
-        {
-            using var obj = Get(i);
-            if (obj == item)
-                return true;
-        }
-        return false;
-    }
+    public bool Contains(JObject item) => IndexOf(item) != -1;
 
     public int IndexOf(JObject item)
     {

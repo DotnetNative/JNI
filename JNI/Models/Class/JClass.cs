@@ -7,8 +7,8 @@ public unsafe abstract class JClass : HandleContainer
 {
     public JClass(EnvHandle handle) : base(handle) { }
 
-    public LJCtor GetCtor(params Arg[] args) => new LJCtor(GetVoidMethod("<init>", args));
-    public GJCtor GetGCtor(params Arg[] args) => new GJCtor(GetVoidGMethod("<init>", args));
+    public LJCtor GetCtor(params Arg[] args) => new(GetVoidMethod("<init>", args));
+    public GJCtor GetGCtor(params Arg[] args) => new(GetVoidGMethod("<init>", args));
 
     public LJCtor GetCtor(params TypeInfo[] args) => GetCtor(args.ToArgs());
     public GJCtor GetGCtor(params TypeInfo[] args) => GetGCtor(args.ToArgs());
@@ -46,6 +46,7 @@ public unsafe abstract class JClass : HandleContainer
         return GHandle.Create(Native->GetStaticFieldID(Addr, nameCo.Ptr, sigCo.Ptr));
     }
 
+    public LJStringField GetStringField(string name) => new(GetFieldHandle(name, Env.Types.String), name);
     public LJObjectField GetObjectField(string name, TypeInfo type) => new(GetFieldHandle(name, type), name, type);
     public LJBoolField GetBoolField(string name) => new(GetFieldHandle(name, Env.Types.Bool), name);
     public LJByteField GetByteField(string name) => new(GetFieldHandle(name, Env.Types.Byte), name);
@@ -56,6 +57,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJFloatField GetFloatField(string name) => new(GetFieldHandle(name, Env.Types.Float), name);
     public LJDoubleField GetDoubleField(string name) => new(GetFieldHandle(name, Env.Types.Double), name);
 
+    public GJStringField GetStringGField(string name) => new(GetFieldGHandle(name, Env.Types.String), name);
     public GJObjectField GetObjectGField(string name, TypeInfo type) => new(GetFieldGHandle(name, type), name, type);
     public GJBoolField GetBoolGField(string name) => new(GetFieldGHandle(name, Env.Types.Bool), name);
     public GJByteField GetByteGField(string name) => new(GetFieldGHandle(name, Env.Types.Byte), name);
@@ -66,16 +68,18 @@ public unsafe abstract class JClass : HandleContainer
     public GJFloatField GetFloatGField(string name) => new(GetFieldGHandle(name, Env.Types.Float), name);
     public GJDoubleField GetDoubleGField(string name) => new(GetFieldGHandle(name, Env.Types.Double), name);
 
-    public LJObjectField GetStaticObjectField(string name, TypeInfo type) => new(GetStaticFieldHandle(name, type), name, type);
-    public LJBoolField GetStaticBoolField(string name) => new(GetStaticFieldHandle(name, Env.Types.Bool), name);
-    public LJByteField GetStaticByteField(string name) => new(GetStaticFieldHandle(name, Env.Types.Byte), name);
-    public LJCharField GetStaticCharField(string name) => new(GetStaticFieldHandle(name, Env.Types.Char), name);
-    public LJShortField GetStaticShortField(string name) => new(GetStaticFieldHandle(name, Env.Types.Short), name);
-    public LJIntField GetStaticIntField(string name) => new(GetStaticFieldHandle(name, Env.Types.Int), name);
-    public LJLongField GetStaticLongField(string name) => new(GetStaticFieldHandle(name, Env.Types.Long), name);
-    public LJFloatField GetStaticFloatField(string name) => new(GetStaticFieldHandle(name, Env.Types.Float), name);
-    public LJDoubleField GetStaticDoubleField(string name) => new(GetStaticFieldHandle(name, Env.Types.Double), name);
+    public LJStaticStringField GetStaticStringField(string name) => new(GetStaticFieldHandle(name, Env.Types.String), name, this);
+    public LJStaticObjectField GetStaticObjectField(string name, TypeInfo type) => new(GetStaticFieldHandle(name, type), name, type, this);
+    public LJStaticBoolField GetStaticBoolField(string name) => new(GetStaticFieldHandle(name, Env.Types.Bool), name, this);
+    public LJStaticByteField GetStaticByteField(string name) => new(GetStaticFieldHandle(name, Env.Types.Byte), name, this);
+    public LJStaticCharField GetStaticCharField(string name) => new(GetStaticFieldHandle(name, Env.Types.Char), name, this);
+    public LJStaticShortField GetStaticShortField(string name) => new(GetStaticFieldHandle(name, Env.Types.Short), name, this);
+    public LJStaticIntField GetStaticIntField(string name) => new(GetStaticFieldHandle(name, Env.Types.Int), name, this);
+    public LJStaticLongField GetStaticLongField(string name) => new(GetStaticFieldHandle(name, Env.Types.Long), name, this);
+    public LJStaticFloatField GetStaticFloatField(string name) => new(GetStaticFieldHandle(name, Env.Types.Float), name, this);
+    public LJStaticDoubleField GetStaticDoubleField(string name) => new(GetStaticFieldHandle(name, Env.Types.Double), name, this);
 
+    public GJStaticStringField GetStaticStringGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.String), name, this);
     public GJStaticObjectField GetStaticObjectGField(string name, TypeInfo type) => new(GetStaticFieldGHandle(name, type), name, type, this);
     public GJStaticBoolField GetStaticBoolGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Bool), name, this);
     public GJStaticByteField GetStaticByteGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Byte), name, this);
@@ -124,6 +128,7 @@ public unsafe abstract class JClass : HandleContainer
         return GHandle.Create(Native->GetStaticMethodID(Addr, nameCo.Ptr, sigCo.Ptr));
     }
 
+    public LJStringMethod GetStringMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.String, args), name, this, args);
     public LJObjectMethod GetObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodHandle(name, type, args), name, type, this, args);
     public LJVoidMethod GetVoidMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Void, args), name, this, args);
     public LJBoolMethod GetBoolMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Bool, args), name, this, args);
@@ -135,6 +140,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJFloatMethod GetFloatMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Float, args), name, this, args);
     public LJDoubleMethod GetDoubleMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Double, args), name, this, args);
 
+    public GJStringMethod GetStringGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.String, args), name, this, args);
     public GJObjectMethod GetObjectGMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodGHandle(name, type, args), name, type, this, args);
     public GJVoidMethod GetVoidGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Void, args), name, this, args);
     public GJBoolMethod GetBoolGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Bool, args), name, this, args);
@@ -146,6 +152,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJFloatMethod GetFloatGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Float, args), name, this, args);
     public GJDoubleMethod GetDoubleGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Double, args), name, this, args);
 
+    public LJStaticStringMethod GetStaticbStringMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.String, args), name, this, args);
     public LJStaticObjectMethod GetStaticObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodHandle(name, type, args), name, type, this, args);
     public LJStaticVoidMethod GetStaticVoidMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Void, args), name, this, args);
     public LJStaticBoolMethod GetStaticBoolMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Bool, args), name, this, args);
@@ -157,6 +164,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJStaticFloatMethod GetStaticFloatMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Float, args), name, this, args);
     public LJStaticDoubleMethod GetStaticDoubleMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Double, args), name, this, args);
 
+    public GJStaticStringMethod GetStaticStringGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.String, args), name, this, args);
     public GJStaticObjectMethod GetStaticObjectGMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodGHandle(name, type, args), name, type, this, args);
     public GJStaticVoidMethod GetStaticVoidGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Void, args), name, this, args);
     public GJStaticBoolMethod GetStaticBoolGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Bool, args), name, this, args);
@@ -169,8 +177,8 @@ public unsafe abstract class JClass : HandleContainer
     public GJStaticDoubleMethod GetStaticDoubleGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Double, args), name, this, args);
     #endregion
 
-    public LJClass GetSuperclass() => new LJClass(LHandle.Create(Env.Native->GetSuperclass(Addr)));
-    public GJClass GetGSuperclass() => new GJClass(GHandle.Create(Env.Native->GetSuperclass(Addr)));
+    public LJClass GetSuperclass() => new(LHandle.Create(Env.Native->GetSuperclass(Addr)));
+    public GJClass GetGSuperclass() => new(GHandle.Create(Env.Native->GetSuperclass(Addr)));
 
     public bool AssignableFrom(JClass clazz) => Env.Native->IsAssignableFrom(Addr, clazz);
 
@@ -187,6 +195,8 @@ public unsafe abstract class JClass : HandleContainer
     }
 
     public RetCode UnregisterNatives() => Env.Native->UnregisterNatives(Addr);
+
+    public string ClassName => new java.lang.Class(this).NameNative;
 }
 
 public unsafe class LJClass : JClass

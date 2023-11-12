@@ -14,6 +14,25 @@ public unsafe abstract class GJField : JField
     public GJField(GHandle handle, string name, TypeInfo type) : base(handle, name, type) { }
 }
 
+public unsafe class LJStringField : LJField
+{
+    public LJStringField(LHandle handle, string name) : base(handle, name, handle.Env.Types.String) { }
+
+    public java.lang.String Get(JObject obj) => new(LHandle.Create(Native->GetObjectField(obj, Addr)));
+    public java.lang.String GetG(JObject obj) => new(GHandle.Create(Native->GetObjectField(obj, Addr)));
+    public void Set(JObject obj, java.lang.String value) => Native->SetObjectField(obj, Addr, value);
+}
+
+public unsafe class GJStringField : GJField
+{
+    public GJStringField(GHandle handle, string name) : base(handle, name, handle.Env.Types.String) { }
+
+    public java.lang.String Get(JObject obj) => new(LHandle.Create(Native->GetObjectField(obj, Addr)));
+    public java.lang.String GetG(JObject obj) => new(GHandle.Create(Native->GetObjectField(obj, Addr)));
+    public void Set(JObject obj, java.lang.String value) => Native->SetObjectField(obj, Addr, value);
+}
+
+
 public unsafe class LJObjectField : LJField
 {
     public LJObjectField(LHandle handle, string name, TypeInfo type) : base(handle, name, type) { }
