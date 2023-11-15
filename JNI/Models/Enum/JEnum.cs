@@ -9,43 +9,28 @@ public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enu
 {
     public JEnum(EnvHandle handle, TypeInfo info) : base(handle, info)
     {
-        InitEnum();
-        InitJavaEnum(EnumNames);
-    }
-
-    public JEnum(EnvHandle handle, List<string> names, TypeInfo info) : base(handle, info) 
-    {
-        InitEnum();
-        InitJavaEnum(names);
-    }
-
-    void InitEnum()
-    {
         EnumValues = Enum.GetValues<T>().ToList();
         EnumNames = Enum.GetNames<T>().ToList();
-    }
 
-    void InitJavaEnum(List<string> names)
-    {
-        Count = names.Count;
+        using var valuesField = GetStaticObjectField("$VALUES", new(Info.Signature, 1));
+        using var values = new LJObjectArray(valuesField.Value.Handle);
 
-        Names = names;
-        Values = new List<GJObject>();
-        foreach (var name in names)
-        {
-            using var field = this.GetStaticObjectField(name, this);
-            var value = field.GValue;
-            Values.Add(value);
-        }
+        Count = values.Length;
+
+        Values = new();
+        for (int i = 0; i < Count; i++)
+            Values.Add(new java.lang.Enum<T>(values.GetG(i), EnumValues[i]));
     }
 
     public int Count;
 
     public List<T> EnumValues;
     public List<string> EnumNames;
+    public List<java.lang.Enum<T>> Values;
 
-    public List<GJObject> Values;
-    public List<string> Names;
+    public T this[java.lang.Enum<T> e] => e.Value;
+    public java.lang.Enum<T> this[JObject e] => Values[Values.FindIndex(v => v == e)];
+    public java.lang.Enum<T> this[T value] => Values[EnumValues.IndexOf(value)];
 
     public new void Dispose()
     {
@@ -59,11 +44,9 @@ public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enu
 public class LJEnum<T> : JEnum<T> where T : struct, Enum
 {
     public LJEnum(LHandle handle, TypeInfo info) : base(handle, info) { }
-    public LJEnum(LHandle handle, List<string> names, TypeInfo info) : base(handle, names, info) { }
 }
 
 public class GJEnum<T> : JEnum<T> where T : struct, Enum
 {
     public GJEnum(GHandle handle, TypeInfo info) : base(handle, info) { }
-    public GJEnum(GHandle handle, List<string> names, TypeInfo info) : base(handle, names, info) { }
 }

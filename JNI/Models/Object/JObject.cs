@@ -60,14 +60,18 @@ public unsafe abstract class JObject : HandleContainer
 
 public unsafe class LJObject : JObject
 {
-    public LJObject(LHandle handle) : base(handle) { }
+    public LJObject(LHandle handle) : base(handle) => Handle = handle;
 
     public static LJObject Create(nint addr) => new LJObject(LHandle.Create(addr));
+
+    public new LHandle Handle;
 }
 
 public unsafe class GJObject : JObject
 {
-    public GJObject(GHandle handle) : base(handle) { }
+    public GJObject(GHandle handle) : base(handle) => Handle = handle;
 
     public static GJObject Create(nint addr) => new GJObject(GHandle.Create(addr));
+
+    public new GHandle Handle;
 }

@@ -18,12 +18,12 @@ public sealed class SigGen
 
     public static string Arg(JType type) => Field(type);
     public static string Arg(TypeInfo info) => Field(info);
-    public static string Field(TypeInfo info) => baseTypes.Contains(info.Name) ? $"{Dim(info.Dim)}{info.Sig}" : $"{Dim(info.Dim)}L{info.Sig};";
+    public static string Field(TypeInfo info) => baseTypes.Contains(info.Name) ? $"{Dim(info.Dimension)}{info.Signature}" : $"{Dim(info.Dimension)}L{info.Signature};";
     public static string Field(FieldData field) => field.Signature;
     public static string Method(TypeInfo retType, Arg[] args) =>
         $"({string.Concat(args.Select(a => a.Sig))})" +
         Field(retType);
 
     public static string Dim(int dim) => new string('[', dim);
-    public static string Type(TypeInfo info) => baseTypes.Contains(info.Name) ? info.Sig : $"L{info.Sig};";
+    public static string Type(TypeInfo info) => baseTypes.Contains(info.Name) ? info.Signature : $"L{info.Signature};";
 }

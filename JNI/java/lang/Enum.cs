@@ -9,8 +9,8 @@ namespace java.lang;
 public class Enum : IClass
 {
     public static GJType type;
-    static GJIntField ordinal;
-    static GJStringField name;
+    protected static GJIntField ordinal;
+    protected static GJStringField name;
 
     public static void Init(Env e)
     {
@@ -30,4 +30,11 @@ public class Enum : IClass
             return obj.ToString();
         }
     }
+}
+
+public class Enum<T> : Enum where T : struct, System.Enum
+{    
+    public Enum(EnvHandle handle, T value) : base(handle) => Value = value;
+
+    public T Value;
 }

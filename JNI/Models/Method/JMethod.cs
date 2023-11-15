@@ -48,7 +48,6 @@ public unsafe class GJVoidMethod : GJMethod
     }
 }
 
-
 public unsafe class LJStringMethod : LJMethod
 {
     public LJStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
@@ -434,5 +433,55 @@ public unsafe class GJDoubleMethod : GJMethod
     {
         fixed (JValue* ptr = args)
             return Native->CallDoubleMethodA(obj, Addr, ptr);
+    }
+}
+
+public unsafe class LJEnumMethod<T> : LJMethod where T : struct, Enum
+{
+    public LJEnumMethod(LHandle handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+
+    public readonly JEnum<T> ReturnEnumType;
+
+    public java.lang.Enum<T> Call(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr));
+            return ReturnEnumType[data];
+        }
+    }
+
+    public java.lang.Enum<T> CallVirt(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallObjectMethodA(obj, Addr, ptr));
+            return ReturnEnumType[data];
+        }
+    }
+}
+
+public unsafe class GJEnumMethod<T> : GJMethod where T : struct, Enum
+{
+    public GJEnumMethod(GHandle handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+
+    public readonly JEnum<T> ReturnEnumType;
+
+    public java.lang.Enum<T> Call(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Addr, ptr));
+            return ReturnEnumType[data];
+        }
+    }
+
+    public java.lang.Enum<T> CallVirt(JObject obj, params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallObjectMethodA(obj, Addr, ptr));
+            return ReturnEnumType[data];
+        }
     }
 }

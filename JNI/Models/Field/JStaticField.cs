@@ -160,3 +160,37 @@ public unsafe class GJStaticDoubleField : GJStaticField
 
     public double Value { get => Native->GetStaticDoubleField(Clazz, Addr); set => Native->SetStaticDoubleField(Clazz, Addr, value); }
 }
+
+public unsafe class LJStaticEnumField<T> : JStaticField where T : struct, Enum
+{
+    public LJStaticEnumField(LHandle handle, string name, JEnum<T> type, JClass clazz) : base(handle, name, type, clazz) => EnumType = type;
+
+    public JEnum<T> EnumType;
+
+    public java.lang.Enum<T> Value
+    {
+        get
+        {
+            using var data = LJObject.Create(Native->GetStaticObjectField(Clazz, Addr));
+            return EnumType[data];
+        }
+        set => Native->SetStaticObjectField(Clazz, Addr, value);
+    }
+}
+
+public unsafe class GJStaticEnumField<T> : JStaticField where T : struct, Enum
+{
+    public GJStaticEnumField(GHandle handle, string name, JEnum<T> type, JClass clazz) : base(handle, name, type, clazz) => EnumType = type;
+
+    public JEnum<T> EnumType;
+
+    public java.lang.Enum<T> Value
+    {
+        get
+        {
+            using var data = LJObject.Create(Native->GetStaticObjectField(Clazz, Addr));
+            return EnumType[data];
+        }
+        set => Native->SetStaticObjectField(Clazz, Addr, value);
+    }
+}

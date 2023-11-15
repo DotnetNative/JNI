@@ -279,3 +279,35 @@ public unsafe class GJStaticDoubleMethod : GJStaticMethod
             return Native->CallStaticDoubleMethodA(Clazz, Addr, ptr);
     }
 }
+
+public unsafe class LJStaticEnumMethod<T> : LJStaticMethod where T : struct, Enum
+{
+    public LJStaticEnumMethod(LHandle handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+
+    public JEnum<T> ReturnEnumType;
+
+    public java.lang.Enum<T> Call(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr));
+            return ReturnEnumType[data];
+        }
+    }
+}
+
+public unsafe class GJStaticEnumMethod<T> : GJStaticMethod where T : struct, Enum
+{
+    public GJStaticEnumMethod(GHandle handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+
+    public JEnum<T> ReturnEnumType;
+
+    public java.lang.Enum<T> Call(params JValue[] args)
+    {
+        fixed (JValue* ptr = args)
+        {
+            using var data = LJObject.Create(Native->CallStaticObjectMethodA(Clazz, Addr, ptr));
+            return ReturnEnumType[data];
+        }
+    }
+}

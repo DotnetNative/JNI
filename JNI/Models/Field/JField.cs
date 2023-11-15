@@ -32,7 +32,6 @@ public unsafe class GJStringField : GJField
     public void Set(JObject obj, java.lang.String value) => Native->SetObjectField(obj, Addr, value);
 }
 
-
 public unsafe class LJObjectField : LJField
 {
     public LJObjectField(LHandle handle, string name, TypeInfo type) : base(handle, name, type) { }
@@ -177,4 +176,32 @@ public unsafe class GJDoubleField : GJField
 
     public double Get(JObject obj) => Native->GetDoubleField(obj, Addr);
     public void Set(JObject obj, double value) => Native->SetDoubleField(obj, Addr, value);
+}
+
+public unsafe class LJEnumField<T> : LJField where T : struct, Enum
+{
+    public LJEnumField(LHandle handle, string name, JEnum<T> type) : base(handle, name, type) => EnumType = type;
+
+    public JEnum<T> EnumType;
+
+    public java.lang.Enum<T> Get(JObject obj)
+    {
+        using var data = LJObject.Create(Native->GetObjectField(obj, Addr));
+        return EnumType[data];
+    }
+    public void Set(JObject obj, java.lang.Enum<T> value) => Native->SetObjectField(obj, Addr, value);
+}
+
+public unsafe class GJEnumField<T> : GJField where T : struct, Enum
+{
+    public GJEnumField(GHandle handle, string name, JEnum<T> type) : base(handle, name, type) => EnumType = type;
+
+    public JEnum<T> EnumType;
+
+    public java.lang.Enum<T> Get(JObject obj)
+    {
+        using var data = LJObject.Create(Native->GetObjectField(obj, Addr));
+        return EnumType[data];
+    }
+    public void Set(JObject obj, java.lang.Enum<T> value) => Native->SetObjectField(obj, Addr, value);
 }

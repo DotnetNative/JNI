@@ -8,18 +8,22 @@ public sealed unsafe class Env
     public Env(Env_* env)
     {
         Native = env;
-
-        if (!init)
-        {
-            init = true;
-
-            StaticTypes = new RuntimeTypeCollection(this);
-
-            java.lang.String.Init(this);
-            java.lang.Enum.Init(this);
-        }
-
         Types = StaticTypes;
+
+        if (init)
+            return;
+
+        init = true;
+
+        StaticTypes = new RuntimeTypeCollection(this);
+        Types = StaticTypes;
+
+        foreach (var init in new[] 
+        { 
+            java.lang.Class.Init, 
+            java.lang.String.Init,
+            java.lang.Enum.Init
+        }) init(this);
     }
 
     static bool init;
@@ -55,18 +59,19 @@ public sealed unsafe class Env
     public GJType GetGType(string nameAndSig, int dim = 0) => new(GHandle.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
     public GJType GetGType(TypeInfo info) => new(GHandle.Create(GetClassHandle(info.Name)), info);
 
+    public LJEnum<T> GetEnum<T>(string name) where T : struct, Enum => new(LHandle.Create(GetClassHandle(name)), new(name));
+    public GJEnum<T> GetGEnum<T>(string name) where T : struct, Enum => new(GHandle.Create(GetClassHandle(name)), new(name));
+
     public LJClass DefineClass(string name, JObject loader, byte[] bytes)
     {
-        using var nameCo = new CoMem(name.AsJavaPath());
         fixed (byte* ptr = bytes)
-            return new(LHandle.Create(Native->DefineClass(nameCo.Ptr, loader, ptr, bytes.Length)));
+            return new(LHandle.Create(Native->DefineClass(name, loader, ptr, bytes.Length)));
     }
 
     public GJClass DefineGClass(string name, JObject loader, byte[] bytes)
     {
-        using var nameCo = new CoMem(name.AsJavaPath());
         fixed (byte* ptr = bytes)
-            return new GJClass(GHandle.Create(Native->DefineClass(nameCo.Ptr, loader, ptr, bytes.Length)));
+            return new GJClass(GHandle.Create(Native->DefineClass(name, loader, ptr, bytes.Length)));
     }
     #endregion
 

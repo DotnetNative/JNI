@@ -56,6 +56,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJLongField GetLongField(string name) => new(GetFieldHandle(name, Env.Types.Long), name);
     public LJFloatField GetFloatField(string name) => new(GetFieldHandle(name, Env.Types.Float), name);
     public LJDoubleField GetDoubleField(string name) => new(GetFieldHandle(name, Env.Types.Double), name);
+    public LJEnumField<T> GetEnumField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetFieldHandle(name, jenum), name, jenum);
 
     public GJStringField GetStringGField(string name) => new(GetFieldGHandle(name, Env.Types.String), name);
     public GJObjectField GetObjectGField(string name, TypeInfo type) => new(GetFieldGHandle(name, type), name, type);
@@ -67,6 +68,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJLongField GetLongGField(string name) => new(GetFieldGHandle(name, Env.Types.Long), name);
     public GJFloatField GetFloatGField(string name) => new(GetFieldGHandle(name, Env.Types.Float), name);
     public GJDoubleField GetDoubleGField(string name) => new(GetFieldGHandle(name, Env.Types.Double), name);
+    public GJEnumField<T> GetEnumGField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetFieldGHandle(name, jenum), name, jenum);
 
     public LJStaticStringField GetStaticStringField(string name) => new(GetStaticFieldHandle(name, Env.Types.String), name, this);
     public LJStaticObjectField GetStaticObjectField(string name, TypeInfo type) => new(GetStaticFieldHandle(name, type), name, type, this);
@@ -78,6 +80,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJStaticLongField GetStaticLongField(string name) => new(GetStaticFieldHandle(name, Env.Types.Long), name, this);
     public LJStaticFloatField GetStaticFloatField(string name) => new(GetStaticFieldHandle(name, Env.Types.Float), name, this);
     public LJStaticDoubleField GetStaticDoubleField(string name) => new(GetStaticFieldHandle(name, Env.Types.Double), name, this);
+    public LJStaticEnumField<T> GetStaticEnumField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetStaticFieldHandle(name, jenum), name, jenum, this);
 
     public GJStaticStringField GetStaticStringGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.String), name, this);
     public GJStaticObjectField GetStaticObjectGField(string name, TypeInfo type) => new(GetStaticFieldGHandle(name, type), name, type, this);
@@ -89,6 +92,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJStaticLongField GetStaticLongGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Long), name, this);
     public GJStaticFloatField GetStaticFloatGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Float), name, this);
     public GJStaticDoubleField GetStaticDoubleGField(string name) => new(GetStaticFieldGHandle(name, Env.Types.Double), name, this);
+    public GJStaticEnumField<T> GetStaticEnumGField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetStaticFieldGHandle(name, jenum), name, jenum, this);
     #endregion
 
     #region Method
@@ -139,6 +143,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJLongMethod GetLongMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Long, args), name, this, args);
     public LJFloatMethod GetFloatMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Float, args), name, this, args);
     public LJDoubleMethod GetDoubleMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Env.Types.Double, args), name, this, args);
+    public LJEnumMethod<T> GetEnumMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetMethodHandle(name, jenum, args), name, jenum, this, args);
 
     public GJStringMethod GetStringGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.String, args), name, this, args);
     public GJObjectMethod GetObjectGMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodGHandle(name, type, args), name, type, this, args);
@@ -151,6 +156,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJLongMethod GetLongGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Long, args), name, this, args);
     public GJFloatMethod GetFloatGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Float, args), name, this, args);
     public GJDoubleMethod GetDoubleGMethod(string name, params Arg[] args) => new(GetMethodGHandle(name, Env.Types.Double, args), name, this, args);
+    public GJEnumMethod<T> GetEnumGMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetMethodGHandle(name, jenum, args), name, jenum, this, args);
 
     public LJStaticStringMethod GetStaticbStringMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.String, args), name, this, args);
     public LJStaticObjectMethod GetStaticObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodHandle(name, type, args), name, type, this, args);
@@ -163,6 +169,7 @@ public unsafe abstract class JClass : HandleContainer
     public LJStaticLongMethod GetStaticLongMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Long, args), name, this, args);
     public LJStaticFloatMethod GetStaticFloatMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Float, args), name, this, args);
     public LJStaticDoubleMethod GetStaticDoubleMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Env.Types.Double, args), name, this, args);
+    public LJStaticEnumMethod<T> GetStaticEnumMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetStaticMethodHandle(name, jenum, args), name, jenum, this, args);
 
     public GJStaticStringMethod GetStaticStringGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.String, args), name, this, args);
     public GJStaticObjectMethod GetStaticObjectGMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodGHandle(name, type, args), name, type, this, args);
@@ -175,6 +182,7 @@ public unsafe abstract class JClass : HandleContainer
     public GJStaticLongMethod GetStaticLongGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Long, args), name, this, args);
     public GJStaticFloatMethod GetStaticFloatGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Float, args), name, this, args);
     public GJStaticDoubleMethod GetStaticDoubleGMethod(string name, params Arg[] args) => new(GetStaticMethodGHandle(name, Env.Types.Double, args), name, this, args);
+    public GJStaticEnumMethod<T> GetStaticEnumGMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetStaticMethodGHandle(name, jenum, args), name, jenum, this, args);
     #endregion
 
     public LJClass GetSuperclass() => new(LHandle.Create(Env.Native->GetSuperclass(Addr)));

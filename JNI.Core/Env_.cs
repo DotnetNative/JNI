@@ -16,6 +16,24 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
+    public nint DefineClass(string name, nint loader, byte[] buf, int len)
+    {
+        using var coName = new CoMem(name);
+
+        fixed (byte* ptr = buf)
+            fixed (Env_* env = &this)
+                return functions->DefineClass(env, (byte*)coName, loader, ptr, len);
+    }
+
+    [MethImpl(AggressiveInlining)]
+    public nint DefineClass(byte* name, nint loader, byte[] buf, int len)
+    {
+        fixed (byte* ptr = buf)
+            fixed (Env_* env = &this)
+                return functions->DefineClass(env, name, loader, ptr, len);
+    }
+
+    [MethImpl(AggressiveInlining)]
     public nint DefineClass(string name, nint loader, byte* buf, int len)
     {
         using var coName = new CoMem(name);
