@@ -1,7 +1,5 @@
-﻿using System.Collections;
-
-namespace JNI;
-public sealed unsafe class Params : IList<JValue>
+﻿namespace JNI;
+public sealed unsafe class Params
 {
     public Params(params JValue[] values)
     {
@@ -51,9 +49,4 @@ public sealed unsafe class Params : IList<JValue>
             Values = listValues.ToArray();
         return res;
     }
-
-    public IEnumerator<JValue> GetEnumerator() => throw new NotImplementedException();
-    public bool Contains(JValue item) => throw new NotImplementedException();
-    public void CopyTo(JValue[] array, int arrayIndex) => throw new NotImplementedException();
-    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
 }

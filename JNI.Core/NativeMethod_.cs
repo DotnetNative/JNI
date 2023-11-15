@@ -6,7 +6,7 @@ namespace JNI.Core;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct NativeMethod_ : IDisposable
 {
-    public NativeMethod_(byte* name, byte* signature, void* fnPtr)
+    public NativeMethod_(byte* name, byte* signature, byte* fnPtr)
     {
         Name = name;
         Signature = signature;
@@ -15,7 +15,7 @@ public unsafe struct NativeMethod_ : IDisposable
 
     public byte* Name;
     public byte* Signature;
-    public void* FnPtr;
+    public byte* FnPtr;
 
     public void Dispose() => MemEx.Free(Name, Signature);
 }

@@ -5,8 +5,6 @@ namespace JNI.Core;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JNINativeInterface_
 {
-    public JNINativeInterface_() { }
-
     public void* reserved0, reserved1, reserved2, reserved3;
 
     public delegate* unmanaged<Env_*, JVersion> GetVersion;

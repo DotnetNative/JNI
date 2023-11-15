@@ -1,11 +1,8 @@
 ﻿using JNI.Core;
-using System.Runtime.InteropServices;
 
 namespace JNI;
 public static unsafe class SugarExtensions
 {
-    public static T ToStruct<T>(this nint addr) where T : struct => Marshal.PtrToStructure<T>(addr);
-
     public static Arg[] ToArgs(this TypeInfo[] arr)
     {
         var ret = new Arg[arr.Length];

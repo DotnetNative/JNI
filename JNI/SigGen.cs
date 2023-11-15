@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace JNI;
+﻿namespace JNI;
 public sealed class SigGen
 {
     private static string[] baseTypes = new string[]

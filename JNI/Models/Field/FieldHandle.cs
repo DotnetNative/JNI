@@ -1,5 +1,2 @@
 ﻿namespace JNI;
-public class FieldHandle : HandleContainer
-{
-    public FieldHandle(EnvHandle handle) : base(handle) { }
-}
+public class FieldHandle(EnvHandle handle) : HandleContainer(handle);

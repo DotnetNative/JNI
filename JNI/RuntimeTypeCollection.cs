@@ -17,7 +17,7 @@ public class RuntimeTypeCollection
         StringType = env.GetGType(String);
     }
 
-    public readonly TypeInfo 
+    public readonly TypeInfo
         Void = new("java.lang.Void", "V"),
         Bool = new("java.lang.Boolean", "Z"),
         Byte = new("java.lang.Byte", "B"),

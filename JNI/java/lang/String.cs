@@ -1,13 +1,9 @@
 ﻿using JNI;
 using Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace java.lang;
-public unsafe class String : IClass
+public unsafe class String(EnvHandle handle) : IClass(handle)
 {
     public static GJType type;
 
@@ -16,8 +12,7 @@ public unsafe class String : IClass
         type = e.GetGType("java.lang.String");
     }
 
-    public String(EnvHandle handle) : base(handle) { }
-    public String(string text, bool isUnicode = true) : base(GHandle.Create(isUnicode ? Env.ThreadNativeEnv->NewString(text) : Env.ThreadNativeEnv->NewStringUTF(text))) { }
+    public String(string text, bool isUnicode = true) : this(GHandle.Create(isUnicode ? Env.ThreadNativeEnv->NewString(text) : Env.ThreadNativeEnv->NewStringUTF(text))) { }
 
     public int Length => Native->GetStringLength(this);
 

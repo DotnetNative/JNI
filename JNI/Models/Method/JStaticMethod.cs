@@ -1,23 +1,10 @@
 ﻿namespace JNI;
-public abstract class JStaticMethod : JMethodInstance
-{
-    public JStaticMethod(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
+public abstract class JStaticMethod(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethodInstance(handle, name, type, clazz, args);
+public abstract class LJStaticMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JStaticMethod(handle, name, type, clazz, args);
+public abstract class GJStaticMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JStaticMethod(handle, name, type, clazz, args);
 
-public abstract class LJStaticMethod : JStaticMethod
+public unsafe class LJStaticVoidMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Void, clazz, args)
 {
-    public LJStaticMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
-
-public abstract class GJStaticMethod : JStaticMethod
-{
-    public GJStaticMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
-
-public unsafe class LJStaticVoidMethod : LJStaticMethod
-{
-    public LJStaticVoidMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Void, clazz, args) { }
-
     public void Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -25,10 +12,8 @@ public unsafe class LJStaticVoidMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticVoidMethod : GJStaticMethod
+public unsafe class GJStaticVoidMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Void, clazz, args)
 {
-    public GJStaticVoidMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Void, clazz, args) { }
-
     public void Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -36,10 +21,8 @@ public unsafe class GJStaticVoidMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticStringMethod : LJStaticMethod
+public unsafe class LJStaticStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.String, clazz, args)
 {
-    public LJStaticStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
-
     public java.lang.String Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -53,10 +36,8 @@ public unsafe class LJStaticStringMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticStringMethod : GJStaticMethod
+public unsafe class GJStaticStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.String, clazz, args)
 {
-    public GJStaticStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
-
     public java.lang.String Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -70,10 +51,8 @@ public unsafe class GJStaticStringMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticObjectMethod : LJStaticMethod
+public unsafe class LJStaticObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, type, clazz, args)
 {
-    public LJStaticObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-
     public LJObject Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -87,10 +66,8 @@ public unsafe class LJStaticObjectMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticObjectMethod : GJStaticMethod
+public unsafe class GJStaticObjectMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, type, clazz, args)
 {
-    public GJStaticObjectMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-
     public LJObject Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -104,10 +81,8 @@ public unsafe class GJStaticObjectMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticBoolMethod : LJStaticMethod
+public unsafe class LJStaticBoolMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Bool, clazz, args)
 {
-    public LJStaticBoolMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Bool, clazz, args) { }
-
     public bool Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -115,10 +90,8 @@ public unsafe class LJStaticBoolMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticBoolMethod : GJStaticMethod
+public unsafe class GJStaticBoolMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Bool, clazz, args)
 {
-    public GJStaticBoolMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Bool, clazz, args) { }
-
     public bool Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -126,10 +99,8 @@ public unsafe class GJStaticBoolMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticByteMethod : LJStaticMethod
+public unsafe class LJStaticByteMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Byte, clazz, args)
 {
-    public LJStaticByteMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Byte, clazz, args) { }
-
     public byte Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -137,10 +108,8 @@ public unsafe class LJStaticByteMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticByteMethod : GJStaticMethod
+public unsafe class GJStaticByteMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Byte, clazz, args)
 {
-    public GJStaticByteMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Byte, clazz, args) { }
-
     public byte Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -148,10 +117,8 @@ public unsafe class GJStaticByteMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticCharMethod : LJStaticMethod
+public unsafe class LJStaticCharMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Char, clazz, args)
 {
-    public LJStaticCharMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Char, clazz, args) { }
-
     public char Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -159,10 +126,8 @@ public unsafe class LJStaticCharMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticCharMethod : GJStaticMethod
+public unsafe class GJStaticCharMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Char, clazz, args)
 {
-    public GJStaticCharMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Char, clazz, args) { }
-
     public char Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -170,10 +135,8 @@ public unsafe class GJStaticCharMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticShortMethod : LJStaticMethod
+public unsafe class LJStaticShortMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Short, clazz, args)
 {
-    public LJStaticShortMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Short, clazz, args) { }
-
     public short Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -181,10 +144,8 @@ public unsafe class LJStaticShortMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticShortMethod : GJStaticMethod
+public unsafe class GJStaticShortMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Short, clazz, args)
 {
-    public GJStaticShortMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Short, clazz, args) { }
-
     public short Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -192,10 +153,8 @@ public unsafe class GJStaticShortMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticIntMethod : LJStaticMethod
+public unsafe class LJStaticIntMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Int, clazz, args)
 {
-    public LJStaticIntMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Int, clazz, args) { }
-
     public int Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -203,10 +162,8 @@ public unsafe class LJStaticIntMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticIntMethod : GJStaticMethod
+public unsafe class GJStaticIntMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Int, clazz, args)
 {
-    public GJStaticIntMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Int, clazz, args) { }
-
     public int Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -214,10 +171,8 @@ public unsafe class GJStaticIntMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticLongMethod : LJStaticMethod
+public unsafe class LJStaticLongMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Long, clazz, args)
 {
-    public LJStaticLongMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Long, clazz, args) { }
-
     public long Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -225,10 +180,8 @@ public unsafe class LJStaticLongMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticLongMethod : GJStaticMethod
+public unsafe class GJStaticLongMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Long, clazz, args)
 {
-    public GJStaticLongMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Long, clazz, args) { }
-
     public long Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -236,10 +189,8 @@ public unsafe class GJStaticLongMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticFloatMethod : LJStaticMethod
+public unsafe class LJStaticFloatMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Float, clazz, args)
 {
-    public LJStaticFloatMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Float, clazz, args) { }
-
     public float Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -247,10 +198,8 @@ public unsafe class LJStaticFloatMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticFloatMethod : GJStaticMethod
+public unsafe class GJStaticFloatMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Float, clazz, args)
 {
-    public GJStaticFloatMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Float, clazz, args) { }
-
     public float Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -258,10 +207,8 @@ public unsafe class GJStaticFloatMethod : GJStaticMethod
     }
 }
 
-public unsafe class LJStaticDoubleMethod : LJStaticMethod
+public unsafe class LJStaticDoubleMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJStaticMethod(handle, name, handle.Env.Types.Double, clazz, args)
 {
-    public LJStaticDoubleMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Double, clazz, args) { }
-
     public double Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -269,10 +216,8 @@ public unsafe class LJStaticDoubleMethod : LJStaticMethod
     }
 }
 
-public unsafe class GJStaticDoubleMethod : GJStaticMethod
+public unsafe class GJStaticDoubleMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJStaticMethod(handle, name, handle.Env.Types.Double, clazz, args)
 {
-    public GJStaticDoubleMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Double, clazz, args) { }
-
     public double Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)

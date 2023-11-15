@@ -1,12 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace JNI;
 
-namespace JNI;
-
-public abstract class IClass : JObject
-{
-    public IClass(EnvHandle handle) : base(handle) { }
-}
+public abstract class IClass(EnvHandle handle) : JObject(handle);

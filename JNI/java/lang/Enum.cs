@@ -1,12 +1,7 @@
 ﻿using JNI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace java.lang;
-public class Enum : IClass
+public class Enum(EnvHandle handle) : IClass(handle)
 {
     public static GJType type;
     protected static GJIntField ordinal;
@@ -18,8 +13,6 @@ public class Enum : IClass
         ordinal = type.GetIntGField("ordinal");
         name = type.GetStringGField("name");
     }
-
-    public Enum(EnvHandle handle) : base(handle) { }
 
     public int Ordinal => this[ordinal];
     public string Name
@@ -33,7 +26,7 @@ public class Enum : IClass
 }
 
 public class Enum<T> : Enum where T : struct, System.Enum
-{    
+{
     public Enum(EnvHandle handle, T value) : base(handle) => Value = value;
 
     public T Value;

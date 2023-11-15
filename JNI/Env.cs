@@ -18,9 +18,9 @@ public sealed unsafe class Env
         StaticTypes = new RuntimeTypeCollection(this);
         Types = StaticTypes;
 
-        foreach (var init in new[] 
-        { 
-            java.lang.Class.Init, 
+        foreach (var init in new[]
+        {
+            java.lang.Class.Init,
             java.lang.String.Init,
             java.lang.Enum.Init
         }) init(this);

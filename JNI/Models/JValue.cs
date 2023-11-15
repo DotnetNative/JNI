@@ -5,34 +5,13 @@ namespace JNI;
 [StructLayout(LayoutKind.Explicit)]
 public struct JValue
 {
-    [FieldOffset(0)]
-    bool z; //1
-    [FieldOffset(0)]
-    sbyte b; //1
-    [FieldOffset(0)]
-    ushort c; //2
-    [FieldOffset(0)]
-    short s; //2
-    [FieldOffset(0)]
-    int i; //4
-    [FieldOffset(0)]
-    long j; //8
-    [FieldOffset(0)]
-    float f; //4
-    [FieldOffset(0)]
-    double d; //8
-    [FieldOffset(0)]
-    nint l; //8
-
-    public static JValue Zero = new(nint.Zero);
-
     public JValue(bool value)
     {
         this = new();
         z = value;
     }
 
-    public JValue(sbyte value)
+    public JValue(byte value)
     {
         this = new();
         b = value;
@@ -86,8 +65,20 @@ public struct JValue
         l = value.Addr;
     }
 
+    [FieldOffset(0)] bool z;
+    [FieldOffset(0)] byte b;
+    [FieldOffset(0)] ushort c;
+    [FieldOffset(0)] short s;
+    [FieldOffset(0)] int i;
+    [FieldOffset(0)] long j;
+    [FieldOffset(0)] float f;
+    [FieldOffset(0)] double d;
+    [FieldOffset(0)] nint l;
+
+    public static JValue Zero = new(nint.Zero);
+
     public static implicit operator JValue(bool val) => new(val);
-    public static implicit operator JValue(sbyte val) => new(val);
+    public static implicit operator JValue(byte val) => new(val);
     public static implicit operator JValue(char val) => new(val);
     public static implicit operator JValue(short val) => new(val);
     public static implicit operator JValue(int val) => new(val);

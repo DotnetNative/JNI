@@ -3,10 +3,8 @@ using Memory;
 
 namespace JNI;
 
-public unsafe abstract class JClass : HandleContainer
+public unsafe abstract class JClass(EnvHandle handle) : HandleContainer(handle)
 {
-    public JClass(EnvHandle handle) : base(handle) { }
-
     public LJCtor GetCtor(params Arg[] args) => new(GetVoidMethod("<init>", args));
     public GJCtor GetGCtor(params Arg[] args) => new(GetVoidGMethod("<init>", args));
 
@@ -207,16 +205,12 @@ public unsafe abstract class JClass : HandleContainer
     public string ClassName => new java.lang.Class(this).NameNative;
 }
 
-public unsafe class LJClass : JClass
+public unsafe class LJClass(LHandle handle) : JClass(handle)
 {
-    public LJClass(LHandle handle) : base(handle) { }
-
     public LJObject AsObject => LJObject.Create(Addr);
 }
 
-public unsafe class GJClass : JClass
+public unsafe class GJClass(GHandle handle) : JClass(handle)
 {
-    public GJClass(GHandle handle) : base(handle) { }
-
     public GJObject AsObject => GJObject.Create(Addr);
 }

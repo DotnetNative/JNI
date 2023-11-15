@@ -4,7 +4,7 @@ public sealed unsafe class JVM
 {
     public JVM(JVM_* jvm) => Native = jvm;
 
-    public JVM_* Native { get; init; }
+    public readonly JVM_* Native;
 
     public Env AttachCurrentThread(void* args = null)
     {

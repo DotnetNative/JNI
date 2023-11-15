@@ -5,8 +5,6 @@ namespace JNI.Core;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JNIInvokeInterface
 {
-    public JNIInvokeInterface() { }
-
     public void* reserved0, reserved1, reserved2;
 
     public delegate* unmanaged<JVM_*, RetCode> DestroyJavaVM;

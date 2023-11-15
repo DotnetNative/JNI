@@ -1,5 +1,2 @@
 ﻿namespace JNI;
-public abstract class JFieldInstance : FieldData
-{
-    public JFieldInstance(EnvHandle handle, string name, TypeInfo type) : base(handle, name, type) { }
-}
+public abstract class JFieldInstance(EnvHandle handle, string name, TypeInfo type) : FieldData(handle, name, type);

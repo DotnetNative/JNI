@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JNI;
+﻿namespace JNI;
 public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enum
 {
     public JEnum(EnvHandle handle, TypeInfo info) : base(handle, info)
@@ -41,12 +35,6 @@ public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enu
     }
 }
 
-public class LJEnum<T> : JEnum<T> where T : struct, Enum
-{
-    public LJEnum(LHandle handle, TypeInfo info) : base(handle, info) { }
-}
+public class LJEnum<T>(LHandle handle, TypeInfo info) : JEnum<T>(handle, info) where T : struct, Enum;
 
-public class GJEnum<T> : JEnum<T> where T : struct, Enum
-{
-    public GJEnum(GHandle handle, TypeInfo info) : base(handle, info) { }
-}
+public class GJEnum<T>(GHandle handle, TypeInfo info) : JEnum<T>(handle, info) where T : struct, Enum;

@@ -5,7 +5,7 @@ namespace JNI.Core;
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct JVM_
 {
-    private JNIInvokeInterface* functions;
+    JNIInvokeInterface* functions;
 
     [MethImpl(AggressiveInlining)]
     public RetCode AttachCurrentThread(void** penv, void* args)

@@ -1,18 +1,7 @@
 ﻿namespace JNI;
-public unsafe abstract class JMethod : JMethodInstance
-{
-    public JMethod(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
-
-public unsafe abstract class LJMethod : JMethod
-{
-    public LJMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
-
-public unsafe abstract class GJMethod : JMethod
-{
-    public GJMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-}
+public abstract class JMethod(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethodInstance(handle, name, type, clazz, args);
+public abstract class LJMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethod(handle, name, type, clazz, args);
+public abstract class GJMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethod(handle, name, type, clazz, args);
 
 public unsafe class LJVoidMethod : LJMethod
 {
@@ -31,10 +20,8 @@ public unsafe class LJVoidMethod : LJMethod
     }
 }
 
-public unsafe class GJVoidMethod : GJMethod
+public unsafe class GJVoidMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Void, clazz, args)
 {
-    public GJVoidMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Void, clazz, args) { }
-
     public void Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -48,10 +35,8 @@ public unsafe class GJVoidMethod : GJMethod
     }
 }
 
-public unsafe class LJStringMethod : LJMethod
+public unsafe class LJStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.String, clazz, args)
 {
-    public LJStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
-
     public java.lang.String Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -77,10 +62,8 @@ public unsafe class LJStringMethod : LJMethod
     }
 }
 
-public unsafe class GJStringMethod : GJMethod
+public unsafe class GJStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.String, clazz, args)
 {
-    public GJStringMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.String, clazz, args) { }
-
     public java.lang.String Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -106,10 +89,8 @@ public unsafe class GJStringMethod : GJMethod
     }
 }
 
-public unsafe class LJObjectMethod : LJMethod
+public unsafe class LJObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : LJMethod(handle, name, type, clazz, args)
 {
-    public LJObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-
     public LJObject Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -135,10 +116,8 @@ public unsafe class LJObjectMethod : LJMethod
     }
 }
 
-public unsafe class GJObjectMethod : GJMethod
+public unsafe class GJObjectMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : GJMethod(handle, name, type, clazz, args)
 {
-    public GJObjectMethod(GHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) { }
-
     public LJObject Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -164,10 +143,8 @@ public unsafe class GJObjectMethod : GJMethod
     }
 }
 
-public unsafe class LJBoolMethod : LJMethod
+public unsafe class LJBoolMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Bool, clazz, args)
 {
-    public LJBoolMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Bool, clazz, args) { }
-
     public bool Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -181,10 +158,8 @@ public unsafe class LJBoolMethod : LJMethod
     }
 }
 
-public unsafe class GJBoolMethod : GJMethod
+public unsafe class GJBoolMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Bool, clazz, args)
 {
-    public GJBoolMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Bool, clazz, args) { }
-
     public bool Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -198,10 +173,8 @@ public unsafe class GJBoolMethod : GJMethod
     }
 }
 
-public unsafe class LJByteMethod : LJMethod
+public unsafe class LJByteMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Byte, clazz, args)
 {
-    public LJByteMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Byte, clazz, args) { }
-
     public byte Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -215,10 +188,8 @@ public unsafe class LJByteMethod : LJMethod
     }
 }
 
-public unsafe class GJByteMethod : GJMethod
+public unsafe class GJByteMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Byte, clazz, args)
 {
-    public GJByteMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Byte, clazz, args) { }
-
     public byte Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -232,10 +203,8 @@ public unsafe class GJByteMethod : GJMethod
     }
 }
 
-public unsafe class LJCharMethod : LJMethod
+public unsafe class LJCharMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Char, clazz, args)
 {
-    public LJCharMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Char, clazz, args) { }
-
     public char Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -249,10 +218,8 @@ public unsafe class LJCharMethod : LJMethod
     }
 }
 
-public unsafe class GJCharMethod : GJMethod
+public unsafe class GJCharMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Char, clazz, args)
 {
-    public GJCharMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Char, clazz, args) { }
-
     public char Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -266,10 +233,8 @@ public unsafe class GJCharMethod : GJMethod
     }
 }
 
-public unsafe class LJShortMethod : LJMethod
+public unsafe class LJShortMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Short, clazz, args)
 {
-    public LJShortMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Short, clazz, args) { }
-
     public short Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -283,10 +248,8 @@ public unsafe class LJShortMethod : LJMethod
     }
 }
 
-public unsafe class GJShortMethod : GJMethod
+public unsafe class GJShortMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Short, clazz, args)
 {
-    public GJShortMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Short, clazz, args) { }
-
     public short Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -300,10 +263,8 @@ public unsafe class GJShortMethod : GJMethod
     }
 }
 
-public unsafe class LJIntMethod : LJMethod
+public unsafe class LJIntMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Int, clazz, args)
 {
-    public LJIntMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Int, clazz, args) { }
-
     public int Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -317,10 +278,8 @@ public unsafe class LJIntMethod : LJMethod
     }
 }
 
-public unsafe class GJIntMethod : GJMethod
+public unsafe class GJIntMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Int, clazz, args)
 {
-    public GJIntMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Int, clazz, args) { }
-
     public int Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -334,10 +293,8 @@ public unsafe class GJIntMethod : GJMethod
     }
 }
 
-public unsafe class LJLongMethod : LJMethod
+public unsafe class LJLongMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Long, clazz, args)
 {
-    public LJLongMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Long, clazz, args) { }
-
     public long Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -351,10 +308,8 @@ public unsafe class LJLongMethod : LJMethod
     }
 }
 
-public unsafe class GJLongMethod : GJMethod
+public unsafe class GJLongMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Long, clazz, args)
 {
-    public GJLongMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Long, clazz, args) { }
-
     public long Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -368,10 +323,8 @@ public unsafe class GJLongMethod : GJMethod
     }
 }
 
-public unsafe class LJFloatMethod : LJMethod
+public unsafe class LJFloatMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Float, clazz, args)
 {
-    public LJFloatMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Float, clazz, args) { }
-
     public float Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -385,10 +338,8 @@ public unsafe class LJFloatMethod : LJMethod
     }
 }
 
-public unsafe class GJFloatMethod : GJMethod
+public unsafe class GJFloatMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Float, clazz, args)
 {
-    public GJFloatMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Float, clazz, args) { }
-
     public float Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -402,10 +353,8 @@ public unsafe class GJFloatMethod : GJMethod
     }
 }
 
-public unsafe class LJDoubleMethod : LJMethod
+public unsafe class LJDoubleMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : LJMethod(handle, name, handle.Env.Types.Double, clazz, args)
 {
-    public LJDoubleMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Double, clazz, args) { }
-
     public double Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
@@ -419,10 +368,8 @@ public unsafe class LJDoubleMethod : LJMethod
     }
 }
 
-public unsafe class GJDoubleMethod : GJMethod
+public unsafe class GJDoubleMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : GJMethod(handle, name, handle.Env.Types.Double, clazz, args)
 {
-    public GJDoubleMethod(GHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Double, clazz, args) { }
-
     public double Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
