@@ -27,6 +27,6 @@ public sealed unsafe class NativeMethod
         nameCo.MarkAsDisposed();
         var sigCo = new CoMem(Sig);
         sigCo.MarkAsDisposed();
-        return new(nameCo.Ptr, sigCo.Ptr, FuncPtr);
+        return new(nameCo.Ptr, sigCo.Ptr, (byte*)FuncPtr);
     }
 }

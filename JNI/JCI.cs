@@ -4,18 +4,28 @@ using JNI.Internal;
 namespace JNI;
 public unsafe struct JCI
 {
-    public JCI(JVersion version)
+    public JCI()
     {
-        Version = version;
         jvms = GetJVMs();
     }
 
-    public JVersion Version { get; init; }
+    /// <summary>
+    /// Returns count of all created JVM's
+    /// </summary>
+    public int CountJVMs => jvms.Length;
 
-    public JVM GetJVM(int index = 0) => new JVM(jvms[index]);
+    /// <summary>
+    /// Returns JVM by index from all created JVM's
+    /// </summary>
+    public JVM GetJVM(int index = 0) => new(jvms[index]);
 
-    private JVM_*[] jvms;
-    private static JVM_*[] GetJVMs()
+    /// <summary>
+    /// Returns first created JVM in current process
+    /// </summary>
+    public JVM JVM => new(jvms[0]); 
+
+    JVM_*[] jvms;
+    static JVM_*[] GetJVMs()
     {
         int count;
         Interop.JNI_GetCreatedJavaVMs(null, 0, &count);

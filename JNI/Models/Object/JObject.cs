@@ -1,11 +1,18 @@
 ﻿namespace JNI;
+/// <summary>
+/// Contains handle of object implemented from java.lang.Object
+/// </summary>
 public unsafe abstract class JObject(EnvHandle handle) : HandleContainer(handle)
 {
-    public bool IsNull => Addr == nint.Zero;
     public bool InstanceOf(JClass clazz) => Native->IsInstanceOf(Addr, clazz);
 
     public LJClass GetClass() => new LJClass(LHandle.Create(Native->GetObjectClass(Addr)));
     public GJClass GetGClass() => new GJClass(GHandle.Create(Native->GetObjectClass(Addr)));
+
+    /// <summary>
+    /// Checks if object is null
+    /// </summary>
+    public new bool IsNull => Native->IsSameObject(this, nint.Zero);
 
     public java.lang.String this[LJStringField field] { get => field.Get(this); set => field.Set(this, value); }
     public java.lang.String this[GJStringField field] { get => field.Get(this); set => field.Set(this, value); }

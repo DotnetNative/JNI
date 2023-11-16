@@ -1,4 +1,8 @@
 ﻿namespace JNI;
+
+/// <summary>
+/// Typedefining <see cref="EnvHandle"/>. Indicates that handle is local and can only be used in thread in which was created
+/// </summary>
 public unsafe class LHandle : EnvHandle, IDisposable
 {
     public LHandle(nint addr)
@@ -13,6 +17,9 @@ public unsafe class LHandle : EnvHandle, IDisposable
     Env env = Env.ThreadEnv;
     public override Env Env => env;
 
+    /// <summary>
+    /// Creates new instance from local addr
+    /// </summary>
     public static LHandle Create(nint addr) => new(addr);
 
     public void Dispose()

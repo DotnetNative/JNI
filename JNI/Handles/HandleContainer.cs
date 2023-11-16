@@ -1,6 +1,9 @@
 ﻿using JNI.Core;
 
 namespace JNI;
+/// <summary>
+/// Contains and implements handle of jvm object
+/// </summary>
 public abstract unsafe class HandleContainer : Handle, IDisposable
 {
     public HandleContainer(EnvHandle handle) => Handle = handle;
