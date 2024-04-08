@@ -10,6 +10,8 @@ public class TypeInfo
 
     public TypeInfo(string nameAndSig, int dimension = 0) : this(nameAndSig, nameAndSig, dimension) { }
 
+    public TypeInfo(TypeInfo type, int dimension) : this(type.Name, type.Signature, type.Dimension + dimension) { }
+
     public readonly string Name;
     public readonly string Signature;
     public readonly int Dimension = 0;

@@ -1,5 +1,6 @@
 ﻿using JNI.Core;
 using Memory;
+using System.Runtime.InteropServices;
 using static JNI.Internal.Interop;
 
 namespace JNI;
@@ -24,6 +25,7 @@ public sealed unsafe class Env
             java.lang.String.Init,
             java.lang.Enum.Init
         }) init(this);
+
     }
 
     static bool init;
@@ -120,15 +122,15 @@ public sealed unsafe class Env
     #endregion
 
     #region Tls
-    public static int TlsIndex = 5;
-    public static nint TlsEnvOffset = 0x1F8;
+    public static int TLS_INDEX = 5;
+    public static nint TLS_ENV_OFFSET = 0x1F8;
 
     public static Env_* ThreadNativeEnv
     {
         get
         {
-            var tls = (byte*)TlsGetValue(TlsIndex);
-            return (Env_*)(tls + TlsEnvOffset);
+            var tls = (byte*)TlsGetValue(TLS_INDEX);
+            return (Env_*)(tls + TLS_ENV_OFFSET);
         }
     }
 

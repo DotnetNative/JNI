@@ -6,19 +6,23 @@ public sealed unsafe class JVM
 
     public readonly JVM_* Native;
 
-    public Env AttachCurrentThread(void* args = null)
+    public Env_* NativeAttachCurrentThread(void* args = null)
     {
         Env_* env;
         Native->AttachCurrentThread((void**)&env, args);
-        return new(env);
+        return env;
     }
 
-    public Env AttachCurrentThreadAsDaemon(void* args = null)
+    public Env AttachCurrentThread(void* args = null) => new(NativeAttachCurrentThread(args));
+
+    public Env_* NativeAttachCurrentThreadAsDaemon(void* args = null)
     {
         Env_* env;
         Native->AttachCurrentThreadAsDaemon((void**)&env, args);
-        return new(env);
+        return env;
     }
+
+    public Env AttachCurrentThreadAsDaemon(void* args = null) => new(NativeAttachCurrentThreadAsDaemon(args));
 
     public void DetachCurrentThread() => Native->DetachCurrentThread();
 
