@@ -11,16 +11,20 @@ public abstract unsafe class HandleContainer : Handle, IDisposable
     public EnvHandle Handle { get; init; }
     public bool IsGlobal => Handle is GHandle;
 
-    public override nint Addr { get => Handle.Addr; set => Handle.Addr = value; }
+    public override nint Address { get => Handle.Address; set => Handle.Address = value; }
     public Env Env => Handle.Env;
     public Env_* Native => Handle.Native;
 
-    public static implicit operator EnvHandle(HandleContainer val) => val.Handle;
+    public static implicit operator EnvHandle(HandleContainer value) => value.Handle;
 
     public void Dispose()
     {
-        if (IsGlobal)
-            (Handle as GHandle)!.Dispose();
-        else (Handle as LHandle)!.Dispose();
+        if (!disposed)
+        {
+            if (IsGlobal)
+                (Handle as GHandle)!.Dispose();
+        }        
     }
+
+    ~HandleContainer() => Dispose();
 }

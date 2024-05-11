@@ -2,7 +2,7 @@
 
 namespace JNI.Core;
 
-[StructLayout(LayoutKind.Sequential)]
+
 public unsafe struct JNINativeInterface_
 {
     public void* reserved0, reserved1, reserved2, reserved3;

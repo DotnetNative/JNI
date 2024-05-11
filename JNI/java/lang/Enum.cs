@@ -4,14 +4,14 @@ namespace java.lang;
 public class Enum(EnvHandle handle) : IClass(handle)
 {
     public static GJType type;
-    protected static GJIntField ordinal;
-    protected static GJStringField name;
+    protected static JIntField ordinal;
+    protected static JStringField name;
 
     public static void Init(Env e)
     {
         type = e.GetGType("java.lang.Enum");
-        ordinal = type.GetIntGField("ordinal");
-        name = type.GetStringGField("name");
+        ordinal = type.GetIntField("ordinal");
+        name = type.GetStringField("name");
     }
 
     public int Ordinal => this[ordinal];

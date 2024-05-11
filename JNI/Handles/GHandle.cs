@@ -5,32 +5,43 @@
 /// </summary>
 public unsafe class GHandle : EnvHandle, IDisposable
 {
-    public GHandle(nint localAddr, nint globalAddr)
+    public GHandle(nint localAddress, nint globalAddress)
     {
-        this.localAddr = localAddr;
-        this.globalAddr = globalAddr;
+        this.localAddress = localAddress;
+        this.globalAddress = globalAddress;
     }
 
-    nint localAddr;
-    nint globalAddr;
+    nint localAddress;
+    nint globalAddress;
 
-    public override nint Addr { get => globalAddr; set => globalAddr = value; }
+    public override nint Address { get => globalAddress; set => globalAddress = value; }
 
     public override Env Env => Env.ThreadEnv;
 
     /// <summary>
     /// Creates new instance from local addr
     /// </summary>
-    public static GHandle Create(nint localAddr)
+    public static GHandle Create(nint localAddress)
     {
-        var globalAddr = Env.ThreadNativeEnv->NewGlobalRef(localAddr);
-        return new(localAddr, globalAddr);
+        var globalAddress = Env.ThreadNativeEnv->NewGlobalRef(localAddress);
+        return new(localAddress, globalAddress);
     }
+
+    /// <summary>
+    /// Creates new instance from local and global addr
+    /// </summary>
+    public static GHandle Create(nint localAddress, nint globalAddress) => new(localAddress, globalAddress);
 
     public void Dispose()
     {
-        var e = Native;
-        e->DeleteGlobalRef(globalAddr);
-        e->DeleteLocalRef(localAddr);
+        if (!disposed)
+        {
+            disposed = true;
+            var e = Native;
+            e->DeleteGlobalRef(globalAddress);
+            e->DeleteLocalRef(localAddress);
+        }
     }
+
+    ~GHandle() => Dispose();
 }

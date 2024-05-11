@@ -62,7 +62,7 @@ public struct JValue
     public JValue(JObject value)
     {
         this = new();
-        l = value.Addr;
+        l = value.Address;
     }
 
     [FieldOffset(0)] bool z;

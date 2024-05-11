@@ -1,18 +1,18 @@
 ﻿using JNI;
 
 namespace java.lang;
-internal class Class(EnvHandle handle) : IClass(handle)
+public class Class(EnvHandle handle) : IClass(handle)
 {
     public static GJType type;
-    public static GJStringMethod getName;
+    public static JStringMethod getName;
 
     public static void Init(Env e)
     {
         type = e.GetGType("java.lang.Class");
-        getName = type.GetStringGMethod("getName");
+        getName = type.GetStringMethod("getName");
     }
 
-    public java.lang.String Name => getName.Call(this);
+    public java.lang.String Name => getName.CallVirtUTF8(this);
     public string NameNative
     {
         get

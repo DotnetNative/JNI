@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace JNI.Core;
 
-[StructLayout(LayoutKind.Sequential)]
+
 public unsafe struct NativeMethod_ : IDisposable
 {
     public NativeMethod_(byte* name, byte* signature, byte* fnPtr)

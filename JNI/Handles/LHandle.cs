@@ -5,14 +5,11 @@
 /// </summary>
 public unsafe class LHandle : EnvHandle, IDisposable
 {
-    public LHandle(nint addr)
-    {
-        localAddr = addr;
-    }
+    public LHandle(nint address) => localAddress = address;
 
-    nint localAddr;
+    nint localAddress;
 
-    public override nint Addr { get => localAddr; set => localAddr = value; }
+    public override nint Address { get => localAddress; set => localAddress = value; }
 
     Env env = Env.ThreadEnv;
     public override Env Env => env;
@@ -24,6 +21,17 @@ public unsafe class LHandle : EnvHandle, IDisposable
 
     public void Dispose()
     {
-        Native->DeleteLocalRef(localAddr);
+        if (!disposed)
+        {
+            disposed = true;
+
+            // Pseudo check that it's not a field/method descriptor
+            if (Address > short.MaxValue)
+            {
+                Native->DeleteLocalRef(localAddress);
+            }
+        }
     }
+
+    ~LHandle() => Dispose();
 }

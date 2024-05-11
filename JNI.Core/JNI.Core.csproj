@@ -5,10 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Yotic.Memory.Extensions" Version="1.1.3" />
+    <PackageReference Include="DotnetNativeBase" Version="1.0.7" />
+    <PackageReference Include="Yotic.Memory.Extensions" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

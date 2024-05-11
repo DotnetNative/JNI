@@ -1,8 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace JNI.Core;
-
-[StructLayout(LayoutKind.Sequential)]
+﻿namespace JNI.Core;
 public unsafe struct JNIInvokeInterface
 {
     public void* reserved0, reserved1, reserved2;

@@ -1,5 +1,5 @@
 ﻿namespace JNI;
-public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enum
+public unsafe class JEnum<T> : JType, IDisposable where T : struct, Enum
 {
     public JEnum(EnvHandle handle, TypeInfo info) : base(handle, info)
     {
@@ -34,7 +34,5 @@ public unsafe abstract class JEnum<T> : JType, IDisposable where T : struct, Enu
         base.Dispose();
     }
 }
-
-public class LJEnum<T>(LHandle handle, TypeInfo info) : JEnum<T>(handle, info) where T : struct, Enum;
 
 public class GJEnum<T>(GHandle handle, TypeInfo info) : JEnum<T>(handle, info) where T : struct, Enum;

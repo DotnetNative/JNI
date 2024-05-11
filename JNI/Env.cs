@@ -1,4 +1,5 @@
 ﻿using JNI.Core;
+using JNI.Internal;
 using Memory;
 using System.Runtime.InteropServices;
 using static JNI.Internal.Interop;
@@ -6,18 +7,33 @@ using static JNI.Internal.Interop;
 namespace JNI;
 public sealed unsafe class Env
 {
+    static bool inited;
     public Env(Env_* env)
     {
         Native = env;
-        Types = StaticTypes;
 
-        if (init)
+        if (inited)
+        {
+            Types = TypesInstance;
             return;
+        }            
+        inited = true;
 
-        init = true;
+        for (var i = 0; i < 255; i++)
+        {
+            var tlsValue = TlsGetValue(i);
+            var offset = (nint)env - (nint)tlsValue;
+            if (Math.Abs(offset) < Math.Abs(TLS_ENV_OFFSET))
+            {
+                TLS_ENV_OFFSET = offset;
+                TLS_INDEX = i;
+            }
+        }
 
-        StaticTypes = new RuntimeTypeCollection(this);
-        Types = StaticTypes;
+        OnInit?.Invoke();
+
+        TypesInstance = new RuntimeTypeCollection(this);
+        Types = TypesInstance;
 
         foreach (var init in new[]
         {
@@ -25,12 +41,12 @@ public sealed unsafe class Env
             java.lang.String.Init,
             java.lang.Enum.Init
         }) init(this);
-
     }
 
-    static bool init;
+    public delegate void OnInitDelegate();
+    public static event OnInitDelegate? OnInit;
 
-    public static RuntimeTypeCollection StaticTypes;
+    public static RuntimeTypeCollection TypesInstance;
     public RuntimeTypeCollection Types;
 
     public Env_* Native;
@@ -61,7 +77,7 @@ public sealed unsafe class Env
     public GJType GetGType(string nameAndSig, int dim = 0) => new(GHandle.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
     public GJType GetGType(TypeInfo info) => new(GHandle.Create(GetClassHandle(info.Name)), info);
 
-    public LJEnum<T> GetEnum<T>(string name) where T : struct, Enum => new(LHandle.Create(GetClassHandle(name)), new(name));
+    public JEnum<T> GetEnum<T>(string name) where T : struct, Enum => new(LHandle.Create(GetClassHandle(name)), new(name));
     public GJEnum<T> GetGEnum<T>(string name) where T : struct, Enum => new(GHandle.Create(GetClassHandle(name)), new(name));
 
     public LJClass DefineClass(string name, JObject loader, byte[] bytes)
@@ -122,18 +138,10 @@ public sealed unsafe class Env
     #endregion
 
     #region Tls
-    public static int TLS_INDEX = 5;
-    public static nint TLS_ENV_OFFSET = 0x1F8;
+    public static int TLS_INDEX = -1;
+    public static nint TLS_ENV_OFFSET = nint.MaxValue;
 
-    public static Env_* ThreadNativeEnv
-    {
-        get
-        {
-            var tls = (byte*)TlsGetValue(TLS_INDEX);
-            return (Env_*)(tls + TLS_ENV_OFFSET);
-        }
-    }
-
+    public static Env_* ThreadNativeEnv => (Env_*)((byte*)TlsGetValue(TLS_INDEX) + TLS_ENV_OFFSET);
     public static Env ThreadEnv => new(ThreadNativeEnv);
     #endregion
 }

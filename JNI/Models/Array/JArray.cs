@@ -3,16 +3,16 @@
 namespace JNI;
 public unsafe abstract class JArray : HandleContainer
 {
-    public JArray(EnvHandle handle) : base(handle) => Length = Env.Native->GetArrayLength(Addr);
+    public JArray(EnvHandle handle) : base(handle) => Length = Env.Native->GetArrayLength(Address);
 
     public readonly int Length;
 }
 
 public unsafe abstract class JStringArray(EnvHandle handle) : JArray(handle)
 {
-    public java.lang.String this[int index] { get => new(Get(index)); set => Native->SetObjectArrayElement(Addr, index, value); }
-    public java.lang.String Get(int index) => new(LJObject.Create(Native->GetObjectArrayElement(Addr, index)));
-    public java.lang.String GetG(int index) => new(GJObject.Create(Native->GetObjectArrayElement(Addr, index)));
+    public java.lang.String this[int index] { get => new(Get(index)); set => Native->SetObjectArrayElement(Address, index, value); }
+    public java.lang.String Get(int index) => new(LJObject.Create(Native->GetObjectArrayElement(Address, index)));
+    public java.lang.String GetG(int index) => new(GJObject.Create(Native->GetObjectArrayElement(Address, index)));
 
     public bool Contains(java.lang.String item) => IndexOf(item) != -1;
 
@@ -31,18 +31,18 @@ public unsafe abstract class JStringArray(EnvHandle handle) : JArray(handle)
 
 public unsafe class LJStringArray(LHandle handle) : JStringArray(handle)
 {
-    public LJStringArray(int length) : this(LHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.StaticTypes.StringType, 0))) { }
+    public LJStringArray(int length) : this(LHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.TypesInstance.StringType, 0))) { }
 }
 public unsafe class GJStringArray(GHandle handle) : JStringArray(handle)
 {
-    public GJStringArray(int length, JType type) : this(GHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.StaticTypes.StringType, 0))) { }
+    public GJStringArray(int length, JType type) : this(GHandle.Create(Env.ThreadNativeEnv->NewObjectArray(length, Env.TypesInstance.StringType, 0))) { }
 }
 
 public unsafe abstract class JObjectArray(EnvHandle handle) : JArray(handle)
 {
-    public LJObject this[int index] { get => Get(index); set => Native->SetObjectArrayElement(Addr, index, value); }
-    public LJObject Get(int index) => LJObject.Create(Native->GetObjectArrayElement(Addr, index));
-    public GJObject GetG(int index) => GJObject.Create(Native->GetObjectArrayElement(Addr, index));
+    public LJObject this[int index] { get => Get(index); set => Native->SetObjectArrayElement(Address, index, value); }
+    public LJObject Get(int index) => LJObject.Create(Native->GetObjectArrayElement(Address, index));
+    public GJObject GetG(int index) => GJObject.Create(Native->GetObjectArrayElement(Address, index));
 
     public bool Contains(JObject item) => IndexOf(item) != -1;
 
@@ -84,7 +84,7 @@ public unsafe abstract class JPrimitiveArray<T> : JArray where T : unmanaged
 
 public unsafe abstract class JBoolArray(EnvHandle handle) : JPrimitiveArray<bool>(handle)
 {
-    public override bool* GetElements() => Native->GetBooleanArrayElements(Addr, false);
+    public override bool* GetElements() => Native->GetBooleanArrayElements(Address, false);
 }
 
 public unsafe class LJBoolArray(LHandle handle) : JBoolArray(handle)
@@ -99,7 +99,7 @@ public unsafe class GJBoolArray(GHandle handle) : JBoolArray(handle)
 
 public unsafe abstract class JByteArray(EnvHandle handle) : JPrimitiveArray<byte>(handle)
 {
-    public override byte* GetElements() => Native->GetByteArrayElements(Addr, false);
+    public override byte* GetElements() => Native->GetByteArrayElements(Address, false);
 }
 
 public unsafe class LJByteArray(LHandle handle) : JByteArray(handle)
@@ -114,7 +114,7 @@ public unsafe class GJByteArray(GHandle handle) : JByteArray(handle)
 
 public unsafe abstract class JCharArray(EnvHandle handle) : JPrimitiveArray<char>(handle)
 {
-    public override char* GetElements() => Native->GetCharArrayElements(Addr, false);
+    public override char* GetElements() => Native->GetCharArrayElements(Address, false);
 }
 
 public unsafe class LJCharArray(LHandle handle) : JCharArray(handle)
@@ -129,7 +129,7 @@ public unsafe class GJCharArray(GHandle handle) : JCharArray(handle)
 
 public unsafe abstract class JShortArray(EnvHandle handle) : JPrimitiveArray<short>(handle)
 {
-    public override short* GetElements() => Native->GetShortArrayElements(Addr, false);
+    public override short* GetElements() => Native->GetShortArrayElements(Address, false);
 }
 
 public unsafe class LJShortArray(LHandle handle) : JShortArray(handle)
@@ -144,7 +144,7 @@ public unsafe class GJShortArray(GHandle handle) : JShortArray(handle)
 
 public unsafe abstract class JIntArray(EnvHandle handle) : JPrimitiveArray<int>(handle)
 {
-    public override int* GetElements() => Native->GetIntArrayElements(Addr, false);
+    public override int* GetElements() => Native->GetIntArrayElements(Address, false);
 }
 
 public unsafe class LJIntArray(LHandle handle) : JIntArray(handle)
@@ -159,7 +159,7 @@ public unsafe class GJIntArray(GHandle handle) : JIntArray(handle)
 
 public unsafe abstract class JLongArray(EnvHandle handle) : JPrimitiveArray<long>(handle)
 {
-    public override long* GetElements() => Native->GetLongArrayElements(Addr, false);
+    public override long* GetElements() => Native->GetLongArrayElements(Address, false);
 }
 
 public unsafe class LJLongArray(LHandle handle) : JLongArray(handle)
@@ -174,7 +174,7 @@ public unsafe class GJLongArray(GHandle handle) : JLongArray(handle)
 
 public unsafe abstract class JFloatArray(EnvHandle handle) : JPrimitiveArray<float>(handle)
 {
-    public override float* GetElements() => Native->GetFloatArrayElements(Addr, false);
+    public override float* GetElements() => Native->GetFloatArrayElements(Address, false);
 }
 
 public unsafe class LJFloatArray(LHandle handle) : JFloatArray(handle)
@@ -191,7 +191,7 @@ public unsafe abstract class JDoubleArray : JPrimitiveArray<double>
 {
     public JDoubleArray(EnvHandle handle) : base(handle) { }
 
-    public override double* GetElements() => Native->GetDoubleArrayElements(Addr, false);
+    public override double* GetElements() => Native->GetDoubleArrayElements(Address, false);
 }
 
 public unsafe class LJDoubleArray(LHandle handle) : JDoubleArray(handle)

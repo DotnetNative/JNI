@@ -1,9 +1,7 @@
 ﻿using Memory;
-using System.Runtime.InteropServices;
 
 namespace JNI.Core;
 
-[StructLayout(LayoutKind.Sequential)]
 public unsafe struct Env_
 {
     public JNINativeInterface_* functions;
@@ -259,9 +257,10 @@ public unsafe struct Env_
     [MethImpl(AggressiveInlining)]
     public nint GetMethodID(nint clazz, string name, string sig)
     {
+        File.AppendAllLines(@"C:\a.txt", [$"s: \'{name}\' \'{sig}\'"]);
+
         using var coName = new CoMem(name);
         using var coSig = new CoMem(name);
-
         fixed (Env_* env = &this)
             return functions->GetMethodID(env, clazz, (byte*)coName, (byte*)coSig);
     }
