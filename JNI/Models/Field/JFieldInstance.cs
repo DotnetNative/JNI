@@ -1,2 +1,2 @@
 ﻿namespace JNI;
-public abstract class JFieldInstance(EnvHandle handle, string name, TypeInfo type) : FieldData(handle, name, type);
+public abstract class JFieldInstance(FieldDescriptor descriptor, string name, TypeInfo type) : FieldData(descriptor, name, type);

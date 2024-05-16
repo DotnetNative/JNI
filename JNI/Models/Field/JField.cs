@@ -1,81 +1,78 @@
 ﻿namespace JNI;
-
-public abstract class JField(EnvHandle handle, string name, TypeInfo type) : JFieldInstance(handle, name, type);
+public abstract class JField(FieldDescriptor descriptor, string name, TypeInfo type) : JFieldInstance(descriptor, name, type);
 
 public unsafe class JStringField : JField
 {
-    public JStringField(LHandle handle, string name) : base(handle, name, handle.Env.Types.String) { }
+    public JStringField(FieldDescriptor descriptor, string name) : base(descriptor, name, Types.String) { }
 
-    public java.lang.String Get(JObject obj) => new(LHandle.Create(Native->GetObjectField(obj, Address)));
-    public java.lang.String GetG(JObject obj) => new(GHandle.Create(Native->GetObjectField(obj, Address)));
-    public void Set(JObject obj, java.lang.String value) => Native->SetObjectField(obj, Address, value);
+    public JString Get(JObject obj) => new(HandleImpl.Create(env_->GetObjectField(obj, Descriptor)));
+    public void Set(JObject obj, JString value) => env_->SetObjectField(obj, Descriptor, value);
 }
 
-public unsafe class JObjectField(LHandle handle, string name, TypeInfo type) : JField(handle, name, type)
+public unsafe class JObjectField(FieldDescriptor descriptor, string name, TypeInfo type) : JField(descriptor, name, type)
 {
-    public LJObject Get(JObject obj) => LJObject.Create(Native->GetObjectField(obj, Address));
-    public GJObject GetG(JObject obj) => GJObject.Create(Native->GetObjectField(obj, Address));
-    public void Set(JObject obj, JObject value) => Native->SetObjectField(obj, Address, value);
+    public JObject Get(JObject obj) => JObject.Create(env_->GetObjectField(obj, Descriptor));
+    public void Set(JObject obj, JObject value) => env_->SetObjectField(obj, Descriptor, value);
 }
 
-public unsafe class JBoolField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Bool)
+public unsafe class JBoolField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Bool)
 {
-    public bool Get(JObject obj) => Native->GetBooleanField(obj, Address);
-    public void Set(JObject obj, bool value) => Native->SetBooleanField(obj, Address, value);
+    public bool Get(JObject obj) => env_->GetBooleanField(obj, Descriptor);
+    public void Set(JObject obj, bool value) => env_->SetBooleanField(obj, Descriptor, value);
 }
 
-public unsafe class JByteField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Byte)
+public unsafe class JByteField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Byte)
 {
-    public byte Get(JObject obj) => Native->GetByteField(obj, Address);
-    public void Set(JObject obj, byte value) => Native->SetByteField(obj, Address, value);
+    public byte Get(JObject obj) => env_->GetByteField(obj, Descriptor);
+    public void Set(JObject obj, byte value) => env_->SetByteField(obj, Descriptor, value);
 }
 
-public unsafe class JCharField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Char)
+public unsafe class JCharField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Char)
 {
-    public char Get(JObject obj) => Native->GetCharField(obj, Address);
-    public void Set(JObject obj, char value) => Native->SetCharField(obj, Address, value);
+    public char Get(JObject obj) => env_->GetCharField(obj, Descriptor);
+    public void Set(JObject obj, char value) => env_->SetCharField(obj, Descriptor, value);
 }
 
-public unsafe class JShortField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Short)
+public unsafe class JShortField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Short)
 {
-    public short Get(JObject obj) => Native->GetShortField(obj, Address);
-    public void Set(JObject obj, short value) => Native->SetShortField(obj, Address, value);
+    public short Get(JObject obj) => env_->GetShortField(obj, Descriptor);
+    public void Set(JObject obj, short value) => env_->SetShortField(obj, Descriptor, value);
 }
 
-public unsafe class JIntField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Int)
+public unsafe class JIntField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Int)
 {
-    public int Get(JObject obj) => Native->GetIntField(obj, Address);
-    public void Set(JObject obj, int value) => Native->SetIntField(obj, Address, value);
+    public int Get(JObject obj) => env_->GetIntField(obj, Descriptor);
+    public void Set(JObject obj, int value) => env_->SetIntField(obj, Descriptor, value);
 }
 
-public unsafe class JLongField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Long)
+public unsafe class JLongField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Long)
 {
-    public long Get(JObject obj) => Native->GetLongField(obj, Address);
-    public void Set(JObject obj, long value) => Native->SetLongField(obj, Address, value);
+    public long Get(JObject obj) => env_->GetLongField(obj, Descriptor);
+    public void Set(JObject obj, long value) => env_->SetLongField(obj, Descriptor, value);
 }
 
-public unsafe class JFloatField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Float)
+public unsafe class JFloatField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Float)
 {
-    public float Get(JObject obj) => Native->GetFloatField(obj, Address);
-    public void Set(JObject obj, float value) => Native->SetFloatField(obj, Address, value);
+    public float Get(JObject obj) => env_->GetFloatField(obj, Descriptor);
+    public void Set(JObject obj, float value) => env_->SetFloatField(obj, Descriptor, value);
 }
 
-public unsafe class JDoubleField(LHandle handle, string name) : JField(handle, name, handle.Env.Types.Double)
+public unsafe class JDoubleField(FieldDescriptor descriptor, string name) : JField(descriptor, name, Types.Double)
 {
-    public double Get(JObject obj) => Native->GetDoubleField(obj, Address);
-    public void Set(JObject obj, double value) => Native->SetDoubleField(obj, Address, value);
+    public double Get(JObject obj) => env_->GetDoubleField(obj, Descriptor);
+    public void Set(JObject obj, double value) => env_->SetDoubleField(obj, Descriptor, value);
 }
 
 public unsafe class JEnumField<T> : JField where T : struct, Enum
 {
-    public JEnumField(LHandle handle, string name, JEnum<T> type) : base(handle, name, type) => EnumType = type;
+    public JEnumField(FieldDescriptor descriptor, string name, JEnum<T> type) : base(descriptor, name, type) => EnumType = type;
 
     public JEnum<T> EnumType;
 
-    public java.lang.Enum<T> Get(JObject obj)
+    public JEnumTuple<T> Get(JObject obj)
     {
-        using var data = LJObject.Create(Native->GetObjectField(obj, Address));
+        using var data = JObject.Create(env_->GetObjectField(obj, Descriptor));
         return EnumType[data];
     }
-    public void Set(JObject obj, java.lang.Enum<T> value) => Native->SetObjectField(obj, Address, value);
+    public void Set(JObject obj, JEnumTuple<T> value) => env_->SetObjectField(obj, Descriptor, value);
 }

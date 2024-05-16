@@ -1,9 +1,7 @@
-﻿using System.Collections;
-
-namespace JNI;
+﻿namespace JNI;
 public class RuntimeTypeCollection
 {
-    public RuntimeTypeCollection(Env env)
+    public RuntimeTypeCollection(Env e)
     {
         BoolArray = new(Bool, 1);
         ByteArray = new(Byte, 1);
@@ -16,19 +14,21 @@ public class RuntimeTypeCollection
 
         ObjectArray = new(Object, 1);
         StringArray = new(String, 1);
+        ClassArray = new(Class, 1);
 
-        VoidType = env.GetGType(Void);
-        BoolType = env.GetGType(Bool);
-        ByteType = env.GetGType(Byte);
-        CharType = env.GetGType(Char);
-        ShortType = env.GetGType(Short);
-        IntType = env.GetGType(Int);
-        LongType = env.GetGType(Long);
-        FloatType = env.GetGType(Float);
-        DoubleType = env.GetGType(Double);
+        VoidType = e.GetType(Void);
+        BoolType = e.GetType(Bool);
+        ByteType = e.GetType(Byte);
+        CharType = e.GetType(Char);
+        ShortType = e.GetType(Short);
+        IntType = e.GetType(Int);
+        LongType = e.GetType(Long);
+        FloatType = e.GetType(Float);
+        DoubleType = e.GetType(Double);
 
-        ObjectType = env.GetGType(Object);
-        StringType = env.GetGType(String);
+        ObjectType = e.GetType(Object);
+        StringType = e.GetType(String);
+        ClassType = e.GetType(Class);
     }
 
     public readonly TypeInfo
@@ -42,9 +42,10 @@ public class RuntimeTypeCollection
         Float = new("java.lang.Float", "F"), FloatArray,
         Double = new("java.lang.Double", "D"), DoubleArray,
         Object = new("java.lang.Object"), ObjectArray,
-        String = new("java.lang.String"), StringArray;
+        String = new("java.lang.String"), StringArray,
+        Class = new("java.lang.Class"), ClassArray;
 
-    public readonly GJType
+    public readonly JType
         VoidType,
         BoolType,
         ByteType,
@@ -55,5 +56,6 @@ public class RuntimeTypeCollection
         FloatType,
         DoubleType,
         StringType,
-        ObjectType;
+        ObjectType,
+        ClassType;
 }

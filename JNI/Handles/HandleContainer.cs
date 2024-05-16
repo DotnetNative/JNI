@@ -1,30 +1,25 @@
-﻿using JNI.Core;
-
-namespace JNI;
-/// <summary>
-/// Contains and implements handle of jvm object
-/// </summary>
-public abstract unsafe class HandleContainer : Handle, IDisposable
+﻿namespace JNI;
+public class HandleContainer : Handle, IDisposable
 {
-    public HandleContainer(EnvHandle handle) => Handle = handle;
+    public HandleContainer(Handle handle) => Handle = handle;
 
-    public EnvHandle Handle { get; init; }
-    public bool IsGlobal => Handle is GHandle;
+    public Handle Handle;
 
-    public override nint Address { get => Handle.Address; set => Handle.Address = value; }
-    public Env Env => Handle.Env;
-    public Env_* Native => Handle.Native;
+    public override nint LocalAddress => Handle.LocalAddress;
 
-    public static implicit operator EnvHandle(HandleContainer value) => value.Handle;
+    public override nint Address => Handle.Address;
 
+    public override bool IsDisposed => Handle.IsDisposed;
+
+    #region IDisposable
     public void Dispose()
     {
-        if (!disposed)
-        {
-            if (IsGlobal)
-                (Handle as GHandle)!.Dispose();
-        }        
+        if (!IsDisposed)
+            Handle.DisposeHandle();
     }
 
+    public override void DisposeHandle() => Handle.DisposeHandle();
+
     ~HandleContainer() => Dispose();
+    #endregion
 }

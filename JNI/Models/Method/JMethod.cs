@@ -1,241 +1,205 @@
 ﻿namespace JNI;
-public abstract class JMethod(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethodInstance(handle, name, type, clazz, args);
+public abstract class JMethod(MethodDescriptor handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethodInstance(handle, name, type, clazz, args);
 
 public unsafe class JVoidMethod : JMethod
 {
-    public JVoidMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : base(handle, name, handle.Env.Types.Void, clazz, args) { }
+    public JVoidMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : base(handle, name, Types.Void, clazz, args) { }
 
     public void Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            Native->CallNonvirtualVoidMethodA(obj, Clazz, Address, ptr);
+            env_->CallNonvirtualVoidMethod(obj, Class, Descriptor, ptr);
     }
 
     public void CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            Native->CallVoidMethodA(obj, Address, ptr);
+            env_->CallVoidMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JStringMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.String, clazz, args)
+public unsafe class JStringMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.String, clazz, args)
 {
-    public java.lang.String Call(JObject obj, params JValue[] args)
+    public JString Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return new(LHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr)));
+            return new(HandleImpl.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr)));
     }
 
-    public java.lang.String CallVirt(JObject obj, params JValue[] args)
+    public JString CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return new(GHandle.Create(Native->CallObjectMethodA(obj, Address, ptr)));
+            return new(HandleImpl.Create(env_->CallObjectMethod(obj, Descriptor, ptr)));
     }
 
-    public java.lang.String CallG(JObject obj, params JValue[] args)
+    public JString CallUTF8(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return new(GHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr)));
+            return new(HandleImpl.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr)), false);
     }
 
-    public java.lang.String CallVirtG(JObject obj, params JValue[] args)
+    public JString CallVirtUTF8(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return new(LHandle.Create(Native->CallObjectMethodA(obj, Address, ptr)));
-    }
-
-    public java.lang.String CallUTF8(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return new(LHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr)), false);
-    }
-
-    public java.lang.String CallVirtUTF8(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return new(GHandle.Create(Native->CallObjectMethodA(obj, Address, ptr)), false);
-    }
-
-    public java.lang.String CallGUTF8(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return new(GHandle.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr)), false);
-    }
-
-    public java.lang.String CallVirtGUTF8(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return new(LHandle.Create(Native->CallObjectMethodA(obj, Address, ptr)), false);
+            return new(HandleImpl.Create(env_->CallObjectMethod(obj, Descriptor, ptr)), false);
     }
 }
 
-public unsafe class JObjectMethod(LHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethod(handle, name, type, clazz, args)
+public unsafe class JObjectMethod(MethodDescriptor handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : JMethod(handle, name, type, clazz, args)
 {
-    public LJObject Call(JObject obj, params JValue[] args)
+    public JObject Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return LJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr));
+            return JObject.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
     }
 
-    public LJObject CallVirt(JObject obj, params JValue[] args)
+    public JObject CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return LJObject.Create(Native->CallObjectMethodA(obj, Address, ptr));
-    }
-
-    public GJObject CallG(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return GJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr));
-    }
-
-    public GJObject CallVirtG(JObject obj, params JValue[] args)
-    {
-        fixed (JValue* ptr = args)
-            return GJObject.Create(Native->CallObjectMethodA(obj, Address, ptr));
+            return JObject.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
     }
 }
 
-public unsafe class JBoolMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Bool, clazz, args)
+public unsafe class JBoolMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Bool, clazz, args)
 {
     public bool Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualBooleanMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualBooleanMethod(obj, Class, Descriptor, ptr);
     }
 
     public bool CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallBooleanMethodA(obj, Address, ptr);
+            return env_->CallBooleanMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JByteMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Byte, clazz, args)
+public unsafe class JByteMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Byte, clazz, args)
 {
     public byte Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualByteMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualByteMethod(obj, Class, Descriptor, ptr);
     }
 
     public byte CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallByteMethodA(obj, Address, ptr);
+            return env_->CallByteMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JCharMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Char, clazz, args)
+public unsafe class JCharMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Char, clazz, args)
 {
     public char Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualCharMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualCharMethod(obj, Class, Descriptor, ptr);
     }
 
     public char CallVirt(JObject obj, params JValue[] args)
     {
-        fixed (JValue* ptr = args)
-            return Native->CallCharMethodA(obj, Address, ptr);
+        fixed (JValue* ptr = args) 
+            return env_->CallCharMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JShortMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Short, clazz, args)
+public unsafe class JShortMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Short, clazz, args)
 {
     public short Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualShortMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualShortMethod(obj, Class, Descriptor, ptr);
     }
 
     public short CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallShortMethodA(obj, Address, ptr);
+            return env_->CallShortMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JIntMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Int, clazz, args)
+public unsafe class JIntMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Int, clazz, args)
 {
     public int Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualIntMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualIntMethod(obj, Class, Descriptor, ptr);
     }
 
     public int CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallIntMethodA(obj, Address, ptr);
+            return env_->CallIntMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JLongMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Long, clazz, args)
+public unsafe class JLongMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Long, clazz, args)
 {
     public long Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualLongMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualLongMethod(obj, Class, Descriptor, ptr);
     }
 
     public long CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallLongMethodA(obj, Address, ptr);
+            return env_->CallLongMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JFloatMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Float, clazz, args)
+public unsafe class JFloatMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Float, clazz, args)
 {
     public float Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualFloatMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualFloatMethod(obj, Class, Descriptor, ptr);
     }
 
     public float CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallFloatMethodA(obj, Address, ptr);
+            return env_->CallFloatMethod(obj, Descriptor, ptr);
     }
 }
 
-public unsafe class JDoubleMethod(LHandle handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, handle.Env.Types.Double, clazz, args)
+public unsafe class JDoubleMethod(MethodDescriptor handle, string name, JClass clazz, params Arg[] args) : JMethod(handle, name, Types.Double, clazz, args)
 {
     public double Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallNonvirtualDoubleMethodA(obj, Clazz, Address, ptr);
+            return env_->CallNonvirtualDoubleMethod(obj, Class, Descriptor, ptr);
     }
 
     public double CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return Native->CallDoubleMethodA(obj, Address, ptr);
+            return env_->CallDoubleMethod(obj, Descriptor, ptr);
     }
 }
 
 public unsafe class JEnumMethod<T> : JMethod where T : struct, Enum
 {
-    public JEnumMethod(LHandle handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+    public JEnumMethod(MethodDescriptor handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
 
     public readonly JEnum<T> ReturnEnumType;
 
-    public java.lang.Enum<T> Call(JObject obj, params JValue[] args)
+    public JEnumTuple<T> Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
         {
-            using var data = LJObject.Create(Native->CallNonvirtualObjectMethodA(obj, Clazz, Address, ptr));
+            using var data = JObject.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
             return ReturnEnumType[data];
         }
     }
 
-    public java.lang.Enum<T> CallVirt(JObject obj, params JValue[] args)
+    public JEnumTuple<T> CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
         {
-            using var data = LJObject.Create(Native->CallObjectMethodA(obj, Address, ptr));
+            using var data = JObject.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
             return ReturnEnumType[data];
         }
     }

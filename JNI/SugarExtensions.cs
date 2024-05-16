@@ -1,13 +1,11 @@
-﻿using JNI.Core;
-
-namespace JNI;
+﻿namespace JNI;
 public static unsafe class SugarExtensions
 {
     public static Arg[] ToArgs(this TypeInfo[] arr)
     {
         var ret = new Arg[arr.Length];
         for (int i = 0; i < arr.Length; i++)
-            ret[i] = new Arg(arr[i]);
+            ret[i] = new(arr[i]);
         return ret;
     }
 
@@ -18,12 +16,6 @@ public static unsafe class SugarExtensions
             result[i] = arr[i].ToStruct();
         return result;
     }
-
-    public static string AsLetterHex(this nint addr, char letter) => $"0{letter}" + addr.ToInt64().ToString("X");
-
-    public static string TransformHex(this string hex) => "0x" + (string.IsNullOrEmpty(hex) ? "0" : hex);
-
-    public static string AsHex(this nint addr) => addr.ToInt64().ToString("X").TransformHex();
 
     public static string AsJavaPath(this string path) => path.Replace('.', '/');
 }

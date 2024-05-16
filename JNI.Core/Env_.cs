@@ -1,7 +1,6 @@
 ﻿using Memory;
 
 namespace JNI.Core;
-
 public unsafe struct Env_
 {
     public JNINativeInterface_* functions;
@@ -220,21 +219,7 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
-    public nint NewObject(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->NewObjectV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint NewObjectV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->NewObjectV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint NewObjectA(nint clazz, nint methodID, void* args)
+    public nint NewObject(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->NewObjectA(env, clazz, methodID, args);
@@ -257,8 +242,6 @@ public unsafe struct Env_
     [MethImpl(AggressiveInlining)]
     public nint GetMethodID(nint clazz, string name, string sig)
     {
-        File.AppendAllLines(@"C:\a.txt", [$"s: \'{name}\' \'{sig}\'"]);
-
         using var coName = new CoMem(name);
         using var coSig = new CoMem(name);
         fixed (Env_* env = &this)
@@ -273,420 +256,139 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
-    public nint CallObjectMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallObjectMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallObjectMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallObjectMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallObjectMethodA(nint obj, nint methodID, void* args)
+    public nint CallObjectMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallObjectMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public bool CallBooleanMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallBooleanMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallBooleanMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallBooleanMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallBooleanMethodA(nint obj, nint methodID, void* args)
+    public bool CallBooleanMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallBooleanMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public byte CallByteMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallByteMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallByteMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallByteMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallByteMethodA(nint obj, nint methodID, void* args)
+    public byte CallByteMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallByteMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public char CallCharMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallCharMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallCharMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallCharMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallCharMethodA(nint obj, nint methodID, void* args)
+    public char CallCharMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallCharMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public short CallShortMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallShortMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallShortMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallShortMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallShortMethodA(nint obj, nint methodID, void* args)
+    public short CallShortMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallShortMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public int CallIntMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallIntMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallIntMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallIntMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallIntMethodA(nint obj, nint methodID, void* args)
+    public int CallIntMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallIntMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public long CallLongMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallLongMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallLongMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallLongMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallLongMethodA(nint obj, nint methodID, void* args)
+    public long CallLongMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallLongMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public float CallFloatMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallFloatMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallFloatMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallFloatMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallFloatMethodA(nint obj, nint methodID, void* args)
+    public float CallFloatMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallFloatMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public double CallDoubleMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallDoubleMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallDoubleMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallDoubleMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallDoubleMethodA(nint obj, nint methodID, void* args)
+    public double CallDoubleMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallDoubleMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public void CallVoidMethod(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallVoidMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallVoidMethodV(nint obj, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallVoidMethodV(env, obj, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallVoidMethodA(nint obj, nint methodID, void* args)
+    public void CallVoidMethod(nint obj, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallVoidMethodA(env, obj, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public nint CallNonvirtualObjectMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallNonvirtualObjectMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallNonvirtualObjectMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public nint CallNonvirtualObjectMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualObjectMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public bool CallNonvirtualBooleanMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualBooleanMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallNonvirtualBooleanMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualBooleanMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallNonvirtualBooleanMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public bool CallNonvirtualBooleanMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualBooleanMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public byte CallNonvirtualByteMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualByteMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallNonvirtualByteMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualByteMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallNonvirtualByteMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public byte CallNonvirtualByteMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualByteMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public char CallNonvirtualCharMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualCharMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallNonvirtualCharMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualCharMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallNonvirtualCharMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public char CallNonvirtualCharMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualCharMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public short CallNonvirtualShortMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualShortMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallNonvirtualShortMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualShortMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallNonvirtualShortMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public short CallNonvirtualShortMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualShortMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public int CallNonvirtualIntMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualIntMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallNonvirtualIntMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualIntMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallNonvirtualIntMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public int CallNonvirtualIntMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualIntMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public long CallNonvirtualLongMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualLongMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallNonvirtualLongMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualLongMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallNonvirtualLongMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public long CallNonvirtualLongMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualLongMethodA(env, obj, clazz, methodID, args);
     }
-
     [MethImpl(AggressiveInlining)]
-    public float CallNonvirtualFloatMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualFloatMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallNonvirtualFloatMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualFloatMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallNonvirtualFloatMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public float CallNonvirtualFloatMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualFloatMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public double CallNonvirtualDoubleMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualDoubleMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallNonvirtualDoubleMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallNonvirtualDoubleMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallNonvirtualDoubleMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public double CallNonvirtualDoubleMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallNonvirtualDoubleMethodA(env, obj, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public void CallNonvirtualVoidMethod(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallNonvirtualVoidMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallNonvirtualVoidMethodV(nint obj, nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallNonvirtualVoidMethodV(env, obj, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallNonvirtualVoidMethodA(nint obj, nint clazz, nint methodID, void* args)
+    public void CallNonvirtualVoidMethod(nint obj, nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallNonvirtualVoidMethodA(env, obj, clazz, methodID, args);
@@ -853,210 +555,70 @@ public unsafe struct Env_
     }
 
     [MethImpl(AggressiveInlining)]
-    public nint CallStaticObjectMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticObjectMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallStaticObjectMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticObjectMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public nint CallStaticObjectMethodA(nint clazz, nint methodID, void* args)
+    public nint CallStaticObjectMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticObjectMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public bool CallStaticBooleanMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticBooleanMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallStaticBooleanMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticBooleanMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public bool CallStaticBooleanMethodA(nint clazz, nint methodID, void* args)
+    public bool CallStaticBooleanMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticBooleanMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public byte CallStaticByteMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticByteMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallStaticByteMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticByteMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public byte CallStaticByteMethodA(nint clazz, nint methodID, void* args)
+    public byte CallStaticByteMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticByteMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public char CallStaticCharMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticCharMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallStaticCharMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticCharMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public char CallStaticCharMethodA(nint clazz, nint methodID, void* args)
+    public char CallStaticCharMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticCharMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public short CallStaticShortMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticShortMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallStaticShortMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticShortMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public short CallStaticShortMethodA(nint clazz, nint methodID, void* args)
+    public short CallStaticShortMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticShortMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public int CallStaticIntMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticIntMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallStaticIntMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticIntMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public int CallStaticIntMethodA(nint clazz, nint methodID, void* args)
+    public int CallStaticIntMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticIntMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public long CallStaticLongMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticLongMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallStaticLongMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticLongMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public long CallStaticLongMethodA(nint clazz, nint methodID, void* args)
+    public long CallStaticLongMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticLongMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public float CallStaticFloatMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticFloatMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallStaticFloatMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticFloatMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public float CallStaticFloatMethodA(nint clazz, nint methodID, void* args)
+    public float CallStaticFloatMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticFloatMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public double CallStaticDoubleMethod(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticDoubleMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallStaticDoubleMethodV(nint clazz, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            return functions->CallStaticDoubleMethodV(env, clazz, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public double CallStaticDoubleMethodA(nint clazz, nint methodID, void* args)
+    public double CallStaticDoubleMethod(nint clazz, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             return functions->CallStaticDoubleMethodA(env, clazz, methodID, args);
     }
 
     [MethImpl(AggressiveInlining)]
-    public void CallStaticVoidMethod(nint cls, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallStaticVoidMethodV(env, cls, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallStaticVoidMethodV(nint cls, nint methodID, ArgIterator args)
-    {
-        fixed (Env_* env = &this)
-            functions->CallStaticVoidMethodV(env, cls, methodID, args);
-    }
-
-    [MethImpl(AggressiveInlining)]
-    public void CallStaticVoidMethodA(nint cls, nint methodID, void* args)
+    public void CallStaticVoidMethod(nint cls, nint methodID, void* args)
     {
         fixed (Env_* env = &this)
             functions->CallStaticVoidMethodA(env, cls, methodID, args);
@@ -1788,7 +1350,7 @@ public unsafe struct Env_
 
     [MethImpl(AggressiveInlining)]
     public JObjRefType GetObjectRefType(nint obj)
-    {
+    {   
         fixed (Env_* env = &this)
             return functions->GetObjectRefType(env, obj);
     }

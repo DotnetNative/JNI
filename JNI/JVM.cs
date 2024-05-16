@@ -1,30 +1,50 @@
-﻿using JNI.Core;
-namespace JNI;
-public sealed unsafe class JVM
+﻿namespace JNI;
+public static unsafe class JVM
 {
-    public JVM(JVM_* jvm) => Native = jvm;
+    [DllImport("jvm", CallingConvention = CallingConvention.StdCall)] public static extern
+        int JNI_GetCreatedJavaVMs(JVM_** jvms, int size, int* sizePtr);
 
-    public readonly JVM_* Native;
+    public static int JVM_INDEX = 0;
 
-    public Env_* NativeAttachCurrentThread(void* args = null)
+    public static JVM_* GetJVM()
     {
-        Env_* env;
-        Native->AttachCurrentThread((void**)&env, args);
-        return env;
+        int count;
+        JNI_GetCreatedJavaVMs(null, 0, &count);
+        JVM_*[] jvms = new JVM_*[count];
+        fixed (JVM_** jvmPrr = jvms)
+            JNI_GetCreatedJavaVMs(jvmPrr, count, &count);
+
+        if (jvms.Length <= JVM_INDEX)
+            throw new MessageBoxException($"JVM.JVM_INDEX is bigger than count of available java virtual machines. JVM_INDEX = {JVM_INDEX}. Count of available JVM is {jvms.Length}");
+
+        return jvms[JVM_INDEX];
     }
 
-    public Env AttachCurrentThread(void* args = null) => new(NativeAttachCurrentThread(args));
-
-    public Env_* NativeAttachCurrentThreadAsDaemon(void* args = null)
+    public static void AttachCurrentThread(void* args = null)
     {
-        Env_* env;
-        Native->AttachCurrentThreadAsDaemon((void**)&env, args);
-        return env;
+        var jvm = GetJVM();
+        Env_* e_;
+        jvm->AttachCurrentThread((void**)&e_, args);
+        var e = new Env(e_);
     }
 
-    public Env AttachCurrentThreadAsDaemon(void* args = null) => new(NativeAttachCurrentThreadAsDaemon(args));
+    public static void AttachCurrentThreadAsDaemon(void* args = null)
+    {
+        var jvm = GetJVM();
+        Env_* e_;
+        jvm->AttachCurrentThreadAsDaemon((void**)&e_, args);
+        var e = new Env(e_);
+    }
 
-    public void DetachCurrentThread() => Native->DetachCurrentThread();
+    public static void DetachCurrentThread()
+    {
+        var jvm = GetJVM();
+        jvm->DetachCurrentThread();
+    }
 
-    public void DestroyJVM() => Native->DestroyJavaVM();
+    public static void DestroyJVM()
+    {
+        var jvm = GetJVM();
+        jvm->DestroyJavaVM();
+    }
 }

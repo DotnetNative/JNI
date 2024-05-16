@@ -1,74 +1,72 @@
 ﻿namespace JNI;
 public unsafe abstract class JStaticField : JFieldInstance
 {
-    public JStaticField(EnvHandle handle, string name, TypeInfo type, JClass clazz) : base(handle, name, type) => Clazz = clazz;
+    public JStaticField(FieldDescriptor descriptor, string name, TypeInfo type, JClass clazz) : base(descriptor, name, type) => Class = clazz;
 
-    public readonly JClass Clazz;
-}
-
-public unsafe class JStaticStringField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.String, clazz)
-{
-    public java.lang.String Value { get => new(LHandle.Create(Native->GetStaticObjectField(Clazz, Address))); set => Native->SetStaticObjectField(Clazz, Address, value); }
-    public java.lang.String GValue { get => new(GHandle.Create(Native->GetStaticObjectField(Clazz, Address))); set => Native->SetStaticObjectField(Clazz, Address, value); }
-}
-public unsafe class JStaticObjectField(LHandle handle, string name, TypeInfo type, JClass clazz) : JStaticField(handle, name, type, clazz)
-{
-    public LJObject Value { get => LJObject.Create(Native->GetStaticObjectField(Clazz, Address)); set => Native->SetStaticObjectField(Clazz, Address, value); }
-    public GJObject GValue { get => GJObject.Create(Native->GetStaticObjectField(Clazz, Address)); set => Native->SetStaticObjectField(Clazz, Address, value); }
-}
-public unsafe class JStaticBoolField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Bool, clazz)
-{
-    public bool Value { get => Native->GetStaticBooleanField(Clazz, Address); set => Native->SetStaticBooleanField(Clazz, Address, value); }
+    public readonly JClass Class;
 }
 
-public unsafe class JStaticByteField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Byte, clazz)
+public unsafe class JStaticStringField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.String, clazz)
 {
-    public byte Value { get => Native->GetStaticByteField(Clazz, Address); set => Native->SetStaticByteField(Clazz, Address, value); }
+    public JString Value { get => new(HandleImpl.Create(env_->GetStaticObjectField(Class, Descriptor))); set => env_->SetStaticObjectField(Class, Descriptor, value); }
+}
+public unsafe class JStaticObjectField(FieldDescriptor descriptor, string name, TypeInfo type, JClass clazz) : JStaticField(descriptor, name, type, clazz)
+{
+    public JObject Value { get => JObject.Create(env_->GetStaticObjectField(Class, Descriptor)); set => env_->SetStaticObjectField(Class, Descriptor, value); }
+}
+public unsafe class JStaticBoolField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Bool, clazz)
+{
+    public bool Value { get => env_->GetStaticBooleanField(Class, Descriptor); set => env_->SetStaticBooleanField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticShortField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Short, clazz)
+public unsafe class JStaticByteField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Byte, clazz)
 {
-    public short Value { get => Native->GetStaticShortField(Clazz, Address); set => Native->SetStaticShortField(Clazz, Address, value); }
+    public byte Value { get => env_->GetStaticByteField(Class, Descriptor); set => env_->SetStaticByteField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticCharField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Char, clazz)
+public unsafe class JStaticShortField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Short, clazz)
 {
-    public char Value { get => Native->GetStaticCharField(Clazz, Address); set => Native->SetStaticCharField(Clazz, Address, value); }
+    public short Value { get => env_->GetStaticShortField(Class, Descriptor); set => env_->SetStaticShortField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticIntField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Int, clazz)
+public unsafe class JStaticCharField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Char, clazz)
 {
-    public int Value { get => Native->GetStaticIntField(Clazz, Address); set => Native->SetStaticIntField(Clazz, Address, value); }
+    public char Value { get => env_->GetStaticCharField(Class, Descriptor); set => env_->SetStaticCharField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticLongField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Long, clazz)
+public unsafe class JStaticIntField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Int, clazz)
 {
-    public long Value { get => Native->GetStaticLongField(Clazz, Address); set => Native->SetStaticLongField(Clazz, Address, value); }
+    public int Value { get => env_->GetStaticIntField(Class, Descriptor); set => env_->SetStaticIntField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticFloatField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Float, clazz)
+public unsafe class JStaticLongField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Long, clazz)
 {
-    public float Value { get => Native->GetStaticFloatField(Clazz, Address); set => Native->SetStaticFloatField(Clazz, Address, value); }
+    public long Value { get => env_->GetStaticLongField(Class, Descriptor); set => env_->SetStaticLongField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticDoubleField(LHandle handle, string name, JClass clazz) : JStaticField(handle, name, handle.Env.Types.Double, clazz)
+public unsafe class JStaticFloatField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Float, clazz)
 {
-    public double Value { get => Native->GetStaticDoubleField(Clazz, Address); set => Native->SetStaticDoubleField(Clazz, Address, value); }
+    public float Value { get => env_->GetStaticFloatField(Class, Descriptor); set => env_->SetStaticFloatField(Class, Descriptor, value); }
+}
+
+public unsafe class JStaticDoubleField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Double, clazz)
+{
+    public double Value { get => env_->GetStaticDoubleField(Class, Descriptor); set => env_->SetStaticDoubleField(Class, Descriptor, value); }
 }
 
 public unsafe class JStaticEnumField<T> : JStaticField where T : struct, Enum
 {
-    public JStaticEnumField(LHandle handle, string name, JEnum<T> type, JClass clazz) : base(handle, name, type, clazz) => EnumType = type;
+    public JStaticEnumField(FieldDescriptor descriptor, string name, JEnum<T> type, JClass clazz) : base(descriptor, name, type, clazz) => EnumType = type;
 
     public JEnum<T> EnumType;
 
-    public java.lang.Enum<T> Value
+    public JEnumTuple<T> Value
     {
         get
         {
-            using var data = LJObject.Create(Native->GetStaticObjectField(Clazz, Address));
+            using var data = JObject.Create(env_->GetStaticObjectField(Class, Descriptor));
             return EnumType[data];
         }
-        set => Native->SetStaticObjectField(Clazz, Address, value);
+        set => env_->SetStaticObjectField(Class, Descriptor, value);
     }
 }

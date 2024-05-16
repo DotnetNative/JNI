@@ -1,24 +1,31 @@
 ﻿namespace JNI;
-
-/// <summary>
-/// Contains address of jvm object, like <see cref="JObject"/>, <see cref="JField"/> and etc
-/// </summary>
 public unsafe abstract class Handle
 {
-    /// <summary>
-    /// An address that represents where the object is stored. This is not necessarily a valid address, may be field or method descriptor
-    /// </summary>
-    public abstract nint Address { get; set; }
-
-    protected private bool disposed;
+    public abstract nint LocalAddress { get; }
+    public abstract nint Address { get; }
+    public abstract bool IsDisposed { get; }
+    public abstract void DisposeHandle();
 
     /// <summary>
     /// Checks if handle is null. This check can't be used for <see cref="JObject"/>
     /// </summary>
     public bool IsNull => Address == nint.Zero;
 
-    public override string ToString() => $"{Address:X2}";
+    public delegate void OnCreateDelegate(Handle handle);
+    public static event OnCreateDelegate? OnCreate;
+    public static event OnCreateDelegate? OnDispose;
+
+    public override string ToString() => $"{Address:X}";
+
+    internal static void InvokeOnCreate(Handle handle) => OnCreate?.Invoke(handle);
+    internal static void InvokeOnDispose(Handle handle) => OnDispose?.Invoke(handle);
 
     public static implicit operator nint(Handle value) => value.Address;
     public static implicit operator void*(Handle value) => (void*)value.Address;
+}
+
+public static class HandleController
+{
+    public static void InvokeOnCreate(Handle handle) => Handle.InvokeOnCreate(handle);
+    public static void InvokeOnDispose(Handle handle) => Handle.InvokeOnDispose(handle);
 }

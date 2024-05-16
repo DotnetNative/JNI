@@ -1,14 +1,18 @@
 ﻿namespace JNI;
-public class MethodData : MethodHandle
+public abstract class MethodData
 {
-    public MethodData(EnvHandle handle, string name, TypeInfo info, Arg[] args) : base(handle)
+    public MethodData(MethodDescriptor descriptor, string name, TypeInfo info, Arg[] args)
     {
-        MethodName = name;
+        Descriptor = descriptor;
+        Name = name;
         ReturnType = info;
         Signature = SigGen.Method(info, args);
     }
 
-    public readonly string MethodName;
+    public readonly string Name;
     public readonly string Signature;
     public readonly TypeInfo ReturnType;
+    public readonly MethodDescriptor Descriptor;
+
+    public static implicit operator nint(MethodData data) => data.Descriptor;
 }

@@ -1,7 +1,7 @@
 ﻿namespace JNI;
 public abstract class JMethodInstance : MethodData
 {
-    public JMethodInstance(EnvHandle handle, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(handle, name, type, args) => Clazz = clazz;
+    public JMethodInstance(MethodDescriptor descriptor, string name, TypeInfo type, JClass clazz, params Arg[] args) : base(descriptor, name, type, args) => Class = clazz;
 
-    public readonly JClass Clazz;
+    public readonly JClass Class;
 }

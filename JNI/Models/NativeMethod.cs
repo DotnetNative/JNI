@@ -1,25 +1,17 @@
-﻿using JNI.Core;
-using Memory;
-
-namespace JNI;
+﻿namespace JNI;
 public sealed unsafe class NativeMethod
 {
-    public NativeMethod(string name, void* funcPtr, TypeInfo retType, params Arg[] args)
+    public NativeMethod(string name, pointer functionPointer, TypeInfo retType, params Arg[] args)
     {
         Name = name;
         Sig = SigGen.Method(retType, args);
-        FuncPtr = funcPtr;
+        FunctionPointer = functionPointer;
     }
-
-    public NativeMethod(string name, void* funcPtr, TypeInfo retType, params TypeInfo[] args) : this(name, funcPtr, retType, args.ToArgs()) { }
-
-    public NativeMethod(string name, nint funcAddr, TypeInfo retType, params Arg[] args) : this(name, funcAddr.ToPointer(), retType, args) { }
-
-    public NativeMethod(string name, nint funcAddr, TypeInfo retType, params TypeInfo[] args) : this(name, funcAddr.ToPointer(), retType, args.ToArgs()) { }
+    public NativeMethod(string name, pointer functionPointer, TypeInfo retType, params TypeInfo[] args) : this(name, functionPointer, retType, args.ToArgs()) { }
 
     public readonly string Name;
     public readonly string Sig;
-    public readonly void* FuncPtr;
+    public readonly pointer FunctionPointer;
 
     public NativeMethod_ ToStruct()
     {
@@ -27,6 +19,7 @@ public sealed unsafe class NativeMethod
         nameCo.MarkAsDisposed();
         var sigCo = new CoMem(Sig);
         sigCo.MarkAsDisposed();
-        return new(nameCo.Ptr, sigCo.Ptr, (byte*)FuncPtr);
+
+        return new(nameCo, sigCo, FunctionPointer);
     }
 }

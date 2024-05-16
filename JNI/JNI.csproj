@@ -50,4 +50,15 @@
 	<RuntimeHostConfigurationOption Include="Switch.System.Reflection.Disabled.DoNotThrowForAssembly" Value="true" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include=" System.Text" />
+    <Using Include="JNI.Core" />
+    <Using Include="JNI.Env">
+      <Static>True</Static>
+    </Using>
+    <Using Include="Memory" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.Runtime.InteropServices" />
+  </ItemGroup>
+
 </Project>
