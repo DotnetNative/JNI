@@ -100,13 +100,13 @@ public unsafe class JStaticDoubleMethod(MethodDescriptor descriptor, string name
     }
 }
 
-public unsafe class JStaticEnumMethod<T> : JStaticMethod where T : struct, Enum
+public unsafe class JStaticEnumMethod : JStaticMethod
 {
-    public JStaticEnumMethod(MethodDescriptor descriptor, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(descriptor, name, type, clazz, args) => ReturnEnumType = type;
+    public JStaticEnumMethod(MethodDescriptor descriptor, string name, JEnum type, JClass clazz, params Arg[] args) : base(descriptor, name, type, clazz, args) => ReturnEnumType = type;
 
-    public JEnum<T> ReturnEnumType;
+    public JEnum ReturnEnumType;
 
-    public JEnumTuple<T> Call(params JValue[] args)
+    public JEnumTuple Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
         {

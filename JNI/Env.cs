@@ -47,7 +47,8 @@ public sealed unsafe class Env
     public JType GetType(string nameAndSig, int dim = 0) => new(HandleImpl.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
     public JType GetType(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Name)), info);
 
-    public JEnum<T> GetEnum<T>(string name) where T : struct, Enum => new(HandleImpl.Create(GetClassHandle(name)), new(name));
+    public JEnum GetEnum(string name) => new(HandleImpl.Create(GetClassHandle(name)), new(name));
+    public JEnum GetEnum(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Name)), info);
 
     public JClass DefineClass(string name, JObject loader, byte[] bytes)
     {

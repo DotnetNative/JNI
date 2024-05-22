@@ -31,7 +31,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
     public JLongField GetLongField(string name) => new(GetFieldHandle(name, Types.Long), name);
     public JFloatField GetFloatField(string name) => new(GetFieldHandle(name, Types.Float), name);
     public JDoubleField GetDoubleField(string name) => new(GetFieldHandle(name, Types.Double), name);
-    public JEnumField<T> GetEnumField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetFieldHandle(name, jenum), name, jenum);
+    public JEnumField GetEnumField(string name, JEnum jenum) => new(GetFieldHandle(name, jenum), name, jenum);
 
     public JStaticStringField GetStaticStringField(string name) => new(GetStaticFieldHandle(name, Types.String), name, this);
     public JStaticObjectField GetStaticObjectField(string name, TypeInfo type) => new(GetStaticFieldHandle(name, type), name, type, this);
@@ -43,7 +43,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
     public JStaticLongField GetStaticLongField(string name) => new(GetStaticFieldHandle(name, Types.Long), name, this);
     public JStaticFloatField GetStaticFloatField(string name) => new(GetStaticFieldHandle(name, Types.Float), name, this);
     public JStaticDoubleField GetStaticDoubleField(string name) => new(GetStaticFieldHandle(name, Types.Double), name, this);
-    public JStaticEnumField<T> GetStaticEnumField<T>(string name, JEnum<T> jenum) where T : struct, Enum => new(GetStaticFieldHandle(name, jenum), name, jenum, this);
+    public JStaticEnumField GetStaticEnumField(string name, JEnum jenum) => new(GetStaticFieldHandle(name, jenum), name, jenum, this);
     #endregion
 
     #region Method
@@ -76,7 +76,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
     public JLongMethod GetLongMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Long, args), name, this, args);
     public JFloatMethod GetFloatMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Float, args), name, this, args);
     public JDoubleMethod GetDoubleMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Double, args), name, this, args);
-    public JEnumMethod<T> GetEnumMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetMethodHandle(name, jenum, args), name, jenum, this, args);
+    public JEnumMethod GetEnumMethod(string name, JEnum jenum, params Arg[] args) => new(GetMethodHandle(name, jenum, args), name, jenum, this, args);
 
     public JStaticStringMethod GetStaticStringMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Types.String, args), name, this, args);
     public JStaticObjectMethod GetStaticObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetStaticMethodHandle(name, type, args), name, type, this, args);
@@ -89,7 +89,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
     public JStaticLongMethod GetStaticLongMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Types.Long, args), name, this, args);
     public JStaticFloatMethod GetStaticFloatMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Types.Float, args), name, this, args);
     public JStaticDoubleMethod GetStaticDoubleMethod(string name, params Arg[] args) => new(GetStaticMethodHandle(name, Types.Double, args), name, this, args);
-    public JStaticEnumMethod<T> GetStaticEnumMethod<T>(string name, JEnum<T> jenum, params Arg[] args) where T : struct, Enum => new(GetStaticMethodHandle(name, jenum, args), name, jenum, this, args);
+    public JStaticEnumMethod GetStaticEnumMethod(string name, JEnum jenum, params Arg[] args) => new(GetStaticMethodHandle(name, jenum, args), name, jenum, this, args);
     #endregion
 
     public JClass Superclass => new(HandleImpl.Create(env_->GetSuperclass(Address)));

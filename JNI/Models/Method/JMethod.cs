@@ -180,13 +180,13 @@ public unsafe class JDoubleMethod(MethodDescriptor handle, string name, JClass c
     }
 }
 
-public unsafe class JEnumMethod<T> : JMethod where T : struct, Enum
+public unsafe class JEnumMethod : JMethod
 {
-    public JEnumMethod(MethodDescriptor handle, string name, JEnum<T> type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
+    public JEnumMethod(MethodDescriptor handle, string name, JEnum type, JClass clazz, params Arg[] args) : base(handle, name, type, clazz, args) => ReturnEnumType = type;
 
-    public readonly JEnum<T> ReturnEnumType;
+    public readonly JEnum ReturnEnumType;
 
-    public JEnumTuple<T> Call(JObject obj, params JValue[] args)
+    public JEnumTuple Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
         {
@@ -195,7 +195,7 @@ public unsafe class JEnumMethod<T> : JMethod where T : struct, Enum
         }
     }
 
-    public JEnumTuple<T> CallVirt(JObject obj, params JValue[] args)
+    public JEnumTuple CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
         {

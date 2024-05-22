@@ -54,18 +54,28 @@ public unsafe class JStaticDoubleField(FieldDescriptor descriptor, string name, 
     public double Value { get => env_->GetStaticDoubleField(Class, Descriptor); set => env_->SetStaticDoubleField(Class, Descriptor, value); }
 }
 
-public unsafe class JStaticEnumField<T> : JStaticField where T : struct, Enum
+public unsafe class JStaticEnumField : JStaticField
 {
-    public JStaticEnumField(FieldDescriptor descriptor, string name, JEnum<T> type, JClass clazz) : base(descriptor, name, type, clazz) => EnumType = type;
+    public JStaticEnumField(FieldDescriptor descriptor, string name, JEnum type, JClass clazz) : base(descriptor, name, type, clazz) => EnumType = type;
 
-    public JEnum<T> EnumType;
+    public JEnum EnumType;
 
-    public JEnumTuple<T> Value
+    public JEnumTuple Value
     {
         get
         {
             using var data = JObject.Create(env_->GetStaticObjectField(Class, Descriptor));
             return EnumType[data];
+        }
+        set => env_->SetStaticObjectField(Class, Descriptor, value);
+    }
+
+    public EnumNotion JValue
+    {
+        get
+        {
+            using var data = JObject.Create(env_->GetStaticObjectField(Class, Descriptor));
+            return new(data);
         }
         set => env_->SetStaticObjectField(Class, Descriptor, value);
     }

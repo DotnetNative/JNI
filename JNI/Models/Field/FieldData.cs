@@ -14,5 +14,7 @@ public abstract class FieldData
     public readonly TypeInfo Type;
     public readonly FieldDescriptor Descriptor;
 
+    public override string ToString() => $"0x{Descriptor.Descriptor:X}";
+
     public static implicit operator nint(FieldData data) => data.Descriptor;
 }

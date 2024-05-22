@@ -950,56 +950,56 @@ public unsafe struct Env_
 
 
     [MethImpl(AggressiveInlining)]
-    public bool* GetBooleanArrayElements(nint array, bool isCopy)
+    public bool* GetBooleanArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetBooleanArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public byte* GetByteArrayElements(nint array, bool isCopy)
+    public byte* GetByteArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetByteArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public char* GetCharArrayElements(nint array, bool isCopy)
+    public char* GetCharArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetCharArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public short* GetShortArrayElements(nint array, bool isCopy)
+    public short* GetShortArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetShortArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public int* GetIntArrayElements(nint array, bool isCopy)
+    public int* GetIntArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetIntArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public long* GetLongArrayElements(nint array, bool isCopy)
+    public long* GetLongArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetLongArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public float* GetFloatArrayElements(nint array, bool isCopy)
+    public float* GetFloatArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetFloatArrayElements(env, array, &isCopy);
     }
 
     [MethImpl(AggressiveInlining)]
-    public double* GetDoubleArrayElements(nint array, bool isCopy)
+    public double* GetDoubleArrayElements(nint array, bool isCopy = false)
     {
         fixed (Env_* env = &this)
             return functions->GetDoubleArrayElements(env, array, &isCopy);

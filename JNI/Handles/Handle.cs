@@ -1,4 +1,5 @@
 ﻿namespace JNI;
+public delegate void OnCreateDelegateHandle(Handle handle);
 public unsafe abstract class Handle
 {
     public abstract nint LocalAddress { get; }
@@ -11,9 +12,8 @@ public unsafe abstract class Handle
     /// </summary>
     public bool IsNull => Address == nint.Zero;
 
-    public delegate void OnCreateDelegate(Handle handle);
-    public static event OnCreateDelegate? OnCreate;
-    public static event OnCreateDelegate? OnDispose;
+    public static event OnCreateDelegateHandle? OnCreate;
+    public static event OnCreateDelegateHandle? OnDispose;
 
     public override string ToString() => $"{Address:X}";
 

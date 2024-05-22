@@ -63,16 +63,17 @@ public unsafe class JDoubleField(FieldDescriptor descriptor, string name) : JFie
     public void Set(JObject obj, double value) => env_->SetDoubleField(obj, Descriptor, value);
 }
 
-public unsafe class JEnumField<T> : JField where T : struct, Enum
+public unsafe class JEnumField : JField
 {
-    public JEnumField(FieldDescriptor descriptor, string name, JEnum<T> type) : base(descriptor, name, type) => EnumType = type;
+    public JEnumField(FieldDescriptor descriptor, string name, JEnum type) : base(descriptor, name, type) => EnumType = type;
 
-    public JEnum<T> EnumType;
+    public JEnum EnumType;
 
-    public JEnumTuple<T> Get(JObject obj)
+    public JEnumTuple Get(JObject obj)
     {
         using var data = JObject.Create(env_->GetObjectField(obj, Descriptor));
         return EnumType[data];
     }
-    public void Set(JObject obj, JEnumTuple<T> value) => env_->SetObjectField(obj, Descriptor, value);
+    public void Set(JObject obj, JEnumTuple value) => env_->SetObjectField(obj, Descriptor, value);
+    public void Set(JObject obj, EnumNotion value) => env_->SetObjectField(obj, Descriptor, value);
 }

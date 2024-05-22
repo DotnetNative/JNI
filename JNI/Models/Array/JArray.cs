@@ -6,31 +6,10 @@ public unsafe abstract class JArray : HandleContainer
     public readonly int Length;
 }
 
-public unsafe class JStringArray(Handle handle) : JArray(handle)
+public unsafe abstract class JObjectArray<T>(Handle handle) : JArray(handle) where T : Handle
 {
-    public JString this[int index] { get => new(Get(index)); set => env_->SetObjectArrayElement(Address, index, value); }
-    public JString Get(int index) => new(JObject.Create(env_->GetObjectArrayElement(Address, index)));
-
-    public bool Contains(JString item) => IndexOf(item) != -1;
-
-    public int IndexOf(JString item)
-    {
-        var e = env_;
-        int length = Length;
-        for (int i = 0; i < length; i++)
-        {
-            var obj = e->GetObjectArrayElement(Address, i);
-            if (e->IsSameObject(obj, item))
-                return i;
-        }
-        return -1;
-    }
-}
-
-public unsafe class JObjectArray(Handle handle) : JArray(handle)
-{
-    public JObject this[int index] { get => Get(index); set => env_->SetObjectArrayElement(Address, index, value); }
-    public JObject Get(int index) => JObject.Create(env_->GetObjectArrayElement(Address, index));
+    public T this[int index] { get => Get(index); set => env_->SetObjectArrayElement(Address, index, value); }
+    public T Get(int index) => FromHandle(HandleImpl.Create(env_->GetObjectArrayElement(Address, index)));
 
     public bool Contains(JObject item) => IndexOf(item) != -1;
 
@@ -47,16 +26,26 @@ public unsafe class JObjectArray(Handle handle) : JArray(handle)
         return -1;
     }
 
-    public JObject[] ToArray()
+    public T[] ToArray()
     {
         var e_ = env_;
         var length = Length;
-        var array = new JObject[length];
+        var array = new T[length];
         for (int i = 0; i < length; i++)
-            array[i] = JObject.Create(e_->GetObjectArrayElement(Address, i));
+            array[i] = FromHandle(HandleImpl.Create(e_->GetObjectArrayElement(Address, i)));
         return array;
     }
+
+    protected abstract T FromHandle(Handle handle);
 }
+
+public class JStringArray(Handle handle) : JObjectArray<JString>(handle) { protected override JString FromHandle(Handle handle) => new(handle); }
+public class JStringArray2D(Handle handle) : JObjectArray<JStringArray>(handle) { protected override JStringArray FromHandle(Handle handle) => new(handle); }
+public class JStringArray3D(Handle handle) : JObjectArray<JStringArray2D>(handle) { protected override JStringArray2D FromHandle(Handle handle) => new(handle); }
+
+public class JObjectArray(Handle handle) : JObjectArray<JObject>(handle) { protected override JObject FromHandle(Handle handle) => JObject.Create(handle); }
+public class JObjectArray2D(Handle handle) : JObjectArray<JObjectArray>(handle) { protected override JObjectArray FromHandle(Handle handle) => new(handle); }
+public class JObjectArray3D(Handle handle) : JObjectArray<JObjectArray2D>(handle) { protected override JObjectArray2D FromHandle(Handle handle) => new(handle); }
 
 public unsafe abstract class JPrimitiveArray<T> : JArray where T : unmanaged
 {
@@ -72,11 +61,34 @@ public unsafe abstract class JPrimitiveArray<T> : JArray where T : unmanaged
     public int IndexOf(T item) => MemEx.IndexOf(Pointer, Length, item);
 }
 
-public unsafe class JBoolArray(Handle handle) : JPrimitiveArray<bool>(handle) { public override bool* GetElements() => env_->GetBooleanArrayElements(Address, false); }
-public unsafe class JByteArray(Handle handle) : JPrimitiveArray<byte>(handle) { public override byte* GetElements() => env_->GetByteArrayElements(Address, false); }
-public unsafe class JCharArray(Handle handle) : JPrimitiveArray<char>(handle) { public override char* GetElements() => env_->GetCharArrayElements(Address, false); }
-public unsafe class JShortArray(Handle handle) : JPrimitiveArray<short>(handle) { public override short* GetElements() => env_->GetShortArrayElements(Address, false); }
-public unsafe class JIntArray(Handle handle) : JPrimitiveArray<int>(handle) { public override int* GetElements() => env_->GetIntArrayElements(Address, false); }
-public unsafe class JLongArray(Handle handle) : JPrimitiveArray<long>(handle) { public override long* GetElements() => env_->GetLongArrayElements(Address, false); }
-public unsafe class JFloatArray(Handle handle) : JPrimitiveArray<float>(handle) { public override float* GetElements() => env_->GetFloatArrayElements(Address, false); }
-public unsafe class JDoubleArray(Handle handle) : JPrimitiveArray<double>(handle) { public override double* GetElements() => env_->GetDoubleArrayElements(Address, false); }
+public unsafe class JBoolArray(Handle handle) : JPrimitiveArray<bool>(handle) { public override bool* GetElements() => env_->GetBooleanArrayElements(Address); }
+public class JBoolArray2D(Handle handle) : JObjectArray<JBoolArray>(handle) { protected override JBoolArray FromHandle(Handle handle) => new(handle); }
+public class JBoolArray3D(Handle handle) : JObjectArray<JBoolArray2D>(handle) { protected override JBoolArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JByteArray(Handle handle) : JPrimitiveArray<byte>(handle) { public override byte* GetElements() => env_->GetByteArrayElements(Address); }
+public class JByteArray2D(Handle handle) : JObjectArray<JByteArray>(handle) { protected override JByteArray FromHandle(Handle handle) => new(handle); }
+public class JByteArray3D(Handle handle) : JObjectArray<JByteArray2D>(handle) { protected override JByteArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JCharArray(Handle handle) : JPrimitiveArray<char>(handle) { public override char* GetElements() => env_->GetCharArrayElements(Address); }
+public class JCharArray2D(Handle handle) : JObjectArray<JCharArray>(handle) { protected override JCharArray FromHandle(Handle handle) => new(handle); }
+public class JCharArray3D(Handle handle) : JObjectArray<JCharArray2D>(handle) { protected override JCharArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JShortArray(Handle handle) : JPrimitiveArray<short>(handle) { public override short* GetElements() => env_->GetShortArrayElements(Address); }
+public class JShortArray2D(Handle handle) : JObjectArray<JShortArray>(handle) { protected override JShortArray FromHandle(Handle handle) => new(handle); }
+public class JShortArray3D(Handle handle) : JObjectArray<JShortArray2D>(handle) { protected override JShortArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JIntArray(Handle handle) : JPrimitiveArray<int>(handle) { public override int* GetElements() => env_->GetIntArrayElements(Address); }
+public class JIntArray2D(Handle handle) : JObjectArray<JIntArray>(handle) { protected override JIntArray FromHandle(Handle handle) => new(handle); }
+public class JIntArray3D(Handle handle) : JObjectArray<JIntArray2D>(handle) { protected override JIntArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JLongArray(Handle handle) : JPrimitiveArray<long>(handle) { public override long* GetElements() => env_->GetLongArrayElements(Address); }
+public class JLongArray2D(Handle handle) : JObjectArray<JLongArray>(handle) { protected override JLongArray FromHandle(Handle handle) => new(handle); }
+public class JLongArray3D(Handle handle) : JObjectArray<JLongArray2D>(handle) { protected override JLongArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JFloatArray(Handle handle) : JPrimitiveArray<float>(handle) { public override float* GetElements() => env_->GetFloatArrayElements(Address); }
+public class JFloatArray2D(Handle handle) : JObjectArray<JFloatArray>(handle) { protected override JFloatArray FromHandle(Handle handle) => new(handle); }
+public class JFloatArray3D(Handle handle) : JObjectArray<JFloatArray2D>(handle) { protected override JFloatArray2D FromHandle(Handle handle) => new(handle); }
+
+public unsafe class JDoubleArray(Handle handle) : JPrimitiveArray<double>(handle) { public override double* GetElements() => env_->GetDoubleArrayElements(Address); }
+public class JDoubleArray2D(Handle handle) : JObjectArray<JDoubleArray>(handle) { protected override JDoubleArray FromHandle(Handle handle) => new(handle); }
+public class JDoubleArray3D(Handle handle) : JObjectArray<JDoubleArray2D>(handle) { protected override JDoubleArray2D FromHandle(Handle handle) => new(handle); }
