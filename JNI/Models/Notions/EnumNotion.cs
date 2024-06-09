@@ -12,12 +12,12 @@ public class EnumNotion(Handle handle) : JObject(handle)
         name = type.GetStringField("name");
     }
 
-    public int Ordinal => this[ordinal];
+    public int Ordinal => ordinal.Get(this);
     public string Name
     {
         get
         {
-            using var obj = this[name];
+            using var obj = name.Get(this);
             return obj.ToString();
         }
     }

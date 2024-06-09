@@ -39,16 +39,11 @@ public sealed unsafe class Env
 
     public JClass GetClass(string name) => new(HandleImpl.Create(GetClassHandle(name)));
 
-    public JType GetType(string name, string sig, int dim = 0)
-    {
-        var info = new TypeInfo(name.AsJavaPath(), sig.AsJavaPath(), dim);
-        return new(HandleImpl.Create(GetClassHandle(name)), info);
-    }
     public JType GetType(string nameAndSig, int dim = 0) => new(HandleImpl.Create(GetClassHandle(nameAndSig)), nameAndSig.AsJavaPath(), dim);
-    public JType GetType(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Name)), info);
+    public JType GetType(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Signature)), info);
 
     public JEnum GetEnum(string name) => new(HandleImpl.Create(GetClassHandle(name)), new(name));
-    public JEnum GetEnum(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Name)), info);
+    public JEnum GetEnum(TypeInfo info) => new(HandleImpl.Create(GetClassHandle(info.Signature)), info);
 
     public JClass DefineClass(string name, JObject loader, byte[] bytes)
     {
@@ -58,13 +53,13 @@ public sealed unsafe class Env
     #endregion
 
     #region Frame
-    public JObject PopLocalFrame(JObject result) => JObject.Create(Native->PopLocalFrame(result));
+    public JObject PopLocalFrame(JObject result) => JObjectImpl.Create(Native->PopLocalFrame(result));
     public int PushLocalFrame(int capacity) => Native->PushLocalFrame(capacity);
     #endregion
 
     #region Reflect
-    public JObject ToReflectedField(JClass clazz, FieldDescriptor field, bool isStatic = false) => JObject.Create(Native->ToReflectedField(clazz, field, isStatic));
-    public JObject ToReflectedMethod(JClass clazz, MethodDescriptor method, bool isStatic = false) => JObject.Create(Native->ToReflectedMethod(clazz, method, isStatic));
+    public JObject ToReflectedField(JClass clazz, FieldDescriptor field, bool isStatic = false) => JObjectImpl.Create(Native->ToReflectedField(clazz, field, isStatic));
+    public JObject ToReflectedMethod(JClass clazz, MethodDescriptor method, bool isStatic = false) => JObjectImpl.Create(Native->ToReflectedMethod(clazz, method, isStatic));
     public FieldDescriptor FromReflectedField(JObject field) => new(HandleImpl.Create(Native->FromReflectedField(field)));
     public MethodDescriptor FromReflectedMethod(JObject method) => new(HandleImpl.Create(Native->FromReflectedMethod(method)));
     #endregion
@@ -78,7 +73,7 @@ public sealed unsafe class Env
     public void ExceptionClear() => Native->ExceptionClear();
     public bool ExceptionCheck() => Native->ExceptionCheck();
     public void ExceptionDescribe() => Native->ExceptionDescribe();
-    public JObject ExceptionOccurred() => JObject.Create(Native->ExceptionOccurred());
+    public JObject ExceptionOccurred() => JObjectImpl.Create(Native->ExceptionOccurred());
     public RetCode Throw(JObject obj) => Native->Throw(obj);
     public RetCode ThrowNew(JClass clazz, string msg)
     {

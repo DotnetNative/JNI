@@ -50,13 +50,13 @@ public unsafe class JObjectMethod(MethodDescriptor handle, string name, TypeInfo
     public JObject Call(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return JObject.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
+            return JObjectImpl.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
     }
 
     public JObject CallVirt(JObject obj, params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return JObject.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
+            return JObjectImpl.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
     }
 }
 
@@ -190,7 +190,7 @@ public unsafe class JEnumMethod : JMethod
     {
         fixed (JValue* ptr = args)
         {
-            using var data = JObject.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
+            using var data = JObjectImpl.Create(env_->CallNonvirtualObjectMethod(obj, Class, Descriptor, ptr));
             return ReturnEnumType[data];
         }
     }
@@ -199,7 +199,7 @@ public unsafe class JEnumMethod : JMethod
     {
         fixed (JValue* ptr = args)
         {
-            using var data = JObject.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
+            using var data = JObjectImpl.Create(env_->CallObjectMethod(obj, Descriptor, ptr));
             return ReturnEnumType[data];
         }
     }

@@ -24,7 +24,7 @@ public unsafe class JStaticObjectMethod(MethodDescriptor descriptor, string name
     public JObject Call(params JValue[] args)
     {
         fixed (JValue* ptr = args)
-            return JObject.Create(env_->CallStaticObjectMethod(Class, Descriptor, ptr));
+            return JObjectImpl.Create(env_->CallStaticObjectMethod(Class, Descriptor, ptr));
     }
 }
 
@@ -110,7 +110,7 @@ public unsafe class JStaticEnumMethod : JStaticMethod
     {
         fixed (JValue* ptr = args)
         {
-            using var data = JObject.Create(env_->CallStaticObjectMethod(Class, Descriptor, ptr));
+            using var data = JObjectImpl.Create(env_->CallStaticObjectMethod(Class, Descriptor, ptr));
             return ReturnEnumType[data];
         }
     }

@@ -5,7 +5,7 @@ public abstract class FieldData
     {
         Descriptor = descriptor;
         Name = name;
-        Signature = SigGen.Field(type);
+        Signature = SigGen.Type(type);
         Type = type;
     }
 

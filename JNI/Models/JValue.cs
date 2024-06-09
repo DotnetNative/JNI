@@ -65,6 +65,12 @@ public struct JValue
         l = value.Address;
     }
 
+    public JValue(Handle value)
+    {
+        this = new();
+        l = value.Address;
+    }
+
     [FieldOffset(0)] bool z;
     [FieldOffset(0)] byte b;
     [FieldOffset(0)] ushort c;
@@ -87,4 +93,5 @@ public struct JValue
     public static implicit operator JValue(double val) => new(val);
     public static implicit operator JValue(nint val) => new(val);
     public static implicit operator JValue(JObject val) => new(val);
+    public static implicit operator JValue(Handle val) => new(val);
 }

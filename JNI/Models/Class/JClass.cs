@@ -1,14 +1,11 @@
 ﻿namespace JNI;
 public unsafe class JClass(Handle handle) : HandleContainer(handle)
 {
-    public JCtor GetCtor(params Arg[] args) => new(GetVoidMethod("<init>", args));
-    public JCtor GetCtor(params TypeInfo[] args) => GetCtor(args.ToArgs());
-
     #region Field
     public FieldDescriptor GetFieldHandle(string name, TypeInfo type)
     {
         using var nameCo = new CoMem(name);
-        string sig = SigGen.Field(type);
+        string sig = SigGen.Type(type);
         using var sigCo = new CoMem(sig);
         return env_->GetFieldID(Address, nameCo, sigCo);
     }
@@ -16,7 +13,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
     public FieldDescriptor GetStaticFieldHandle(string name, TypeInfo type)
     {
         using var nameCo = new CoMem(name);
-        string sig = SigGen.Field(type);
+        string sig = SigGen.Type(type);
         using var sigCo = new CoMem(sig);
         return env_->GetStaticFieldID(Address, nameCo, sigCo);
     }
@@ -67,6 +64,7 @@ public unsafe class JClass(Handle handle) : HandleContainer(handle)
 
     public JStringMethod GetStringMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.String, args), name, this, args);
     public JObjectMethod GetObjectMethod(string name, TypeInfo type, params Arg[] args) => new(GetMethodHandle(name, type, args), name, type, this, args);
+    public JConstructor GetConstructor(params Arg[] args) => new(GetMethodHandle("<init>", Types.Void, args), this, args);
     public JVoidMethod GetVoidMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Void, args), name, this, args);
     public JBoolMethod GetBoolMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Bool, args), name, this, args);
     public JByteMethod GetByteMethod(string name, params Arg[] args) => new(GetMethodHandle(name, Types.Byte, args), name, this, args);

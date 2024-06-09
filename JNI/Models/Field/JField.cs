@@ -11,7 +11,7 @@ public unsafe class JStringField : JField
 
 public unsafe class JObjectField(FieldDescriptor descriptor, string name, TypeInfo type) : JField(descriptor, name, type)
 {
-    public JObject Get(JObject obj) => JObject.Create(env_->GetObjectField(obj, Descriptor));
+    public JObject Get(JObject obj) => JObjectImpl.Create(env_->GetObjectField(obj, Descriptor));
     public void Set(JObject obj, JObject value) => env_->SetObjectField(obj, Descriptor, value);
 }
 
@@ -71,7 +71,7 @@ public unsafe class JEnumField : JField
 
     public JEnumTuple Get(JObject obj)
     {
-        using var data = JObject.Create(env_->GetObjectField(obj, Descriptor));
+        using var data = JObjectImpl.Create(env_->GetObjectField(obj, Descriptor));
         return EnumType[data];
     }
     public void Set(JObject obj, JEnumTuple value) => env_->SetObjectField(obj, Descriptor, value);

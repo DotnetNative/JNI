@@ -43,15 +43,15 @@ public class RuntimeTypeCollection
     }
 
     public readonly TypeInfo
-        Void = new("java.lang.Void", "V"),
-        Bool = new("java.lang.Boolean", "Z"), BoolArray, BoolArray2,
-        Byte = new("java.lang.Byte", "B"), ByteArray, ByteArray2,
-        Char = new("java.lang.Character", "C"), CharArray, CharArray2,
-        Short = new("java.lang.Short", "S"), ShortArray, ShortArray2,
-        Int = new("java.lang.Integer", "I"), IntArray, IntArray2,
-        Long = new("java.lang.Long", "J"), LongArray, LongArray2,
-        Float = new("java.lang.Float", "F"), FloatArray, FloatArray2,
-        Double = new("java.lang.Double", "D"), DoubleArray, DoubleArray2,
+        Void = new("V"),
+        Bool = new("Z"), BoolArray, BoolArray2,
+        Byte = new("B"), ByteArray, ByteArray2,
+        Char = new("C"), CharArray, CharArray2,
+        Short = new("S"), ShortArray, ShortArray2,
+        Int = new("I"), IntArray, IntArray2,
+        Long = new("J"), LongArray, LongArray2,
+        Float = new("F"), FloatArray, FloatArray2,
+        Double = new("D"), DoubleArray, DoubleArray2,
         Object = new("java.lang.Object"), ObjectArray, ObjectArray2,
         String = new("java.lang.String"), StringArray, StringArray2,
         Class = new("java.lang.Class"), ClassArray, ClassArray2;

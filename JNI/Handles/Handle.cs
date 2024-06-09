@@ -12,13 +12,7 @@ public unsafe abstract class Handle
     /// </summary>
     public bool IsNull => Address == nint.Zero;
 
-    public static event OnCreateDelegateHandle? OnCreate;
-    public static event OnCreateDelegateHandle? OnDispose;
-
-    public override string ToString() => $"{Address:X}";
-
-    internal static void InvokeOnCreate(Handle handle) => OnCreate?.Invoke(handle);
-    internal static void InvokeOnDispose(Handle handle) => OnDispose?.Invoke(handle);
+    public override string ToString() => $"{(pointer)Address}";
 
     public static implicit operator nint(Handle value) => value.Address;
     public static implicit operator void*(Handle value) => (void*)value.Address;
@@ -26,6 +20,9 @@ public unsafe abstract class Handle
 
 public static class HandleController
 {
-    public static void InvokeOnCreate(Handle handle) => Handle.InvokeOnCreate(handle);
-    public static void InvokeOnDispose(Handle handle) => Handle.InvokeOnDispose(handle);
+    public static event OnCreateDelegateHandle? OnCreate;
+    public static event OnCreateDelegateHandle? OnDispose;
+
+    public static void InvokeOnCreate(Handle handle) => OnCreate?.Invoke(handle);
+    public static void InvokeOnDispose(Handle handle) => OnDispose?.Invoke(handle);
 }

@@ -14,5 +14,7 @@ public abstract class MethodData
     public readonly TypeInfo ReturnType;
     public readonly MethodDescriptor Descriptor;
 
+    public override string ToString() => $"{Signature} [{Descriptor}]";
+
     public static implicit operator nint(MethodData data) => data.Descriptor;
 }

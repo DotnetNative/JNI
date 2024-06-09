@@ -13,20 +13,6 @@ public unsafe class JObject(Handle handle) : HandleContainer(handle)
     /// </summary>
     public new bool IsNull => Handle.IsNull || env_->IsSameObject(this, nint.Zero);
 
-    public JString this[JStringField field] { get => field.Get(this); set => field.Set(this, value); }
-    public JObject this[JObjectField field] { get => field.Get(this); set => field.Set(this, value); }
-    public bool this[JBoolField field] { get => field.Get(this); set => field.Set(this, value); }
-    public byte this[JByteField field] { get => field.Get(this); set => field.Set(this, value); }
-    public char this[JCharField field] { get => field.Get(this); set => field.Set(this, value); }
-    public short this[JShortField field] { get => field.Get(this); set => field.Set(this, value); }
-    public int this[JIntField field] { get => field.Get(this); set => field.Set(this, value); }
-    public long this[JLongField field] { get => field.Get(this); set => field.Set(this, value); }
-    public float this[JFloatField field] { get => field.Get(this); set => field.Set(this, value); }
-    public double this[JDoubleField field] { get => field.Get(this); set => field.Set(this, value); }
-
-    public static JObject Create(nint localAddress) => new(HandleImpl.Create(localAddress));
-    public static JObject Create(nint localAddress, nint globalAddress) => new(HandleImpl.Create(localAddress, globalAddress));
-
     #region Equals
     public static bool operator ==(JObject a, JObject b) => env_->IsSameObject(a, b);
     public static bool operator !=(JObject a, JObject b) => !env_->IsSameObject(a, b);
@@ -44,4 +30,10 @@ public unsafe class JObject(Handle handle) : HandleContainer(handle)
 
     public override int GetHashCode() => (int)Address;
     #endregion
+}
+
+public static class JObjectImpl
+{
+    public static JObject Create(nint localAddress) => new(HandleImpl.Create(localAddress));
+    public static JObject Create(nint localAddress, nint globalAddress) => new(HandleImpl.Create(localAddress, globalAddress));
 }

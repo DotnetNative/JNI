@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace JNI;
+﻿namespace JNI;
 public unsafe class JString : JObject
 {
     [AllowNull] public static JType type;

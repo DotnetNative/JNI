@@ -12,7 +12,7 @@ public unsafe class JStaticStringField(FieldDescriptor descriptor, string name, 
 }
 public unsafe class JStaticObjectField(FieldDescriptor descriptor, string name, TypeInfo type, JClass clazz) : JStaticField(descriptor, name, type, clazz)
 {
-    public JObject Value { get => JObject.Create(env_->GetStaticObjectField(Class, Descriptor)); set => env_->SetStaticObjectField(Class, Descriptor, value); }
+    public JObject Value { get => JObjectImpl.Create(env_->GetStaticObjectField(Class, Descriptor)); set => env_->SetStaticObjectField(Class, Descriptor, value); }
 }
 public unsafe class JStaticBoolField(FieldDescriptor descriptor, string name, JClass clazz) : JStaticField(descriptor, name, Types.Bool, clazz)
 {
@@ -64,7 +64,7 @@ public unsafe class JStaticEnumField : JStaticField
     {
         get
         {
-            using var data = JObject.Create(env_->GetStaticObjectField(Class, Descriptor));
+            using var data = JObjectImpl.Create(env_->GetStaticObjectField(Class, Descriptor));
             return EnumType[data];
         }
         set => env_->SetStaticObjectField(Class, Descriptor, value);
@@ -74,7 +74,7 @@ public unsafe class JStaticEnumField : JStaticField
     {
         get
         {
-            using var data = JObject.Create(env_->GetStaticObjectField(Class, Descriptor));
+            using var data = JObjectImpl.Create(env_->GetStaticObjectField(Class, Descriptor));
             return new(data);
         }
         set => env_->SetStaticObjectField(Class, Descriptor, value);
